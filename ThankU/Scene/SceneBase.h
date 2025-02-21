@@ -4,8 +4,9 @@
 enum eSceneType
 {
 	E_TITLE,	//タイトル画面
-	E_INGAME,		//インゲーム画面
+	E_INGAME,	//インゲーム画面
 	E_RESULT,	//リザルト画面
+	E_CREDIT,	//クレジット画面
 	E_END		//エンド
 };
 
