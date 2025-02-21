@@ -4,20 +4,32 @@
 
 class InGameScene  : public SceneBase
 {
-public://ƒvƒƒpƒeƒB(ƒf[ƒ^ŒQ)
+public://ï¿½vï¿½ï¿½ï¿½pï¿½eï¿½B(ï¿½fï¿½[ï¿½^ï¿½Q)
 	class Player* Player[4];					
 
-public:	//ƒƒ\ƒbƒh(ˆ—ŒQ)
-	InGameScene();								//ƒCƒ“ƒXƒgƒ‰ƒNƒ^[
-	~InGameScene();								//ƒfƒXƒgƒ‰ƒNƒ^[
+public:	//ï¿½ï¿½ï¿½\ï¿½bï¿½h(ï¿½ï¿½ï¿½ï¿½ï¿½Q)
+	InGameScene();								//ï¿½Cï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½[
+	~InGameScene();								//ï¿½fï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½[
 
-	virtual void Initialize()	override;		//‹N“®ˆ—
-	virtual void Finalize()		override;		//I—¹ˆ—
-	virtual eSceneType Update()	override;		//Píˆ—
-	virtual void Draw() const	override;		//•`‰æˆ—
+	virtual void Initialize()	override;		//ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	virtual void Finalize()		override;		//ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	virtual eSceneType Update()	override;		//ï¿½Pï¿½íˆï¿½ï¿½
+	virtual void Draw() const	override;		//ï¿½`ï¿½æˆï¿½ï¿½
+	class Player* Player[4];																//player
+	class Enemy* Enemy;																		//Enemy
 
 
-	//Œ»İ‚ÌƒV[ƒ“î•ñ‚ğæ“¾
+public:	//ï¿½ï¿½ï¿½\ï¿½bï¿½h(ï¿½ï¿½ï¿½ï¿½ï¿½Q)
+	InGameScene();																			//ï¿½Cï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½[
+	~InGameScene();																			//ï¿½fï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½[
+
+	virtual void Initialize()		override;												//ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	virtual void Finalize()			override;													//ï¿½Pï¿½íˆï¿½ï¿½
+	virtual void Draw() const		override;											//ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	virtual eSceneType Update()		override;												//ï¿½`ï¿½æˆï¿½ï¿½
+
+
+	//ï¿½ï¿½ï¿½İ‚ÌƒVï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
 	virtual eSceneType GetNowScene() const override;
 private:
 
