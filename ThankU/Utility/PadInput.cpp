@@ -2,12 +2,12 @@
 #include "DxLib.h"
 
 //実態を定義
-bool InputControl::now_button[4][16] = {};
-bool InputControl::old_button[4][16] = {};
-float InputControl::trigger[4][2] = {};
-Vector2D InputControl::stick[4][2] = {};
+bool PadInput::now_button[4][16] = {};
+bool PadInput::old_button[4][16] = {};
+float PadInput::trigger[4][2] = {};
+Vector2D PadInput::stick[4][2] = {};
 
-void InputControl::Update()
+void PadInput::Update()
 {
 	XINPUT_STATE input_state = {};
 	for (int j = 0; j < 4; j++)
@@ -63,42 +63,42 @@ void InputControl::Update()
 	}
 }
 
-bool InputControl::GetButton(int input_type, int button)
+bool PadInput::GetButton(int input_type, int button)
 {
 	return ChackButtonRange(button) && (now_button[input_type][button] && old_button[input_type][button]);
 }
 
-bool InputControl::GetButtonDown(int input_type, int button)
+bool PadInput::GetButtonDown(int input_type, int button)
 {
 	return ChackButtonRange(button) && (now_button[input_type][button] && !old_button[input_type][button]);
 }
 
-bool InputControl::GetButtonUp(int input_type, int button)
+bool PadInput::GetButtonUp(int input_type, int button)
 {
 	return ChackButtonRange(button) && (!now_button[input_type][button] && old_button[input_type][button]);
 }
 
-float InputControl::GetLeftTrigger(int input_type)
+float PadInput::GetLeftTrigger(int input_type)
 {
 	return trigger[input_type][0];
 }
 
-float InputControl::GetRightTrigger(int input_type)
+float PadInput::GetRightTrigger(int input_type)
 {
 	return trigger[input_type][1];
 }
 
-Vector2D InputControl::GetLeftStick(int input_type)
+Vector2D PadInput::GetLeftStick(int input_type)
 {
 	return stick[input_type][0];
 }
 
-Vector2D InputControl::GetRightStick(int input_type)
+Vector2D PadInput::GetRightStick(int input_type)
 {
 	return stick[input_type][1];
 }
 
-bool InputControl::ChackButtonRange(int button)
+bool PadInput::ChackButtonRange(int button)
 {
 	return (0 <= button && button < 16);
 }

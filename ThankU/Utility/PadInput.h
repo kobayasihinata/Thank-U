@@ -2,7 +2,7 @@
 
 #include "Vector2D.h"
 
-class InputControl
+class PadInput
 {
 private:
 	static bool now_button[4][16]; //現在のボタン入力

@@ -63,7 +63,7 @@ void SceneManager::Update()
 			start_time = now_time;
 
 			//入力機能：更新処理
-			InputControl::Update();
+			PadInput::Update();
 
 			//更新処理（戻り値は次のシーン情報）
 			eSceneType next = current_scene->Update();
