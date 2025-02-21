@@ -23,7 +23,7 @@ void SceneManager::Initialize()
 	SetMainWindowText("相槌を打つ");
 
 	// ウインドウモードで起動
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FALSE);
 
 	// ウインドウのサイズ
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32);
@@ -32,13 +32,13 @@ void SceneManager::Initialize()
 	SetDrawScreen(DX_SCREEN_BACK);  
 
 	//ウィンドウサイズを手動で変更できる
-	SetWindowSizeChangeEnableFlag(TRUE, TRUE);
+	//SetWindowSizeChangeEnableFlag(TRUE, TRUE);
 
-	//ウィンドウモードで起動
-	if (ChangeWindowMode(TRUE) != DX_CHANGESCREEN_OK)
-	{
-		throw("ウィンドウモードで起動できませんでした\n");
-	}
+	////ウィンドウモードで起動
+	//if (ChangeWindowMode(TRUE) != DX_CHANGESCREEN_OK)
+	//{
+	//	throw("ウィンドウモードで起動できませんでした\n");
+	//}
 
 	//DXライブラリの初期化
 	if (DxLib_Init() == -1)
