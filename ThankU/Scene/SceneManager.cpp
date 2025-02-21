@@ -1,5 +1,6 @@
 #include"SceneManager.h"
 #include"../Utility/PadInput.h"
+#include"../Utility/DebugInformation.h"
 #include"DxLib.h"
 #include"Title/TitleScene.h"
 #include"InGame/InGameScene.h"
@@ -66,6 +67,9 @@ void SceneManager::Update()
 			//入力機能：更新処理
 			PadInput::Update();
 
+			//デバッグ表示の更新
+			DebugInfomation::Update();
+
 			//更新処理（戻り値は次のシーン情報）
 			eSceneType next = current_scene->Update();
 
@@ -112,6 +116,9 @@ void SceneManager::Draw() const
 
 	//シーンの描画
 	current_scene->Draw();
+
+	//デバッグ表示の描画
+	DebugInfomation::Draw();
 
 	//裏画面の内容を表画面に反映
 	ScreenFlip();

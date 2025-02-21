@@ -1,5 +1,6 @@
 #include "CreditScene.h"
 #include "../../Utility/PadInput.h"
+#include "../../Utility/DebugInformation.h"
 
 CreditScene::CreditScene()
 {
@@ -30,13 +31,14 @@ eSceneType CreditScene::Update()
 	{
 		return E_END;
 	}
+	DebugInfomation::Add("count", 300);
 	//åªç›ÇÃÉVÅ[ÉìÇï‘Ç∑
 	return GetNowScene();
 }
 
 void CreditScene::Draw() const
 {
-	DrawString(0, 0, "Result", 0xffffff);
+	DrawString(0, 0, "Credit", 0xffffff);
 	DrawFormatString(0, 20, 0xffffff, "Ç†Ç∆%dïbÇ≈EndâÊñ Ç÷", (int)(count / 60));
 }
 
