@@ -2,23 +2,31 @@
 #include"DxLib.h"
 #include"../SceneBase.h"
 
+enum agreement :int
+{
+    positive = 1,
+    negation,
+    question,
+    excitement
+};
+
 class InGameScene  : public SceneBase
 {
-public://�v���p�e�B(�f�[�^�Q)
-    class Player* Player[4];					
+public:
+    agreement FatalAnser;
+    agreement PlayerAnser[4];
+public:
+    InGameScene();								                                            //インストラクタ
+    ~InGameScene();								                                            //デストラクタ
 
-public:	//���\�b�h(�����Q)
-    InGameScene();								//
-    ~InGameScene();								//
+    virtual void Initialize()	            override;		                                //イニシャライズ
+    virtual void Finalize()		            override;		                                //ファイナライズ
+    virtual eSceneType Update()	            override;		                                //恒常処理
+    virtual void Draw() const	            override;		                                //描画処理
 
-    virtual void Initialize()	override;		//
-    virtual void Finalize()		override;		//
-    virtual eSceneType Update()	override;		//
-    virtual void Draw() const	override;		//
-    class Player* Player[4];																//player
-    class Enemy* Enemy;																		//Enemy
-    //���݂̃V�[�������擾
-    virtual eSceneType GetNowScene() const override;
+    virtual eSceneType GetNowScene() const override;                                        //現在のシーン情報
+
+    void EnemyAnser();
 private:
 
 };

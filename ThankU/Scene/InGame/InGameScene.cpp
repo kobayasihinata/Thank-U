@@ -92,3 +92,23 @@ eSceneType InGameScene::GetNowScene() const
 {
 	return eSceneType::E_INGAME;
 }
+
+
+void InGameScene::EnemyAnser()
+{
+	switch (GetRand(4) + 1)
+	{
+	case 0:
+		FatalAnser = agreement::positive;
+		break;
+	case 1:
+		FatalAnser = agreement::negation;
+		break;
+	case 2:
+		FatalAnser = agreement::question;
+		break;
+	case 3:
+		FatalAnser = agreement::excitement;
+		break;
+	}
+}
