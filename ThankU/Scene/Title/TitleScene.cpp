@@ -1,6 +1,7 @@
 #include "TitleScene.h"
+#include"../../Utility/PadInput.h"
 
-TitleScene::TitleScene()
+TitleScene::TitleScene():key(0)
 {
 }
 
@@ -18,26 +19,34 @@ void TitleScene::Finalize()
 
 eSceneType TitleScene::Update()
 {
-    // カーソル決定(決定した画面に遷移する)
-  /*  if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
+    
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || CheckHitKey(KEY_INPUT_SPACE))
     {
-        PlaySoundMem(sound, TRUE);
-
-        switch (menu_cursor)
-        {
-        case 0:
-            return eSceneType::E_INGAME;
-        case 1:
-            return eSceneType::E_RESULT;
-        case 2:
-            return eSceneType::E_HELP;
-        default:
-            return eSceneType::E_END;
-        }
-    }*/
+        return eSceneType::E_INGAME;
+    }
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || CheckHitKey(KEY_INPUT_A))
+    {
+        return eSceneType::E_CREDIT;
+    }
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || CheckHitKey(KEY_INPUT_S))
+    {
+        return eSceneType::E_RESULT;
+    }
+        ////カーソル決定(決定した画面に遷移する)
+        //switch (key)
+        //{
+        //case 0:
+        //    return eSceneType::E_INGAME;
+        //case 1:
+        //    return eSceneType::E_RESULT;
+        //case 2:
+        //    return eSceneType::E_CREDIT;
+        //default:
+        //    return eSceneType::E_END;
+        //}
 
     // 現在のシーンタイプを返す
-    return GetNowScene();
+    //return GetNowScene();
 }
 
 void TitleScene::Draw() const

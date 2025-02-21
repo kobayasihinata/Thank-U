@@ -4,6 +4,9 @@
 
 class TitleScene : public SceneBase
 {
+private:
+	int key;	//デバッグ用(シーン切り替え)
+
 public://プロパティ(データ群)
 
 public:	//メソッド(処理群)
