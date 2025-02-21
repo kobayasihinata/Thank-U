@@ -5,7 +5,6 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    unsigned int Cr;
 
     SetMainWindowText("ThankU");         // ウィンドウタイトルを設定
 
