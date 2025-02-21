@@ -1,5 +1,6 @@
 #include "InGameScene.h"
 #include "../../Utility/PadInput.h"
+#include "../../Utility/KeyInput.h"
 
 /// <summary>
 ///　インストラクタ
@@ -58,7 +59,9 @@ eSceneType InGameScene::Update()
 {	
 
 #if _DEBUG
-	if (PadInput::GetButton(DX_INPUT_PAD1, PAD_INPUT_B))
+	KeyInput* key_input = KeyInput::Get();
+
+	if (PadInput::GetButton(DX_INPUT_PAD1, PAD_INPUT_B)|| key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
 	{
 		/*↓これを利用すると、リザルト画面に偏移する。*/
 		return eSceneType::E_RESULT; 
@@ -118,6 +121,7 @@ int InGameScene::PlayerAnser()
 			break;
 		}
 	}
+	return 0;
 }
 
 ///--		*	*	*	*	*	Enemy関連	*	*	*	*	*	--///

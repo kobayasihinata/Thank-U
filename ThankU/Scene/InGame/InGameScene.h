@@ -22,7 +22,7 @@ public:
     vector<vector<string>> EnemyString;
 
     agreement FatalAnser;
-    agreement PlayerAnser[4];
+    agreement Player_Anser[4];
     string Question;
 public:
     //インストラクタ
