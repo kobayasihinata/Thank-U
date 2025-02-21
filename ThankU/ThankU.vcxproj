@@ -140,10 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Utility\PadInput.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\SceneBase.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Utility\PadInput.h" />
     <ClInclude Include="Utility\Common.h" />
     <ClInclude Include="Utility\Vector2D.h" />
