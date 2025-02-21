@@ -140,21 +140,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
-<<<<<<< Updated upstream
     <ClCompile Include="Scene\Result\ResultScene.cpp" />
-=======
     <ClCompile Include="Scene\InGame\InGameScene.cpp" />
->>>>>>> Stashed changes
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Utility\PadInput.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< Updated upstream
     <ClInclude Include="Scene\Result\ResultScene.h" />
-=======
     <ClInclude Include="Scene\InGame\InGameScene.h" />
->>>>>>> Stashed changes
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\Title\TitleScene.h" />
