@@ -26,7 +26,10 @@ eSceneType ResultScene::Update()
 	__super::Update();
 
 	//Bボタンでタイトルへ
-	if(PadInput::GetButton()
+	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B))
+	{
+		return E_TITLE;
+	}
 	//現在のシーンを返す
 	return GetNowScene();
 }
