@@ -6,16 +6,19 @@ class InGameScene  : public SceneBase
 {
 public://プロパティ(データ群)
 	class Player* Player[4];										//player
+
 public:	//メソッド(処理群)
 	InGameScene();													//インストラクター
 	~InGameScene();													//デストラクター
 
-	void Initialize();												//起動時処理
-	void Finalize();												//終了時処理
-	void Update();													//恒常処理
-	void Draw();													//描画処理
+	virtual void Initialize()	override;												//起動時処理
+	virtual void Finalize()		override;												//終了時処理
+	virtual eSceneType Update()	override;													//恒常処理
+	virtual void Draw() const	override;													//描画処理
 
 
+	//現在のシーン情報を取得
+	virtual eSceneType GetNowScene() const;
 private:
 
 };
