@@ -35,7 +35,7 @@ eSceneType CreditScene::Update()
 	//	return E_END;
 	//}
 	//Bボタンかスペースキーでタイトルへ
-	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
+	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Released)
 	{
 		return E_TITLE;
 	}
