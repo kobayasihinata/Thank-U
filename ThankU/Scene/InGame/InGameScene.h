@@ -1,32 +1,54 @@
 #pragma once
 #include"DxLib.h"
 #include"../SceneBase.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+using namespace std;
 
 enum agreement :int
 {
-    positive = 1,
-    negation,
-    question,
-    excitement
+    positive     = 1,
+    negation     = 2,
+    question     = 3,
+    excitement   = 4
 };
 
 class InGameScene  : public SceneBase
 {
 public:
+    vector<vector<string>> EnemyString;
+
     agreement FatalAnser;
     agreement PlayerAnser[4];
+    string Question;
 public:
-    InGameScene();								                                            //インストラクタ
-    ~InGameScene();								                                            //デストラクタ
+    //インストラクタ
+    InGameScene();
+    //デストラクタ
+    ~InGameScene();
 
-    virtual void Initialize()	            override;		                                //イニシャライズ
-    virtual void Finalize()		            override;		                                //ファイナライズ
-    virtual eSceneType Update()	            override;		                                //恒常処理
-    virtual void Draw() const	            override;		                                //描画処理
+    //イニシャライズ
+    virtual void Initialize()	            override;
+    //ファイナライズ
+    virtual void Finalize()		            override;
+    //恒常処理
+    virtual eSceneType Update()	            override;
+    //描画処理
+    virtual void Draw() const	            override;
+    //現在のシーン情報
+    virtual eSceneType GetNowScene() const override;                                       
 
-    virtual eSceneType GetNowScene() const override;                                        //現在のシーン情報
+    int PlayerAnser();
+
+    //ーー以下は全て記述済みーー//
 
     void EnemyAnser();
+    void EnemyAsk();
+    //csvの読み取り
+    vector<vector<string>>read_csv(const string& filename);
 private:
 
 };

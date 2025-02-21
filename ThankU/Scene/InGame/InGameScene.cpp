@@ -1,4 +1,5 @@
 #include "InGameScene.h"
+#include "../../Utility/PadInput.h"
 
 /// <summary>
 ///　インストラクタ
@@ -7,6 +8,7 @@
 /// <returns></returns>
 InGameScene::InGameScene()
 {
+
 }
 
 /// <summary>
@@ -25,6 +27,7 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
+	EnemyString = read_csv("EnemyQ.csv");
 }
 
 /// <summary>
@@ -43,7 +46,7 @@ void InGameScene::Finalize()
 /// <returns></returns>
 void InGameScene::Draw() const
 {
-	
+	//後々いじりますわ
 }
 
 /// <summary>
@@ -52,26 +55,42 @@ void InGameScene::Draw() const
 /// <param></param>
 /// <returns>現在のシーンを返却</returns>
 eSceneType InGameScene::Update()
-{
-	/*↓	Enemy関連	↓*/
-	//Enemyから問いかけを貰う
+{	
 
-	//Enemyから答えを受け取る
+#if _DEBUG
+	if (PadInput::GetButton(DX_INPUT_PAD1, PAD_INPUT_B))
+	{
+		/*↓これを利用すると、リザルト画面に偏移する。*/
+		return eSceneType::E_RESULT; 
+	}
+#endif // _DEBUG
 
+	/*	Enemy関連	*/
+	{
+		//Enemyから問いかけを貰う
 
-	/*↑	Enemy関連	↑*/
+		//Enemyから答えを受け取る
+
+	}
+	/*player関連^-_-^おそらくループ*/
+	{
+		//入力に応じた処理
+		PlayerAnser();
+		//全員入力するまで待つ
+
+	}
+
 	//Enemyから受け取った答えとplayerらが言ってる答えを比較する
-	if (0)
+	if (0/*?*/)
 	{
 		//正解の場合
 
 	}
-	else
+	else//不正解の場合
 	{
-		//不正解の場合
+		
+
 	}
-	/*↓これを利用すると、リザルト画面に偏移する。*/
-	//return eSceneType::E_RESULT; 
 	
 	
 	return eSceneType::E_INGAME;
@@ -79,31 +98,87 @@ eSceneType InGameScene::Update()
 
 
 /// <summary>
-/// 現在のシーン情報の返却
+/// 現在のシーン情報を返却
 /// </summary>
 /// <param></param>
-/// <returns>現在のシーン名を返却</returns>
+/// <returns>現在のシーン情報</returns>
 eSceneType InGameScene::GetNowScene() const
 {
 	return eSceneType::E_INGAME;
 }
 
+int InGameScene::PlayerAnser()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		//playerの押したボタンに応じて回答を当てはめる
+		switch (PadInput::GetButton(i, PAD_INPUT_B))//←仮置き)
+		{
+		default:
+			break;
+		}
+	}
+}
 
+///--		*	*	*	*	*	Enemy関連	*	*	*	*	*	--///
+
+/// <summary>
+/// Enemyの答え決め
+/// </summary>
+/// <param></param>
+/// <returns></returns>
 void InGameScene::EnemyAnser()
 {
 	switch (GetRand(4) + 1)
 	{
-	case 0:
+	case 1:
 		FatalAnser = agreement::positive;
 		break;
-	case 1:
+	case 2:
 		FatalAnser = agreement::negation;
 		break;
-	case 2:
+	case 3:
 		FatalAnser = agreement::question;
 		break;
-	case 3:
+	case 4:
 		FatalAnser = agreement::excitement;
 		break;
 	}
+}
+
+
+/// <summary>
+/// Enemyの質問決定
+/// </summary>
+void InGameScene::EnemyAsk()
+{
+	string Question = EnemyString[(int)FatalAnser][GetRand(5)];
+}
+
+/// <summary>
+/// CSVファイルを読み取る
+/// </summary>
+/// <param name ="filename">開くファイルの名前</param>
+/// <returns>vectorの中のvectorの中にあるstring</returns>
+vector<vector<string>> InGameScene::read_csv(const string& filename)
+{
+	vector<vector<string>> data;
+	ifstream file(filename);
+	if (!file) {
+		cerr << "Error: ファイルを開けませんでした。" << endl;
+		return data;
+	}
+
+	string line;
+	while (getline(file, line)) { // 1行ずつ読み込む
+		vector<string> row;
+		stringstream ss(line);
+		string cell;
+
+		while (getline(ss, cell, ',')) { // カンマ区切りで分割
+			row.push_back(cell);
+		}
+		data.push_back(row);
+	}
+	return data;
 }
