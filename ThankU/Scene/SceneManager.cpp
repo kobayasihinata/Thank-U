@@ -147,10 +147,13 @@ SceneBase* SceneManager::CreateScene(eSceneType scene_type)
 	{
 	case eSceneType::E_TITLE:
 		return new TitleScene;
+
 	case eSceneType::E_INGAME:
 		return new InGameScene;
+
 	case eSceneType::E_RESULT:
 		return new ResultScene;
+
 	default:
 		return nullptr;
 	}
