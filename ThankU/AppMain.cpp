@@ -5,15 +5,6 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
-    SetMainWindowText("ThankU");         // ウィンドウタイトルを設定
-
-    ChangeWindowMode(TRUE);                        // ウインドウモードで起動
-
-    SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32); // ウインドウのサイズ
-
-    SetDrawScreen(DX_SCREEN_BACK);                 // 描画先画面を裏にする（ダブルバッファリング）
-
     if (DxLib_Init() == -1)  // ＤＸライブラリ初期化処理
     {
         return -1;           // エラーが起きたら直ちに終了

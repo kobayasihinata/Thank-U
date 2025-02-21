@@ -2,6 +2,7 @@
 #include"../Utility/PadInput.h"
 #include"../Utility/KeyInput.h"
 #include"../Utility/DebugInformation.h"
+#include"../Utility/Common.h"
 #include"DxLib.h"
 #include"Title/TitleScene.h"
 #include"InGame/InGameScene.h"
@@ -20,6 +21,15 @@ void SceneManager::Initialize()
 {
 	//ウィンドウのタイトルを設定
 	SetMainWindowText("相槌を打つ");
+
+	// ウインドウモードで起動
+	ChangeWindowMode(TRUE);
+
+	// ウインドウのサイズ
+	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32);
+
+	// 描画先画面を裏にする（ダブルバッファリング）
+	SetDrawScreen(DX_SCREEN_BACK);  
 
 	//ウィンドウサイズを手動で変更できる
 	SetWindowSizeChangeEnableFlag(TRUE, TRUE);
