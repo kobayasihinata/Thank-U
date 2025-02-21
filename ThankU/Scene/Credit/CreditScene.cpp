@@ -1,5 +1,6 @@
 #include "CreditScene.h"
 #include "../../Utility/PadInput.h"
+#include "../../Utility/KeyInput.h"
 #include "../../Utility/DebugInformation.h"
 
 CreditScene::CreditScene()
@@ -26,13 +27,15 @@ eSceneType CreditScene::Update()
 {
 	__super::Update();
 
+	KeyInput* key_input = KeyInput::Get();
+
 	//一定時間経過で終了
-	if (--count < 0)
-	{
-		return E_END;
-	}
+	//if (--count < 0)
+	//{
+	//	return E_END;
+	//}
 	//Bボタンかスペースキーでタイトルへ
-	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || CheckHitKey(KEY_INPUT_SPACE))
+	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
 	{
 		return E_TITLE;
 	}
@@ -45,7 +48,7 @@ eSceneType CreditScene::Update()
 void CreditScene::Draw() const
 {
 	DrawString(0, 0, "Credit", 0xffffff);
-	DrawFormatString(0, 20, 0xffffff, "あと%d秒でEnd画面へ", (int)(count / 60));
+	//DrawFormatString(0, 20, 0xffffff, "あと%d秒でEnd画面へ", (int)(count / 60));
 	DrawFormatString(0, 40, 0xffffff, "Pad B  or  Spaceでタイトル", (int)(count / 60));
 }
 

@@ -1,5 +1,6 @@
 #include"SceneManager.h"
 #include"../Utility/PadInput.h"
+#include"../Utility/KeyInput.h"
 #include"../Utility/DebugInformation.h"
 #include"DxLib.h"
 #include"Title/TitleScene.h"
@@ -51,6 +52,9 @@ void SceneManager::Update()
 	//フレーム開始時間（マイクロ秒）を取得
 	LONGLONG start_time = GetNowHiPerformanceCount();
 
+	//入力機能のインスタンス取得する処理
+	KeyInput* key_input = KeyInput::Get();
+
 	//メインループ
 	while (ProcessMessage() != -1)
 	{
@@ -66,6 +70,7 @@ void SceneManager::Update()
 
 			//入力機能：更新処理
 			PadInput::Update();
+			key_input->Update();
 
 			//デバッグ表示の更新
 			DebugInfomation::Update();
