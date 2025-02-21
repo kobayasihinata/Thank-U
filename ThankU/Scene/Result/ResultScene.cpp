@@ -37,6 +37,7 @@ eSceneType ResultScene::Update()
 void ResultScene::Draw() const
 {
 	DrawString(0, 0, "Result", 0xffffff);
+	DrawString(0, 20, "Pad B  or  Space‚Åƒ^ƒCƒgƒ‹", 0xffffff);
 }
 
 eSceneType ResultScene::GetNowScene() const

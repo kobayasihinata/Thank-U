@@ -31,7 +31,13 @@ eSceneType CreditScene::Update()
 	{
 		return E_END;
 	}
-	DebugInfomation::Add("count", 300);
+	//Bボタンかスペースキーでタイトルへ
+	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || CheckHitKey(KEY_INPUT_SPACE))
+	{
+		return E_TITLE;
+	}
+	//Add使用例
+	DebugInfomation::Add("count", count);
 	//現在のシーンを返す
 	return GetNowScene();
 }
@@ -40,6 +46,7 @@ void CreditScene::Draw() const
 {
 	DrawString(0, 0, "Credit", 0xffffff);
 	DrawFormatString(0, 20, 0xffffff, "あと%d秒でEnd画面へ", (int)(count / 60));
+	DrawFormatString(0, 40, 0xffffff, "Pad B  or  Spaceでタイトル", (int)(count / 60));
 }
 
 eSceneType CreditScene::GetNowScene() const
