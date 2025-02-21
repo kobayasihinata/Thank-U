@@ -32,7 +32,7 @@ eSceneType TitleScene::Update()
             cursor = 3;
         }
     }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_A) || key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
     {
         cursor++;
         // 1”Ô‰º‚É“’B‚µ‚½‚çAˆê”Ôã‚É‚·‚é
