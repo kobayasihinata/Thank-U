@@ -25,8 +25,8 @@ eSceneType ResultScene::Update()
 {
 	__super::Update();
 
-	//Bボタンでタイトルへ
-	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B))
+	//Bボタンかスペースキーでタイトルへ
+	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || CheckHitKey(KEY_INPUT_SPACE))
 	{
 		return E_TITLE;
 	}
