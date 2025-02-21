@@ -7,11 +7,6 @@
 /// <returns></returns>
 InGameScene::InGameScene()
 {
-	//ƒvƒŒƒCƒ„[‚Ìî•ñ‚Ì‰Šú‰»
-	Player[0] = nullptr;
-	Player[1] = nullptr;
-	Player[2] = nullptr;
-	Player[3] = nullptr;
 }
 
 /// <summary>
