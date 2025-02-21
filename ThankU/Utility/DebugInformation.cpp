@@ -1,4 +1,5 @@
 #include "DebugInformation.h"
+#include "KeyInput.h"
 
 std::unordered_map<const char*, float>DebugInfomation::draw_list;
 bool DebugInfomation::draw_flg;
@@ -6,18 +7,11 @@ bool DebugInfomation::hit_once;
 
 void DebugInfomation::Update()
 {
+	KeyInput* input = KeyInput::Get();
 	draw_list.clear();
-	if (CheckHitKey(KEY_INPUT_X))
+	if (input->GetKeyState(KEY_INPUT_X) == eInputState::Pressed)
 	{
-		if (!hit_once)
-		{
 			draw_flg = !draw_flg;
-			hit_once = true;
-		}
-	}
-	else
-	{
-		hit_once = false;
 	}
 }
 

@@ -17,6 +17,7 @@ public:
 	SceneBase() {}	//コンストラクタ
 	virtual ~SceneBase() {}	//デストラクタ
 
+	int animation_image;	//アニメーション画像格納
 public:
 	//初期化処理
 	virtual void Initialize() {}

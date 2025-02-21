@@ -34,6 +34,9 @@ eSceneType CreditScene::Update()
 	//{
 	//	return E_END;
 	//}
+	
+	//デバッグ時処理
+#if _DEBUG
 	//Bボタンかスペースキーでタイトルへ
 	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Released)
 	{
@@ -41,6 +44,7 @@ eSceneType CreditScene::Update()
 	}
 	//Add使用例
 	DebugInfomation::Add("count", count);
+#endif
 	//現在のシーンを返す
 	return GetNowScene();
 }
@@ -49,7 +53,9 @@ void CreditScene::Draw() const
 {
 	DrawString(0, 0, "Credit", 0xffffff);
 	//DrawFormatString(0, 20, 0xffffff, "あと%d秒でEnd画面へ", (int)(count / 60));
-	DrawFormatString(0, 40, 0xffffff, "Pad B  or  Spaceでタイトル", (int)(count / 60));
+#if _DEBUG
+	DrawString(0, 20, "Pad B  or  Spaceでタイトル", 0x000000);
+#endif
 }
 
 eSceneType CreditScene::GetNowScene() const
