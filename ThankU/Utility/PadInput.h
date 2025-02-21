@@ -18,6 +18,7 @@ public:
 	//DX_INPUT_PAD2　　　　 : パッド２
 	//DX_INPUT_PAD3　　　　 : パッド３
 	//DX_INPUT_PAD4　　　　 : パッド４
+	
 	//各ボタン取得
 	//押している間 input_type=コントローラー名 button=取得したいボタン
 	static bool GetButton(int input_type, int button);	
