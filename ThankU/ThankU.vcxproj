@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Utility\KeyInput.cpp" />
     <ClCompile Include="Scene\Credit\CreditScene.cpp" />
     <ClCompile Include="Scene\Result\ResultScene.cpp" />
     <ClCompile Include="Scene\InGame\InGameScene.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utility\KeyInput.h" />
     <ClInclude Include="Scene\Credit\CreditScene.h" />
     <ClInclude Include="Scene\Result\ResultScene.h" />
     <ClInclude Include="Scene\InGame\InGameScene.h" />
