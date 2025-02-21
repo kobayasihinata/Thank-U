@@ -4,6 +4,7 @@
 #include"Title/TitleScene.h"
 #include"InGame/InGameScene.h"
 #include"Result/ResultScene.h"
+#include"Credit/CreditScene.h"
 
 
 SceneManager::SceneManager() : current_scene(nullptr){
@@ -154,6 +155,8 @@ SceneBase* SceneManager::CreateScene(eSceneType scene_type)
 	case eSceneType::E_RESULT:
 		return new ResultScene;
 
+	case eSceneType::E_CREDIT:
+		return new CreditScene;
 	default:
 		return nullptr;
 	}
