@@ -1,11 +1,12 @@
 #pragma once
 #include"DxLib.h"
+#include   "../../Utility/Common.h"
 #include"../SceneBase.h"
 
 class TitleScene : public SceneBase
 {
 private:
-	int key;	//デバッグ用(シーン切り替え)
+	int cursor;	//メニューカーソル（仮）
 
 public://プロパティ(データ群)
 
@@ -21,6 +22,4 @@ public:	//メソッド(処理群)
 
 	//現在のシーン情報を取得
 	virtual eSceneType GetNowScene() const override;
-private:
-
 };
