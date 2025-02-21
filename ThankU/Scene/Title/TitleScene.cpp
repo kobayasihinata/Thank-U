@@ -71,7 +71,7 @@ void TitleScene::Draw() const
     DrawFormatString(10, 10, GetColor(255, 255, 255), "%d",cursor,TRUE);
 
     //カーソル
-    DrawCircle((SCREEN_WIDTH / 2) - 80, (SCREEN_HEIGHT / 1.9) + cursor * 20, 5, GetColor(255, 255, 255), TRUE);
+    DrawCircle((SCREEN_WIDTH / 2) - 80, ((SCREEN_HEIGHT / 1.9) - 24) + cursor * 24, 5, GetColor(255, 255, 255), TRUE);
 
     //真ん中あたりに描画
     DrawFormatString((SCREEN_WIDTH / 2 ) - 90 , (SCREEN_HEIGHT / 3), GetColor(255, 255, 255), "タイトル画面です");
