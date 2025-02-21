@@ -14,7 +14,7 @@ ResultScene::~ResultScene()
 
 void ResultScene::Initialize()
 {
-
+	result_image = LoadGraph("Rescurce/Image/Result/Result_kari.png");
 }
 
 void ResultScene::Finalize()
@@ -39,8 +39,11 @@ eSceneType ResultScene::Update()
 
 void ResultScene::Draw() const
 {
-	DrawString(0, 0, "Result", 0xffffff);
-	DrawString(0, 20, "Pad B  or  Spaceでタイトル", 0xffffff);
+	//背景画像
+	DrawGraph(0, 0, result_image, false);
+
+	DrawString(0, 0, "Result", 0x000000);
+	DrawString(0, 20, "Pad B  or  Spaceでタイトル", 0x000000);
 }
 
 eSceneType ResultScene::GetNowScene() const
