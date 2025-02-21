@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "../../Utility/PadInput.h"
 
 ResultScene::ResultScene()
 {
@@ -24,6 +25,8 @@ eSceneType ResultScene::Update()
 {
 	__super::Update();
 
+	//Bボタンでタイトルへ
+	if(PadInput::GetButton()
 	//現在のシーンを返す
 	return GetNowScene();
 }
