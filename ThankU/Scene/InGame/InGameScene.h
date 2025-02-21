@@ -18,7 +18,7 @@ public:	//メソッド(処理群)
 
 
 	//現在のシーン情報を取得
-	virtual eSceneType GetNowScene() const;
+	virtual eSceneType GetNowScene() const override;
 private:
 
 };
