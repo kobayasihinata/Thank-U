@@ -398,3 +398,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Executables
+*.exe
+*.out
+*.app
+
+.vs
+Log.txt
+x64
