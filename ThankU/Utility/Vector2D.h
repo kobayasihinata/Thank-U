@@ -19,10 +19,10 @@ public:
 	Vector2D& operator = (const Vector2D& location);
 
 	//等価演算オペレーター
-	bool operator == (const Vector2D& location);
+	bool operator == (const Vector2D& location)const;
 
 	//不等価演算オペレーター
-	bool operator != (const Vector2D& location);
+	bool operator != (const Vector2D& location)const;
 
 	//加算オペレーター
 	const Vector2D operator + (const Vector2D& location)const;

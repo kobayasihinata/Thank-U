@@ -30,7 +30,7 @@ eSceneType ResultScene::Update()
 
 void ResultScene::Draw() const
 {
-
+	DrawString(0, 0, "Result", 0xffffff);
 }
 
 eSceneType ResultScene::GetNowScene() const
