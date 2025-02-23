@@ -97,7 +97,7 @@ eSceneType TitleScene::Update()
         }
     }
 
-    // 各参加者の入力があれば＜-- X ボタンで参加
+    // 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
         player_join[0] = true; // プレイヤー1が参加
     }
@@ -111,7 +111,7 @@ eSceneType TitleScene::Update()
         player_join[3] = true; // プレイヤー1が参加
     }
 
-    //デバッグ用＜--　スペースキーで参加
+    //デバッグ用＜--　Aキー で参加 ※ひとり用
     if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
     {
         for (int i = 0; i < 4; i++) {
@@ -129,7 +129,6 @@ eSceneType TitleScene::Update()
 //描画処理
 void TitleScene::Draw() const
 {
-  
     DrawGraph(0, 0, title_image, true);         //背景画像の描画
     DrawGraph(0.0f, 0.0f, title_logo, true);    //タイトルロゴ
     DrawGraph(0, 0, object_image[3], true);     //メッセージバー(下の枠みたいなやつ)
