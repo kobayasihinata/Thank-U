@@ -23,7 +23,7 @@ eSceneType CreditScene::Update()
 	__super::Update();
 
 	//スクロール量を加算
-	scrollY -= 1.5f; 
+	scrollY -= 2.0f; 
 
 	//テキストが画面外に行ったらエンドへ遷移する
 	if (scrollY < -1300) return E_END;
