@@ -34,7 +34,7 @@ void ResultScene::Initialize()
 		score_location[i] = { 100.f,300.f + (i * 120.f) };
 	}
 	//400=吹き出しを含めたサイズ 200=下基準にした時の移動値
-	winner_draw = { SCREEN_WIDTH - 650,SCREEN_HEIGHT - 400 };
+	winner_draw = { SCREEN_WIDTH - 800,SCREEN_HEIGHT - 400 };
 
 	animation_image = LoadGraph("Rescurce/Image/result.png");
 	bar_image = LoadGraph("Rescurce/Image/Line_Message.png");
@@ -157,7 +157,7 @@ void ResultScene::Draw() const
 
 			DrawFormatStringF(score_location[i].x, score_location[i].y, 0xffffff,
 				"Player%d  Score:%d Great:%d Bad:%d",
-				i,
+				i+1,
 				Data::player_data[i].score,
 				Data::player_data[i].great,
 				Data::player_data[i].bad);
@@ -190,16 +190,16 @@ eSceneType ResultScene::GetNowScene() const
 	return E_RESULT;
 }
 
-int ResultScene::CheckWinner()const
+int ResultScene::CheckWinnerNum()const
 {
 	//とりあえずプレイヤー１格納
-	int ret = 0;
+	int ret = Data::player_data[0].score;
 	for (int i = 1; i < Data::player_num; i++)
 	{
-		//スコア比較して一番大きい物を比較
+		//スコア比較して一番大きい物を取得
 		if (Data::player_data[ret].score < Data::player_data[i].score)
 		{
-			ret = i;
+			ret = Data::player_data[i].score;
 		}
 	}
 	return ret;
@@ -208,26 +208,38 @@ int ResultScene::CheckWinner()const
 void ResultScene::DrawWinner()const
 {
 	//勝者表示吹き出し
-	//Data::DrawSpeechBubble(winner_draw, 450, true);
+	Data::DrawSpeechBubble(winner_draw, 700, true);
 	//勝者表示文字（前）
-	//DrawFormatStringF(winner_draw.x,
-	//	winner_draw.y,
-	//	0xffffff,
-	//	"Player",
-	//	CheckWinner());
-
+	DrawFormatStringF(winner_draw.x,
+		winner_draw.y,
+		0xffffff,
+		"Player",
+		CheckWinnerNum());
+	//勝利者を洗い出す
+	int winner_list[4] = { false };
+	int winner_count = 0;
+	for (int i = 0; i < Data::player_num; i++)
+	{
+		//プレイヤーのスコアが一位なら
+		if (Data::player_data[i].score == CheckWinnerNum())
+		{
+			//勝利者リストに加える
+			winner_list[winner_count] = i;
+			winner_count++;
+		}
+	}
 	//勝者表示文字（同率一位も全員表示）
-	//for (int i = 0; i < winner_num; i++)
-	//{
-	//	DrawFormatString(winner_draw.x + 100 + (30 * i),
-	//		winner_draw.y,
-	//		0xffffff, );
-	//}
+	for (int i = 0; i < winner_count; i++)
+	{
+		DrawFormatString(winner_draw.x + 220 + (60 * i),
+			winner_draw.y,
+			0xffffff, "%d",winner_list[i]+1);
+	}
 	//勝者表示文字（後ろ）
-	//DrawFormatStringF(winner_draw.x + 100 + (30 * winner_num),
-	//	winner_draw.y,
-	//	0xffffff,
-	//	"の勝ち！",
-	//	CheckWinner());
+	DrawFormatStringF(winner_draw.x + 220 + (60 * winner_count),
+		winner_draw.y,
+		0xffffff,
+		"の勝ち！",
+		CheckWinnerNum());
 
 }

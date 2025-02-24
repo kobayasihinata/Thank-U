@@ -24,7 +24,7 @@ void SceneManager::Initialize()
 	SetMainWindowText("相槌を打つ");
 
 	// ウインドウモードで起動
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FALSE);
 
 	// ウインドウのサイズ
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32);
