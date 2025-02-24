@@ -1,5 +1,6 @@
 #include "DebugInformation.h"
 #include "KeyInput.h"
+#include "Data.h"
 
 std::unordered_map<const char*, float>DebugInfomation::draw_list;
 bool DebugInfomation::draw_flg;
