@@ -32,7 +32,7 @@ void SceneManager::Initialize()
 	SetDrawScreen(DX_SCREEN_BACK);  
 
 	//ウィンドウサイズを手動で変更できる
-	SetWindowSizeChangeEnableFlag(TRUE, TRUE);
+	//SetWindowSizeChangeEnableFlag(TRUE, TRUE);
 
 	
 	////ウィンドウモードで起動
