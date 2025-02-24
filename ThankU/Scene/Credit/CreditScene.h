@@ -11,6 +11,7 @@ public://プロパティ(データ群)
 
 private:
 	int background_image;
+	int credit_logo;
 	int object_image[5];
 
 public:	//メソッド(処理群)

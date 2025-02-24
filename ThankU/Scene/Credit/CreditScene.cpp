@@ -15,6 +15,9 @@ void CreditScene::Initialize()
 {
 	//背景画像
 	background_image = LoadGraph("Rescurce/Image/background.png");
+	//ロゴ
+	credit_logo = LoadGraph("Rescurce/Image/CreditLogo.png");
+
 	object_image[0] = LoadGraph("Rescurce/Image/Line_Message.png");
 	object_image[1] = LoadGraph("Rescurce/Image/MessageFrame_1.png");
 }
@@ -32,7 +35,7 @@ eSceneType CreditScene::Update()
 	scrollY -= 2.0f; 
 
 	//テキストが画面外に行ったらエンドへ遷移する
-	if (scrollY < -1300) return E_END;
+	if (scrollY < -1300) return E_TITLE;
 
 	//キーボード入力処理のインスタンスを取得
 	KeyInput* key_input = KeyInput::Get();
@@ -64,8 +67,9 @@ void CreditScene::Draw() const
 	//背景画像
 	DrawGraph(0, 0, background_image, true);
 
-	DrawGraph(1500, currentY - 200, object_image[1], true);
-	DrawGraph(1500, currentY + 200, object_image[1], true);
+	//枠
+	DrawGraph(1500, currentY % 500 - 200, object_image[1], true);
+	DrawGraph(1500, currentY % 500, object_image[1], true);
 	
 	//クレジット表記
 	DrawString(startX, currentY += y * 2, "--Credit--", 0xffffff);
@@ -87,6 +91,7 @@ void CreditScene::Draw() const
 	DrawString(startX, currentY += y, "まなと", 0xffffff);
 
 	DrawGraph(0, 0, object_image[0], true);
+	DrawGraph(0, 0, credit_logo, true);
 
 #if _DEBUG
 	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT/13, "Pad B or Spaceでタイトル", 0xffffff);

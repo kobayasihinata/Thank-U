@@ -3,6 +3,7 @@
 #include"../Utility/KeyInput.h"
 #include"../Utility/DebugInformation.h"
 #include"../Utility/Common.h"
+#include"../Utility/Data.h"
 #include"DxLib.h"
 #include"Title/TitleScene.h"
 #include"InGame/InGameScene.h"
@@ -55,6 +56,9 @@ void SceneManager::Initialize()
 
 	//タイトルシーンから始める
 	ChangeScene(eSceneType::E_TITLE);
+
+	//データの初期化
+	Data::Initialize();
 }
 
 //シーンマネージャー機能：更新処理
