@@ -24,6 +24,10 @@ class InGameScene  : public SceneBase
 public://データ
     vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
     agreement FatalAnser;                       //正解
+    int FatalAnserNum;
+    int EnemyImage;
+    int PlayerImage;
+    int Background_image;                       //背景
     agreement Player_Anser[4];                  //プレイヤー入力保存領域
     string Question;                            //質問文
     int PlayerScore[4];                         //仮置き
@@ -64,6 +68,5 @@ public:
     void EnemyAsk();
     //csvの読み取り
     vector<vector<string>>read_csv(const string& filename);
-private:
 
 };
