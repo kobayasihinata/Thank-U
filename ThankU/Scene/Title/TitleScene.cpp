@@ -102,7 +102,7 @@ eSceneType TitleScene::Update()
         case 0:
             return eSceneType::E_INGAME;
         case 1:
-            return eSceneType::E_RESULT;
+            return eSceneType:::E_CREDIT;
         default:
             return eSceneType::E_END;
         }
