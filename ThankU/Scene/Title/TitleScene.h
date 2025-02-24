@@ -50,7 +50,7 @@ private:
 	void ObjectMove();
 
 	//そのコントローラーが既にゲームに参加しているか取得 
-	//_pad=確認するコントローラー 戻り値 真=使われている 偽=使われていない
-	bool CheckUseController(int _pad);
+	//_pad=確認するコントローラー 戻り値 使っているプレイヤー(-1は誰も使っていない)
+	int CheckUseController(int _pad);
 
 };

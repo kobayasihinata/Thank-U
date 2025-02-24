@@ -5,6 +5,7 @@
 #include "../../Utility/KeyInput.h"
 #include "../../Utility/Vector2D.h"
 #include "../../Utility/Data.h"
+#include "../../Utility/DebugInformation.h"
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
@@ -24,24 +25,24 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
     //背景画像
-    title_image = LoadGraph("Rescurce/Image/Title/TitleImages/background.png");
-    title_logo = LoadGraph("Rescurce/Image/Title/TitleImages/TitleLogo.png");
+    title_image = LoadGraph("Rescurce/Image/background.png");
+    title_logo = LoadGraph("Rescurce/Image/TitleLogo.png");
 
     //各オブジェクトの画像
-    object_image[0] = LoadGraph("Rescurce/Image/Title/TitleImages/MessageFrame.png");
-    object_image[1] = LoadGraph("Rescurce/Image/Title/TitleImages/Menu.png");
-    object_image[2] = LoadGraph("Rescurce/Image/Title/TitleImages/Cursor.png");
-    object_image[3] = LoadGraph("Rescurce/Image/Title/TitleImages/Line_Message.png");
-    object_image[4] = LoadGraph("Rescurce/Image/Title/TitleImages/Menu.png");
+    object_image[0] = LoadGraph("Rescurce/Image/MessageFrame.png");
+    object_image[1] = LoadGraph("Rescurce/Image/Menu.png");
+    object_image[2] = LoadGraph("Rescurce/Image/Cursor.png");
+    object_image[3] = LoadGraph("Rescurce/Image/Line_Message.png");
+    object_image[4] = LoadGraph("Rescurce/Image/Menu.png");
     //エネミー用
-    object_image[5] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage.png");
-    object_image[6] = LoadGraph("Rescurce/Image/Title/TitleImages/Icon.png");
+    object_image[5] = LoadGraph("Rescurce/Image/EnemyMessage.png");
+    object_image[6] = LoadGraph("Rescurce/Image/Icon.png");
    //参加者
-   object_image[7] = LoadGraph("Rescurce/Image/Title/TitleImages/Player1.png");
-   object_image[8] = LoadGraph("Rescurce/Image/Title/TitleImages/Player2.png");
-   object_image[9] = LoadGraph("Rescurce/Image/Title/TitleImages/Player3.png");
-   object_image[10] = LoadGraph("Rescurce/Image/Title/TitleImages/Player4.png");
-   object_image[11] = LoadGraph("Rescurce/Image/Title/TitleImages/Button.png");
+   object_image[7] = LoadGraph("Rescurce/Image/Player1.png");
+   object_image[8] = LoadGraph("Rescurce/Image/Player2.png");
+   object_image[9] = LoadGraph("Rescurce/Image/Player3.png");
+   object_image[10] = LoadGraph("Rescurce/Image/Player4.png");
+   object_image[11] = LoadGraph("Rescurce/Image/Button.png");
 
    //オブジェクトの基準となる位置
     obj_location.x = SCREEN_WIDTH;  //1920
@@ -53,6 +54,12 @@ void TitleScene::Initialize()
         player_icon_x[i] = SCREEN_WIDTH; // 初期位置を画面右側に設定
         player_join[i] = false; // 参加フラグを初期化
     }
+
+    //コントローラー1は強制的にプレイヤー1
+    Data::player_data[0].use_controller = DX_INPUT_PAD1;
+    Data::player_num++;
+    player_join[0] = true;
+    join_flag++;
 }
 
 //終了時処理
@@ -118,16 +125,29 @@ eSceneType TitleScene::Update()
     //コントローラーが1～4なのでforも合わす
     for (int i = 1; i <= 4; i++)
     {
-        if (CheckUseController(i) && PadInput::GetButtonDown(i, XINPUT_BUTTON_X))
+        //ボタンが押された時に参加
+        if (PadInput::GetButtonDown(i, XINPUT_BUTTON_X))
         {
-            Data::player_data[Data::player_num].use_controller = i;
-            Data::player_data[Data::player_num].number = Data::player_num;
-            player_join[Data::player_num] = true;
-            Data::player_num++;
+            //参加
+            if (CheckUseController(i) == -1)
+            {
+                Data::player_data[Data::player_num].use_controller = i;
+                Data::player_data[Data::player_num].number = Data::player_num;
+                Data::player_num++;
+            }
+        }
+    }
+    //Dataを参照してアイコンの演出
+    for (int i = 0; i < 4; i++)
+    {
+        //コントローラーが割り当てられている＝プレイヤーが居ると判断
+        if (Data::player_data[i].use_controller != 0 && !player_join[i])
+        {
+            //演出の開始
+            player_join[i] = true;
             join_flag++;
         }
     }
-
     //デバッグ用＜--　Aキー で参加 ※ひとり用
     if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
     {
@@ -175,9 +195,25 @@ void TitleScene::Draw() const
         //if (player_join[i]) {
         //    DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
         //}
+        //自分のコントローラーを押したら反応する
+
         //コントローラーが割り当てられているかで判断
         if (Data::player_data[i].use_controller > 0)
         {
+            int use = Data::player_data[i].use_controller;
+            if (PadInput::GetButton(use, XINPUT_BUTTON_A) ||
+                PadInput::GetButton(use, XINPUT_BUTTON_B) ||
+                PadInput::GetButton(use, XINPUT_BUTTON_X) ||
+                PadInput::GetButton(use, XINPUT_BUTTON_Y))
+            {
+                SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
+                //強調描画
+                for (int j = 0; j < 5; j++)
+                {
+                    DrawCircleAA(player_icon_x[i] + i * 130 + 60, obj_location.y / 4.2f + 60, 60 + (j * 5), 20, 0xffffff, true);
+                }
+                SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+            }
             DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
         }
     }
@@ -222,17 +258,17 @@ void TitleScene::ObjectMove()
     }
 }
 
-bool TitleScene::CheckUseController(int _pad)
+int TitleScene::CheckUseController(int _pad)
 {
     //Playerの数だけ
     for (int i = 0; i < 4; i++)
     {
-        //確認するコントローラーが既に割り当てられているなら真
+        //コントローラーが既に割り当てられているなら使っているプレイヤーの位置を取得
         if (Data::player_data[i].use_controller == _pad)
         {
-            return true;
+            return i;
         }
     }
-    //どこにも割り当てられてないなら偽
-    return false;
+    //どこにも割り当てられてないなら-1
+    return -1;
 }
