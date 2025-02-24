@@ -10,7 +10,7 @@ TitleScene::TitleScene() :
 cursor(0),scale(0), alpha(0), fadein_timer(0), 
 obj_location(0), message_x(0),
 title_image(NULL),title_logo(NULL), scaling_up(true), 
-object_image(),player_icon_x(),player_join()
+object_image(),player_icon_x(),player_join(),join_flag(0)
 {
 }
 
@@ -100,15 +100,19 @@ eSceneType TitleScene::Update()
     // 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
         player_join[0] = true; // プレイヤー1が参加
+        join_flag++;
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD2, XINPUT_BUTTON_X) && !player_join[1]) {
-        player_join[1] = true; // プレイヤー1が参加
+        player_join[1] = true; // プレイヤー2が参加
+        join_flag++;
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD3, XINPUT_BUTTON_X) && !player_join[2]) {
-        player_join[2] = true; // プレイヤー1が参加
+        player_join[2] = true; // プレイヤー3が参加
+        join_flag++;
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD4, XINPUT_BUTTON_X) && !player_join[3]) {
-        player_join[3] = true; // プレイヤー1が参加
+        player_join[3] = true; // プレイヤー4が参加
+        join_flag++;
     }
 
     //デバッグ用＜--　Aキー で参加 ※ひとり用
@@ -117,6 +121,7 @@ eSceneType TitleScene::Update()
         for (int i = 0; i < 4; i++) {
             if (!player_join[i]) {
                 player_join[i] = true; // 参加フラグを設定
+                join_flag++;
                 break;
             }
         }
@@ -166,11 +171,8 @@ void TitleScene::Draw() const
     DrawFormatString(SCREEN_WIDTH / 5, obj_location.y / 1.3f, GetColor(0, 0, 0), "-- A キーで参加 --", true);
 
     // 既読状態の描画  ＜--バグあり
-    for (int i = 0; i < 4; i++) {
-        if (player_join[i]) {
-            DrawFormatString(SCREEN_WIDTH / 1.8 + 105, obj_location.y / 1.25f, GetColor(0, 0, 0), "%d", i + 1, false);
-        }
-    }
+    DrawFormatString(SCREEN_WIDTH / 1.8 + 105, obj_location.y / 1.25f, GetColor(0, 0, 0), "%d", join_flag, false);
+
  }
 
 //現在シーン情報を取得
