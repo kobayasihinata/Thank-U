@@ -4,6 +4,7 @@
 
 #define D_KEYCODE_MAX (256)		//キーコード最大数
 #define MOUSE_MAX (256)			//マウス最大数
+
 //キー入力状態
 enum class eInputState : unsigned char
 {
