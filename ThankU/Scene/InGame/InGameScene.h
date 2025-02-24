@@ -6,24 +6,28 @@
 #include <sstream>
 #include <vector>
 
+//stdの記入を省略(詳細省略)
 using namespace std;
 
 enum agreement :int
 {
-    positive     = 1,
-    negation     = 2,
-    question     = 3,
-    excitement   = 4
+    none         = 0,   //未回答
+    positive     = 1,   //肯定
+    negation     = 2,   //否定
+    question     = 3,   //疑問
+    excitement   = 4    //盛り上げ
 };
 
 class InGameScene  : public SceneBase
 {
-public:
-    vector<vector<string>> EnemyString;
+public://データ
+    vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
+    agreement FatalAnser;                       //正解
+    agreement Player_Anser[4];                  //プレイヤー入力保存領域
+    string Question;                            //質問文
+    int PlayerScore[4];                         //仮置き
+    int TotalScore;                             //全体に配分する合計スコアポイント
 
-    agreement FatalAnser;
-    agreement Player_Anser[4];
-    string Question;
 public:
     //インストラクタ
     InGameScene();
@@ -41,11 +45,16 @@ public:
     //現在のシーン情報
     virtual eSceneType GetNowScene() const override;                                       
 
+    //ーー以下は記述必須ーー//
+    
+    //プレイヤーの回答を探索
     int PlayerAnser();
 
     //ーー以下は全て記述済みーー//
 
+    //エネミーの回答を設定
     void EnemyAnser();
+    //質問文のセット
     void EnemyAsk();
     //csvの読み取り
     vector<vector<string>>read_csv(const string& filename);
