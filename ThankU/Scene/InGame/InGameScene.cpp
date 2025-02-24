@@ -30,7 +30,16 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
-	EnemyString = read_csv("EnemyQ.csv");
+	EnemyString = {
+		{"ポジティブな質問1", "ポジティブな質問2", "ポジティブな質問3", "ポジティブな質問4", "ポジティブな質問5"},
+		{"ネガティブな質問1", "ネガティブな質問2", "ネガティブな質問3", "ネガティブな質問4", "ネガティブな質問5"},
+		{"疑問系の質問1", "疑問系の質問2", "疑問系の質問3", "疑問系の質問4", "疑問系の質問5"},
+		{"盛り上げる質問1", "盛り上げる質問2", "盛り上げる質問3", "盛り上げる質問4", "盛り上げる質問5"}
+	};
+	Background_image = LoadGraph("Rescurce/Image/background.png");
+
+	 PlayerImage = LoadGraph("Rescurce/Image/MessageFrame_1.png");
+	 EnemyImage = LoadGraph("Rescurce/Image/MessageFrame_2.png");
 }
 
 /// <summary>
@@ -49,6 +58,17 @@ void InGameScene::Finalize()
 /// <returns></returns>
 void InGameScene::Draw() const
 {
+	__super::Draw();
+
+	//背景画像
+	DrawGraph(0, 0, Background_image, false);
+	DrawGraph(100, 100, PlayerImage, true);
+	DrawGraph(200, 200, EnemyImage, true);
+
+#if _DEBUG
+	DrawString(10, 10, "InGame", 0x000000);
+	DrawFormatString(200, 200, 0x000000, "E:%s,",Question.c_str());
+#endif
 	//後々いじりますわ
 }
 
@@ -59,7 +79,7 @@ void InGameScene::Draw() const
 /// <returns>現在のシーンを返却</returns>
 eSceneType InGameScene::Update()
 {	
-
+	__super::Update();
 #if _DEBUG
 	KeyInput* key_input = KeyInput::Get();
 
@@ -80,11 +100,12 @@ eSceneType InGameScene::Update()
 	/*player関連^-_-^おそらくループ*/
 	
 
-	for (static int TimeLimit = 300; TimeLimit > 0;TimeLimit--) 
+	for (int TimeLimit = 600000; TimeLimit > 0;TimeLimit--) 
 	{
 		//入力に応じた処理
 		PlayerAnser();
 		//全員入力する または 指定時間過ぎる(要勉強)
+		DrawFormatString(250, 250, 0x000000, "P:%d,",PD1.score);
 
 	}
 
@@ -181,15 +202,19 @@ void InGameScene::EnemyAnser()
 	{
 	case 1:
 		FatalAnser = agreement::positive;
+		FatalAnserNum = 0;
 		break;
 	case 2:
 		FatalAnser = agreement::negation;
+		FatalAnserNum = 1;
 		break;
 	case 3:
 		FatalAnser = agreement::question;
+		FatalAnserNum = 2;
 		break;
 	case 4:
 		FatalAnser = agreement::excitement;
+		FatalAnserNum = 3;
 		break;
 	}
 }
@@ -202,14 +227,7 @@ void InGameScene::EnemyAsk()
 {
 	EnemyAnser();
 
-	string Question = EnemyString[(int)FatalAnser][GetRand(5)];
-#if _DEBUG
-	// デバッグ出力
-	cout << "EnemyAsk() 実行: FatalAnser=" << FatalAnser << ", 選ばれた質問=" << Question << endl;
-
-
-#endif // _DEBUG
-
+	Question = EnemyString[FatalAnserNum][GetRand(4)];
 }
 
 /// <summary>
