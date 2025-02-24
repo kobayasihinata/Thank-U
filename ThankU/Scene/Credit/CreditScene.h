@@ -1,11 +1,14 @@
 #pragma once
 #include"DxLib.h"
 #include"../SceneBase.h"
+#include   "../../Utility/Common.h"
 
 class CreditScene : public SceneBase
 {
 public://プロパティ(データ群)
-	int count;	//一定時間経過で終了
+	int count = 3600;	//一定時間経過で終了
+	int scrollY = SCREEN_HEIGHT; // Starting Y position
+
 public:	//メソッド(処理群)
 	CreditScene();													//インストラクター
 	~CreditScene();													//デストラクター

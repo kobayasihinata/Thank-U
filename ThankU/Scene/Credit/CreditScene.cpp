@@ -8,53 +8,73 @@ CreditScene::CreditScene()
 	count = 300;
 }
 
-CreditScene::~CreditScene()
-{
+CreditScene::~CreditScene(){}
 
-}
+//初期化
+void CreditScene::Initialize(){}
 
-void CreditScene::Initialize()
-{
+//終了時処理
+void CreditScene::Finalize(){}
 
-}
-
-void CreditScene::Finalize()
-{
-
-}
-
+//更新処理
 eSceneType CreditScene::Update()
 {
+	//親クラスの更新処理を呼び出す
 	__super::Update();
 
-	KeyInput* key_input = KeyInput::Get();
+	//スクロール量を加算
+	scrollY -= 1.5f; 
 
-	//一定時間経過で終了
-	//if (--count < 0)
-	//{
-	//	return E_END;
-	//}
+	//テキストが画面外に行ったらエンドへ遷移する
+	if (scrollY < -1300) return E_END;
+
+	//キーボード入力処理のインスタンスを取得
+	KeyInput* key_input = KeyInput::Get();
 	
 	//デバッグ時処理
 #if _DEBUG
-	//Bボタンかスペースキーでタイトルへ
+	//タイトルへ遷移する(デバッグ用)
 	if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
 	{
 		return E_TITLE;
 	}
-	//Add使用例
+	
+	//デバッグ用(Xキー)
 	DebugInfomation::Add("count", count);
+	DebugInfomation::Add("scrollY", scrollY);
+
 #endif
 	//現在のシーンを返す
 	return GetNowScene();
 }
 
+//描画処理
 void CreditScene::Draw() const
 {
-	DrawString(0, 0, "Credit", 0xffffff);
-	//DrawFormatString(0, 20, 0xffffff, "あと%d秒でEnd画面へ", (int)(count / 60));
+	int y = 50;	//文字間隔
+	int startX = SCREEN_HEIGHT / 2; //真ん中ちょい左くらいの座標
+	int currentY = scrollY; // 現在のY位置
+
+	DrawString(startX, currentY += y * 2, "--Credit--", 0xffffff);
+	DrawString(startX, currentY += y * 2, "◇ゲーム制作", 0xffffff);
+	DrawString(startX, currentY += y, "Team Thank U", 0xffffff);
+	DrawString(startX, currentY += y * 2, "◇メンバー", 0xffffff);
+	DrawString(startX, currentY += y, "ひなた", 0xffffff);
+	DrawString(startX, currentY += y, "まなと", 0xffffff);
+	DrawString(startX, currentY += y, "としき", 0xffffff);
+	DrawString(startX, currentY += y, "きょういちろう", 0xffffff);
+	DrawString(startX, currentY += y * 2, "◇ツール", 0xffffff);
+	DrawString(startX, currentY += y, "VisualStudio", 0xffffff);
+	DrawString(startX, currentY += y * 2, "◇BGM", 0xffffff);
+	DrawString(startX, currentY += y, "きょういちろう", 0xffffff);
+	DrawString(startX, currentY += y * 2, "◇SE", 0xffffff);
+	DrawString(startX, currentY += y, "効果音ラボ 様", 0xffffff);
+	DrawString(startX, currentY += y * 2, "◇イラスト素材", 0xffffff);
+	DrawString(startX, currentY += y, "ひなた", 0xffffff);
+	DrawString(startX, currentY += y, "まなと", 0xffffff);
+
 #if _DEBUG
-	DrawString(0, 20, "Pad B  or  Spaceでタイトル", 0x000000);
+	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT/13, "Pad B or Spaceでタイトル", 0xffffff);
 #endif
 }
 
