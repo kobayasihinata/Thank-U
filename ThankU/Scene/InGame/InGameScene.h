@@ -1,42 +1,57 @@
 #pragma once
 #include"DxLib.h"
+#include "../../Utility/Data.h"
 #include"../SceneBase.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "../../Utility/Data.h"
+#include <thread>
+#include <chrono>
+
+
+
+enum agreement :int
+{
+    none = 0,   //未回答
+    positive = 1,   //肯定
+    negation = 2,   //否定
+    question = 3,   //疑問
+    excitement = 4    //盛り上げ
+};
 
 //stdの記入を省略(詳細省略)
 using namespace std;
 
-enum agreement :int
-{
-    none         = 0,   //未回答
-    positive     = 1,   //肯定
-    negation     = 2,   //否定
-    question     = 3,   //疑問
-    excitement   = 4    //盛り上げ
-};
-
 class InGameScene  : public SceneBase
 {
 public://データ
+    //画像類
+    int EnemyImage;
+    int PlayerImage[4];
+    int PlayerTextImage;
+    int Background_image;                       //背景
+    //-Enemy関連-//
     vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
     agreement FatalAnser;                       //正解
-    int FatalAnserNum;
-    int EnemyImage;
-    int PlayerImage;
-    int Background_image;                       //背景
-    agreement Player_Anser[4];                  //プレイヤー入力保存領域
+    int FatalAnserNum;                          //正解の添え字
     string Question;                            //質問文
+
+    vector<string> PString;
+    int Pagree[4];
+    agreement Player_Anser[4];                  //プレイヤー入力保存領域
     int PlayerScore[4];                         //仮置き
-    int TotalScore;                             //全体に配分する合計スコアポイント
+    int TotalScore = 1000;                      //全体に配分する合計スコアポイント
+
+    bool Collect[4];
+
     PlayerData PD1{};
     PlayerData PD2{};
     PlayerData PD3{};
     PlayerData PD4{};
 
+    float TimeCountUp;
+    int Timer;
 
 public:
     //インストラクタ
@@ -55,10 +70,12 @@ public:
     //現在のシーン情報
     virtual eSceneType GetNowScene() const override;                                       
 
-    //ーー以下は記述必須ーー//
+
     
     //プレイヤーの回答を探索
     int PlayerAnser();
+
+    void CheckAnser();
 
     //ーー以下は全て記述済みーー//
 
@@ -68,5 +85,7 @@ public:
     void EnemyAsk();
     //csvの読み取り
     vector<vector<string>>read_csv(const string& filename);
+
+    void TimerCount();
 
 };
