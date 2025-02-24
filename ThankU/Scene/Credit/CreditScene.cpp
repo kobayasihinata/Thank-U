@@ -15,8 +15,8 @@ void CreditScene::Initialize()
 {
 	//背景画像
 	background_image = LoadGraph("Rescurce/Image/background.png");
-
 	object_image[0] = LoadGraph("Rescurce/Image/Line_Message.png");
+	object_image[1] = LoadGraph("Rescurce/Image/MessageFrame_1.png");
 }
 
 //終了時処理
@@ -63,8 +63,10 @@ void CreditScene::Draw() const
 
 	//背景画像
 	DrawGraph(0, 0, background_image, true);
-	DrawGraph(0, 0, object_image[0], true);
 
+	DrawGraph(1500, currentY - 200, object_image[1], true);
+	DrawGraph(1500, currentY + 200, object_image[1], true);
+	
 	//クレジット表記
 	DrawString(startX, currentY += y * 2, "--Credit--", 0xffffff);
 	DrawString(startX, currentY += y * 2, "◇ゲーム制作", 0xffffff);
@@ -83,6 +85,8 @@ void CreditScene::Draw() const
 	DrawString(startX, currentY += y * 2, "◇イラスト素材", 0xffffff);
 	DrawString(startX, currentY += y, "ひなた", 0xffffff);
 	DrawString(startX, currentY += y, "まなと", 0xffffff);
+
+	DrawGraph(0, 0, object_image[0], true);
 
 #if _DEBUG
 	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT/13, "Pad B or Spaceでタイトル", 0xffffff);

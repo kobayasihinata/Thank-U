@@ -102,12 +102,16 @@ eSceneType TitleScene::Update()
         case 0:
             return eSceneType::E_INGAME;
         case 1:
-            return eSceneType:::E_CREDIT;
+            return eSceneType::E_CREDIT;
         default:
             return eSceneType::E_END;
         }
     }
-
+    //デバッグ用
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START))
+    {
+        return eSceneType::E_RESULT;
+    }
     //// 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
     //if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
     //    player_join[0] = true; // プレイヤー1が参加
