@@ -11,7 +11,13 @@ CreditScene::CreditScene()
 CreditScene::~CreditScene(){}
 
 //初期化
-void CreditScene::Initialize(){}
+void CreditScene::Initialize()
+{
+	//背景画像
+	background_image = LoadGraph("Rescurce/Image/background.png");
+
+	object_image[0] = LoadGraph("Rescurce/Image/Line_Message.png");
+}
 
 //終了時処理
 void CreditScene::Finalize(){}
@@ -55,6 +61,11 @@ void CreditScene::Draw() const
 	int startX = SCREEN_HEIGHT / 2; //真ん中ちょい左くらいの座標
 	int currentY = scrollY; // 現在のY位置
 
+	//背景画像
+	DrawGraph(0, 0, background_image, true);
+	DrawGraph(0, 0, object_image[0], true);
+
+	//クレジット表記
 	DrawString(startX, currentY += y * 2, "--Credit--", 0xffffff);
 	DrawString(startX, currentY += y * 2, "◇ゲーム制作", 0xffffff);
 	DrawString(startX, currentY += y, "Team Thank U", 0xffffff);
@@ -76,6 +87,7 @@ void CreditScene::Draw() const
 #if _DEBUG
 	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT/13, "Pad B or Spaceでタイトル", 0xffffff);
 #endif
+
 }
 
 eSceneType CreditScene::GetNowScene() const

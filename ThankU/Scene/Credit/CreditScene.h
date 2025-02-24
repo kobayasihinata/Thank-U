@@ -9,6 +9,10 @@ public://プロパティ(データ群)
 	int count = 3600;	//一定時間経過で終了
 	int scrollY = SCREEN_HEIGHT; // Starting Y position
 
+private:
+	int background_image;
+	int object_image[5];
+
 public:	//メソッド(処理群)
 	CreditScene();													//インストラクター
 	~CreditScene();													//デストラクター
