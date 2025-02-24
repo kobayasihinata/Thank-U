@@ -35,12 +35,12 @@ void TitleScene::Initialize()
     //エネミー用
     object_image[5] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage.png");
     object_image[6] = LoadGraph("Rescurce/Image/Title/TitleImages/Icon.png");
-
    //参加者
    object_image[7] = LoadGraph("Rescurce/Image/Title/TitleImages/Player1.png");
    object_image[8] = LoadGraph("Rescurce/Image/Title/TitleImages/Player2.png");
    object_image[9] = LoadGraph("Rescurce/Image/Title/TitleImages/Player3.png");
    object_image[10] = LoadGraph("Rescurce/Image/Title/TitleImages/Player4.png");
+   object_image[11] = LoadGraph("Rescurce/Image/Title/TitleImages/Button.png");
 
    //オブジェクトの基準となる位置
     obj_location.x = SCREEN_WIDTH;  //1920
@@ -132,6 +132,7 @@ void TitleScene::Draw() const
     DrawGraph(0, 0, title_image, true);         //背景画像の描画
     DrawGraph(0.0f, 0.0f, title_logo, true);    //タイトルロゴ
     DrawGraph(0, 0, object_image[3], true);     //メッセージバー(下の枠みたいなやつ)
+    DrawGraph(10, 500, object_image[11], true); //操作説明
 
     //敵側のメッセージ
     DrawRotaGraph(500, 400, scale, 0.0f, object_image[5], true); //メッセージ(ちょっと話聞いてほしくて)
@@ -162,8 +163,7 @@ void TitleScene::Draw() const
     DrawFormatString(SCREEN_WIDTH / 1.8, obj_location.y / 1.25f, GetColor(0, 0, 0), "既読", true);    //UI
 
     //デバッグ用
-    DrawFormatString(SCREEN_WIDTH / 6, obj_location.y / 1.5f, GetColor(0, 0, 0), "-- A キーで参加 --", true);
-    DrawFormatString(SCREEN_WIDTH / 6, obj_location.y / 1.5f + 50, GetColor(0, 0, 0), "-- X ボタンで参加 --", true);
+    DrawFormatString(SCREEN_WIDTH / 5, obj_location.y / 1.3f, GetColor(0, 0, 0), "-- A キーで参加 --", true);
 
     // 既読状態の描画  ＜--バグあり
     for (int i = 0; i < 4; i++) {
