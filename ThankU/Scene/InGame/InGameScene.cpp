@@ -68,7 +68,7 @@ eSceneType InGameScene::Update()
 	}
 #endif // _DEBUG
 
-	/*	Enemy関連	*/
+	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
 	{
 		//Enemyから問いかけを貰う
 
@@ -79,7 +79,7 @@ eSceneType InGameScene::Update()
 	{
 		//入力に応じた処理
 		PlayerAnser();
-		//全員入力するまで待つ
+		//全員入力する または 指定時間過ぎる(要勉強)
 
 	}
 
@@ -87,14 +87,20 @@ eSceneType InGameScene::Update()
 	if (0/*?*/)
 	{
 		//正解の場合
+		//scoreを正答したプレイヤーに加算
 
 	}
 	else//不正解の場合
 	{
-		
+		//今回は誤答ペナルティが存在しないので、特筆すべき処理は無し
 
 	}
 	
+	//指定ポイント分配しきったら
+	/*----
+	↓これを利用して、リザルト画面に偏移する。
+	//return eSceneType::E_RESULT;
+	----*/
 	
 	return eSceneType::E_INGAME;
 }
