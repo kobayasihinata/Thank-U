@@ -2,6 +2,7 @@
 #include "../../Utility/PadInput.h"
 #include "../../Utility/KeyInput.h"
 
+
 /// <summary>
 ///　インストラクタ
 /// </summary>
@@ -9,6 +10,7 @@
 /// <returns></returns>
 InGameScene::InGameScene()
 {
+	TotalScore = 1000;
 	
 }
 
@@ -71,11 +73,14 @@ eSceneType InGameScene::Update()
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
 	{
 		//Enemyから問いかけを貰う
+		EnemyAsk();
 
-		//Enemyから答えを受け取る
 
 	}
 	/*player関連^-_-^おそらくループ*/
+	
+
+	for (static int TimeLimit = 300; TimeLimit > 0;TimeLimit--) 
 	{
 		//入力に応じた処理
 		PlayerAnser();
@@ -83,24 +88,46 @@ eSceneType InGameScene::Update()
 
 	}
 
-	//Enemyから受け取った答えとplayerらが言ってる答えを比較する
-	if (0/*?*/)
+	for (int i = 0; i < 4; i++)
 	{
-		//正解の場合
-		//scoreを正答したプレイヤーに加算
+		//Enemyから受け取った答えとplayerらが言ってる答えを比較する
+		if (Player_Anser[i] == FatalAnser)
+		{
+			//正解の場合
+			//scoreを正答したプレイヤーに加算
+			switch (i)
+			{
+			case 0:
+				PD1.score += 50;
+				TotalScore -= 50;
+				break;
+			case 1:
+				PD2.score += 50;
+				TotalScore -= 50;
+				break;
+			case 2:
+				PD3.score += 50;
+				TotalScore -= 50;
+				break;
+			case 3:
+				PD4.score += 50;
+				TotalScore -= 50;
+				break;
+			}
+		}
+		else//不正解の場合
+		{
+			//今回は誤答ペナルティが存在しないので、特筆すべき処理は無し
 
-	}
-	else//不正解の場合
-	{
-		//今回は誤答ペナルティが存在しないので、特筆すべき処理は無し
-
+		}
 	}
 	
+	
 	//指定ポイント分配しきったら
-	/*----
-	↓これを利用して、リザルト画面に偏移する。
-	//return eSceneType::E_RESULT;
-	----*/
+	if (TotalScore <= 0)
+	{
+		return eSceneType::E_RESULT;
+	}
 	
 	return eSceneType::E_INGAME;
 }
@@ -121,10 +148,21 @@ int InGameScene::PlayerAnser()
 	for (int i = 0; i < 4; i++)
 	{
 		//playerの押したボタンに応じて回答を当てはめる
-		switch (PadInput::GetButton(i, PAD_INPUT_B))//←仮置き)
+		if(PadInput::GetButton(i, PAD_INPUT_B))//←仮置き
 		{
-		default:
-			break;
+			Player_Anser[i] = positive;
+		}
+		else if (PadInput::GetButton(i, PAD_INPUT_A))
+		{
+			Player_Anser[i] = agreement::negation;
+		}
+		else if (PadInput::GetButton(i, PAD_INPUT_X))
+		{
+			Player_Anser[i] = question;
+		}
+		else if (PadInput::GetButton(i, PAD_INPUT_Y))
+		{
+			Player_Anser[i] = excitement;
 		}
 	}
 	return 0;
@@ -162,6 +200,8 @@ void InGameScene::EnemyAnser()
 /// </summary>
 void InGameScene::EnemyAsk()
 {
+	EnemyAnser();
+
 	string Question = EnemyString[(int)FatalAnser][GetRand(5)];
 #if _DEBUG
 	// デバッグ出力

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "../../Utility/Data.h"
 
 //stdの記入を省略(詳細省略)
 using namespace std;
@@ -27,6 +28,11 @@ public://データ
     string Question;                            //質問文
     int PlayerScore[4];                         //仮置き
     int TotalScore;                             //全体に配分する合計スコアポイント
+    PlayerData PD1{};
+    PlayerData PD2{};
+    PlayerData PD3{};
+    PlayerData PD4{};
+
 
 public:
     //インストラクタ
