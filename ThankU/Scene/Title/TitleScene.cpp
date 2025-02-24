@@ -98,38 +98,36 @@ eSceneType TitleScene::Update()
         }
     }
 
-    // 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
-        player_join[0] = true; // プレイヤー1が参加
-        Data::player_num++;
-        Data::player_data[0].use_controller = DX_INPUT_PAD1;
-        Data::player_data[0].number = 0;
-        join_flag++;
-    }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD2, XINPUT_BUTTON_X) && !player_join[1]) {
-        player_join[1] = true; // プレイヤー2が参加
-        Data::player_num++;
-        Data::player_data[1].use_controller = DX_INPUT_PAD2;
-        Data::player_data[1].number = 1;
-        join_flag++;
-    }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD3, XINPUT_BUTTON_X) && !player_join[2]) {
-        player_join[2] = true; // プレイヤー3が参加
-        join_flag++;
-    }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD4, XINPUT_BUTTON_X) && !player_join[3]) {
-        player_join[3] = true; // プレイヤー4が参加
-        join_flag++;
-    }
+    //// 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
+    //if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
+    //    player_join[0] = true; // プレイヤー1が参加
+    //    join_flag++;
+    //}
+    //if (PadInput::GetButtonDown(DX_INPUT_PAD2, XINPUT_BUTTON_X) && !player_join[1]) {
+    //    player_join[1] = true; // プレイヤー2が参加
+    //    join_flag++;
+    //}
+    //if (PadInput::GetButtonDown(DX_INPUT_PAD3, XINPUT_BUTTON_X) && !player_join[2]) {
+    //    player_join[2] = true; // プレイヤー3が参加
+    //    join_flag++;
+    //}
+    //if (PadInput::GetButtonDown(DX_INPUT_PAD4, XINPUT_BUTTON_X) && !player_join[3]) {
+    //    player_join[3] = true; // プレイヤー4が参加
+    //    join_flag++;
+    //}
+    //コントローラーが1～4なのでforも合わす
     for (int i = 1; i <= 4; i++)
     {
         if (CheckUseController(i) && PadInput::GetButtonDown(i, XINPUT_BUTTON_X))
         {
             Data::player_data[Data::player_num].use_controller = i;
             Data::player_data[Data::player_num].number = Data::player_num;
+            player_join[Data::player_num] = true;
             Data::player_num++;
+            join_flag++;
         }
     }
+
     //デバッグ用＜--　Aキー で参加 ※ひとり用
     if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
     {
@@ -174,7 +172,12 @@ void TitleScene::Draw() const
 
     // 参加者アイコンを描画
     for (int i = 0; i < 4; i++) {
-        if (player_join[i]) {
+        //if (player_join[i]) {
+        //    DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
+        //}
+        //コントローラーが割り当てられているかで判断
+        if (Data::player_data[i].use_controller > 0)
+        {
             DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
         }
     }
@@ -187,7 +190,6 @@ void TitleScene::Draw() const
 
     // 既読状態の描画  ＜--バグあり
     DrawFormatString(SCREEN_WIDTH / 1.8 + 105, obj_location.y / 1.25f, GetColor(0, 0, 0), "%d", join_flag, false);
-
  }
 
 //現在シーン情報を取得
