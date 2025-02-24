@@ -48,4 +48,9 @@ public:	//メソッド(処理群)
 private:
 	//オブジェクトの演出処理
 	void ObjectMove();
+
+	//そのコントローラーが既にゲームに参加しているか取得 
+	//_pad=確認するコントローラー 戻り値 真=使われている 偽=使われていない
+	bool CheckUseController(int _pad);
+
 };
