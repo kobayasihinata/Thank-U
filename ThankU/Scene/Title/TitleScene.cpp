@@ -56,10 +56,13 @@ void TitleScene::Initialize()
     }
 
     //コントローラー1は強制的にプレイヤー1
-    Data::player_data[0].use_controller = DX_INPUT_PAD1;
-    Data::player_num++;
-    player_join[0] = true;
-    join_flag++;
+    if (Data::player_data[0].use_controller == 0)
+    {
+        Data::player_data[0].use_controller = DX_INPUT_PAD1;
+        Data::player_num++;
+        player_join[0] = true;
+        join_flag++;
+    }
 }
 
 //終了時処理
@@ -99,7 +102,7 @@ eSceneType TitleScene::Update()
         case 0:
             return eSceneType::E_INGAME;
         case 1:
-            return eSceneType::E_CREDIT;
+            return eSceneType::E_RESULT;
         default:
             return eSceneType::E_END;
         }
@@ -137,6 +140,24 @@ eSceneType TitleScene::Update()
             }
         }
     }
+
+    //デバッグ用＜--　Aキー で参加 ※ひとり用
+    if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
+    {
+        //コントローラーが1～４なのでforも
+        for (int i = 1; i <= 4; i++) 
+        {
+            //参加
+            if (CheckUseController(i) == -1)
+            {
+                Data::player_data[Data::player_num].use_controller = i;
+                Data::player_data[Data::player_num].number = Data::player_num;
+                Data::player_num++;
+                break;
+            }
+        }
+    }
+
     //Dataを参照してアイコンの演出
     for (int i = 0; i < 4; i++)
     {
@@ -148,18 +169,8 @@ eSceneType TitleScene::Update()
             join_flag++;
         }
     }
-    //デバッグ用＜--　Aキー で参加 ※ひとり用
-    if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
-    {
-        for (int i = 0; i < 4; i++) {
-            if (!player_join[i]) {
-                player_join[i] = true; // 参加フラグを設定
-                join_flag++;
-                break;
-            }
-        }
-    }
 
+    DebugInfomation::Add("player_num", Data::player_num);
     // 現在のシーンタイプを返す
     return GetNowScene();
 }
