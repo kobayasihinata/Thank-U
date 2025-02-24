@@ -4,6 +4,7 @@
 #include"../../Utility/PadInput.h"
 #include "../../Utility/KeyInput.h"
 #include "../../Utility/Vector2D.h"
+#include "../../Utility/Data.h"
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
@@ -100,10 +101,16 @@ eSceneType TitleScene::Update()
     // 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
         player_join[0] = true; // プレイヤー1が参加
+        Data::player_num++;
+        Data::player_data[0].use_controller = DX_INPUT_PAD1;
+        Data::player_data[0].number = 0;
         join_flag++;
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD2, XINPUT_BUTTON_X) && !player_join[1]) {
         player_join[1] = true; // プレイヤー2が参加
+        Data::player_num++;
+        Data::player_data[1].use_controller = DX_INPUT_PAD2;
+        Data::player_data[1].number = 1;
         join_flag++;
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD3, XINPUT_BUTTON_X) && !player_join[2]) {
@@ -114,7 +121,15 @@ eSceneType TitleScene::Update()
         player_join[3] = true; // プレイヤー4が参加
         join_flag++;
     }
-
+    for (int i = 1; i <= 4; i++)
+    {
+        if (CheckUseController(i) && PadInput::GetButtonDown(i, XINPUT_BUTTON_X))
+        {
+            Data::player_data[Data::player_num].use_controller = i;
+            Data::player_data[Data::player_num].number = Data::player_num;
+            Data::player_num++;
+        }
+    }
     //デバッグ用＜--　Aキー で参加 ※ひとり用
     if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
     {
@@ -203,4 +218,19 @@ void TitleScene::ObjectMove()
             player_icon_x[i] -= 10; // スライド速度を調整
         }
     }
+}
+
+bool TitleScene::CheckUseController(int _pad)
+{
+    //Playerの数だけ
+    for (int i = 0; i < 4; i++)
+    {
+        //確認するコントローラーが既に割り当てられているなら真
+        if (Data::player_data[i].use_controller == _pad)
+        {
+            return true;
+        }
+    }
+    //どこにも割り当てられてないなら偽
+    return false;
 }

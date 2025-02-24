@@ -5,8 +5,7 @@
 class ResultScene : public SceneBase
 {
 public://プロパティ(データ群)
-	int result_image;			//タイトル画像格納
-
+	int frame;		//フレーム時間測定
 public:	//メソッド(処理群)
 	ResultScene();													//インストラクター
 	~ResultScene();													//デストラクター

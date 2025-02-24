@@ -2,8 +2,7 @@
 #include "../../Utility/PadInput.h"
 #include "../../Utility/KeyInput.h"
 
-ResultScene::ResultScene():
-	result_image(0)
+ResultScene::ResultScene():frame(0)
 {
 	
 }
@@ -15,7 +14,7 @@ ResultScene::~ResultScene()
 
 void ResultScene::Initialize()
 {
-	result_image = LoadGraph("Rescurce/Image/Result/Result_kari.png");
+	animation_image = LoadGraph("Rescurce/Image/Result/Result_kari.png");
 }
 
 void ResultScene::Finalize()
@@ -27,13 +26,16 @@ eSceneType ResultScene::Update()
 {
 	__super::Update();
 
+	//フレーム測定
+	frame++;
+
 	KeyInput* key_input = KeyInput::Get();
 
 	//デバッグ時処理
 #if _DEBUG
 
 	//Bボタンかスペースキーでタイトルへ
-	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Released)
+	if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
 	{
 		return E_TITLE;
 	}
@@ -45,7 +47,7 @@ eSceneType ResultScene::Update()
 void ResultScene::Draw() const
 {
 	//背景画像
-	DrawGraph(0, 0, result_image, false);
+	DrawGraph(0, 0, animation_image, false);
 
 #if _DEBUG
 	DrawString(0, 0, "Result", 0x000000);

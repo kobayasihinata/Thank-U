@@ -38,7 +38,7 @@ eSceneType CreditScene::Update()
 	//デバッグ時処理
 #if _DEBUG
 	//Bボタンかスペースキーでタイトルへ
-	if (PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Released)
+	if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
 	{
 		return E_TITLE;
 	}
