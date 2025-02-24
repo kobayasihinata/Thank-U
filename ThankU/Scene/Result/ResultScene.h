@@ -14,6 +14,7 @@ public://プロパティ(データ群)
 	int result_num;				//何人分描画中か
 	bool result_draw_flg;		//スコアをすべて表示出来たか判断
 	int winner_draw_time;		//結果発表までの貯め
+	int winner_num;				//同率一位の人数
 
 	//画像用変数
 	int bar_image;			//下のバー
@@ -39,4 +40,6 @@ public:	//メソッド(処理群)
 
 private:
 	int CheckWinner()const;		//勝者を判断 勝者の番号を返す
+
+	void DrawWinner()const;		//勝者を描画
 };

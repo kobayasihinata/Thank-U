@@ -12,6 +12,7 @@ ResultScene::ResultScene() :
 	result_num(0),
 	result_draw_flg(false),
 	winner_draw_time(0),
+	winner_num(0),
 	talk_se(0),
 	drum_se(0),
     winner_se(0),
@@ -143,6 +144,7 @@ void ResultScene::Draw() const
 		//表示していい数以下の描画ならする
 		if (result_num > i)
 		{
+
 			//横の幅を計算
 			int data_width;
 			GetDrawFormatStringSize(&data_width, 0, 0, "Player%d  Score:%d Great:%d Bad:%d",
@@ -177,14 +179,8 @@ void ResultScene::Draw() const
 	//勝者表示
 	if (winner_draw_time > WINNER_DRAW_TIME)
 	{
-		//勝者表示
-		Data::DrawSpeechBubble(winner_draw, 450, true);
-		//勝者表示文字
-		DrawFormatStringF(winner_draw.x,
-			winner_draw.y,
-			0xffffff,
-			"Player%dの勝ち！",
-			CheckWinner());
+		//勝者の描画
+		DrawWinner();
 	}
 	SetFontSize(old);
 }
@@ -207,4 +203,31 @@ int ResultScene::CheckWinner()const
 		}
 	}
 	return ret;
+}
+
+void ResultScene::DrawWinner()const
+{
+	//勝者表示吹き出し
+	//Data::DrawSpeechBubble(winner_draw, 450, true);
+	//勝者表示文字（前）
+	//DrawFormatStringF(winner_draw.x,
+	//	winner_draw.y,
+	//	0xffffff,
+	//	"Player",
+	//	CheckWinner());
+
+	//勝者表示文字（同率一位も全員表示）
+	//for (int i = 0; i < winner_num; i++)
+	//{
+	//	DrawFormatString(winner_draw.x + 100 + (30 * i),
+	//		winner_draw.y,
+	//		0xffffff, );
+	//}
+	//勝者表示文字（後ろ）
+	//DrawFormatStringF(winner_draw.x + 100 + (30 * winner_num),
+	//	winner_draw.y,
+	//	0xffffff,
+	//	"の勝ち！",
+	//	CheckWinner());
+
 }

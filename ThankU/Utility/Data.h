@@ -20,7 +20,7 @@ public:
 
 	static int frame_image[6];				//吹き出し枠
 
-
+	static char* font_name;					//使用フォントの格納
 public:
 	//初期処理
 	static void Initialize();
