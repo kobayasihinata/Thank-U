@@ -163,6 +163,13 @@ void InGameScene::EnemyAnser()
 void InGameScene::EnemyAsk()
 {
 	string Question = EnemyString[(int)FatalAnser][GetRand(5)];
+#if _DEBUG
+	// デバッグ出力
+	cout << "EnemyAsk() 実行: FatalAnser=" << FatalAnser << ", 選ばれた質問=" << Question << endl;
+
+
+#endif // _DEBUG
+
 }
 
 /// <summary>
