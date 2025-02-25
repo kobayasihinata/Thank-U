@@ -40,13 +40,13 @@ public:	//メソッド(処理群)
 	virtual eSceneType GetNowScene() const override;
 
 private:
-	void UpdateResultsMulti();	//結果発表更新（マルチ）
+	void UpdateResultsMulti();		//結果発表更新（マルチ）
 
 	void DrawResultsmulti()const;	//結果発表描画（マルチ）
 
-	void UpdateResultsSolo();	//結果発表更新（ソロ）
+	void UpdateResultsSolo();		//結果発表更新（ソロ）
 
-	void DrawResultsSolo()const;		//結果発表描画（ソロ）
+	void DrawResultsSolo()const;	//結果発表描画（ソロ）
 
 	int CheckWinnerNum()const;		//一番大きいスコアを検知
 
