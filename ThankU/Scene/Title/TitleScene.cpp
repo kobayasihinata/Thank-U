@@ -25,6 +25,9 @@ TitleScene::~TitleScene()
 //初期化処理
 void TitleScene::Initialize()
 {
+    //タイトルBGM再生
+    PlaySoundFile("Rescurce/BGM/TitleBGM.wav", DX_PLAYTYPE_LOOP);
+
     //エフェクト管理クラス取得
     e_manager = EffectManager::Get();
 
@@ -87,6 +90,8 @@ void TitleScene::Initialize()
 //終了時処理
 void TitleScene::Finalize()
 {
+    //BGMを止める
+    StopSoundFile();
 }
 
 //更新処理(現在シーン)

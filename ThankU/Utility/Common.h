@@ -1,6 +1,6 @@
 #pragma once
 
-//#define FULLSCREEN 0
+#define FULLSCREEN 0
 
 //よく使うor共有すべきマクロはここ
 #ifdef FULLSCREEN

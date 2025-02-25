@@ -15,6 +15,9 @@ CreditScene::~CreditScene() {}
 //初期化
 void CreditScene::Initialize()
 {
+	//タイトルBGM再生
+	PlaySoundFile("Rescurce/BGM/CreditBGM.wav", DX_PLAYTYPE_LOOP);
+
 	//背景画像
 	background_image = LoadGraph("Rescurce/Image/background.png");
 	//ロゴ
@@ -28,7 +31,11 @@ void CreditScene::Initialize()
 }
 
 //終了時処理
-void CreditScene::Finalize() {}
+void CreditScene::Finalize()
+{
+	//BGMを止める
+	StopSoundFile();
+}
 
 //更新処理
 eSceneType CreditScene::Update()
