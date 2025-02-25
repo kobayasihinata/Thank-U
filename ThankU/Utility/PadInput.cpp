@@ -2,10 +2,10 @@
 #include "DxLib.h"
 
 //実態を定義
-bool PadInput::now_button[4][16] = {};
-bool PadInput::old_button[4][16] = {};
-float PadInput::trigger[4][2] = {};
-Vector2D PadInput::stick[4][2] = {};
+bool PadInput::now_button[5][16] = {};
+bool PadInput::old_button[5][16] = {};
+float PadInput::trigger[5][2] = {};
+Vector2D PadInput::stick[5][2] = {};
 
 void PadInput::Update()
 {

@@ -113,7 +113,7 @@ eSceneType TitleScene::Update()
         // 1番下に到達したら、一番上にする
         if (cursor > 2) cursor = 0;
     }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Released)
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
     {
         //カーソル決定(決定した画面に遷移する)
         switch (cursor)
@@ -166,7 +166,7 @@ eSceneType TitleScene::Update()
 
 #ifdef _DEBUG
     //デバッグ用(リザルト画面)
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START))
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START) ||key_input->GetKeyState(KEY_INPUT_R) == eInputState::Pressed)
     {
         return eSceneType::E_RESULT;
     }

@@ -54,7 +54,9 @@ void ResultScene::Initialize()
 	drum_se = LoadSoundMem("Rescurce/SE/ドラムロール.mp3");
 	winner_se = LoadSoundMem("Rescurce/SE/Winner.mp3");
 	result_bgm = LoadSoundMem("Rescurce/BGM/ResultBGM.wav");
-	//Data::player_data[0].score = 1000;
+	Data::player_data[0].score = 1000;
+	Data::player_data[1].score = 500;
+	Data::player_data[2].score = 300;
 }
 
 void ResultScene::Finalize()
@@ -158,7 +160,7 @@ int ResultScene::CheckWinnerNum()const
 	for (int i = 1; i < Data::player_num; i++)
 	{
 		//スコア比較して一番大きい物を取得
-		if (Data::player_data[ret].score < Data::player_data[i].score)
+		if (ret < Data::player_data[i].score)
 		{
 			ret = Data::player_data[i].score;
 		}
