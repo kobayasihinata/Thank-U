@@ -88,6 +88,7 @@ void InGameScene::Initialize()
 /// <returns></returns>
 void InGameScene::Finalize()
 {
+	StopSoundFile();
 	Data::player_data[0] = PD1;
 	Data::player_data[1] = PD2;
 	Data::player_data[2] = PD3;
