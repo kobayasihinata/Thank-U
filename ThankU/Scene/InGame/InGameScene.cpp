@@ -8,7 +8,22 @@
 /// </summary>
 /// <param></param>
 /// <returns></returns>
-InGameScene::InGameScene()
+InGameScene::InGameScene():
+	Anserd{ (false),(false),(false),(false) },
+	Background_image(NULL),
+	Border_Line(NULL),
+	Collect{ (false),(false),(false),(false)},
+	EnemyImage(NULL),
+	FatalAnser(none),
+	FatalAnserNum(NULL),
+	InGameHelp(NULL),
+	Pagree{ NULL,NULL,NULL,NULL },
+	PlayerImage{ NULL,NULL,NULL,NULL },
+	Player_Anser{none,none,none,none},
+	PlayerScore{ NULL,NULL,NULL,NULL },
+	QSet(false),
+	SE_Correct(NULL),
+	ScoreValue{ NULL,NULL,NULL,NULL }
 {
 }
 
@@ -36,31 +51,60 @@ void InGameScene::Initialize()
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		Collect[i] = true;
+		Player_Anser[i] = agreement::none;
+		Pagree[i] = agreement::none;
+		Anserd[i] = false;
+		ScoreValue[i] = 0;
+
+		switch (Data::player_data[i].number)
+		{
+		case 0:
+			PD1 = Data::player_data[i];
+			break;
+		case 1:
+			PD2 = Data::player_data[i];
+			break;
+		case 2:
+			PD3 = Data::player_data[i];
+			break;
+		case 3:
+			PD4 = Data::player_data[i];
+			break;
+		}
 	}
+
 	switch (Data::player_num)
 	{
 	case 4:
-		TotalScore = 3000;
 		PlayerImage[3] = LoadGraph("Rescurce/Image/Player4.png");
-		PD4 = Data::player_data[3];
 	case 3:
-		TotalScore = 1500;
 		PlayerImage[2] = LoadGraph("Rescurce/Image/Player3.png");
-		PD3 = Data::player_data[2];
+	case 2:
+		PlayerImage[1] = LoadGraph("Rescurce/Image/Player2.png");
+	case 1:
+		PlayerImage[0] = LoadGraph("Rescurce/Image/Player1.png");
+	}
+
+	switch (Data::player_num)
+	{
+	case 4:
+		TotalScore = 4000;
+		break;
+	case 3:
+		TotalScore = 2500;
+		break;
 	case 2:
 		TotalScore = 1000;
-		PlayerImage[1] = LoadGraph("Rescurce/Image/Player2.png");
-		PD2 = Data::player_data[1];
+		break;
 	case 1:
 		TotalScore = 500;
-		PlayerImage[0] = LoadGraph("Rescurce/Image/Player1.png");
-		PD1 = Data::player_data[0];
 		break;
 	}
 
 	EnemyAnser();
 
 	EnemyString = read_csv("Rescurce/EnemyVoice.csv");
+
 	/*EnemyString = {
 		{"ポジティブな質問1", "ポジティブな質問2", "ポジティブな質問3", "ポジティブな質問4", "ポジティブな質問5"},
 		{"ネガティブな質問1", "ネガティブな質問2", "ネガティブな質問3", "ネガティブな質問4", "ネガティブな質問5"},
