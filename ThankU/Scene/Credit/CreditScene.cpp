@@ -44,20 +44,20 @@ eSceneType CreditScene::Update()
 	if (key_input->GetKeyState(KEY_INPUT_E) == eInputState::Pressed)
 	{
 		// Eキーが押されたらエフェクト
-		effect.Set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, EFF_EXPLODE);
+		//effect.Set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, EFF_EXPLODE);
 		DebugInfomation::Add("Effect Set", true); // デバッグ用
 	}
 
-	//大体３秒くらいエフェクトを出す＜---お試し
-	if (count > 0) {
-		for (int i = 0; i < 5; ++i)
-		{
-			int randomX = std::rand() % SCREEN_WIDTH;
-			int randomY = std::rand() % SCREEN_HEIGHT;
-			effect.Set(randomX, randomY, EFF_EXPLODE);
-		}
-	}
-	count--;
+	////大体３秒くらいエフェクトを出す＜---お試し
+	//if (count > 0) {
+	//	for (int i = 0; i < 5; ++i)
+	//	{
+	//		int randomX = std::rand() % SCREEN_WIDTH;
+	//		int randomY = std::rand() % SCREEN_HEIGHT;
+	//		effect.Set(randomX, randomY, EFF_EXPLODE);
+	//	}
+	//}
+	//count--;
 
 	// エフェクトを更新
 	effect.Update();

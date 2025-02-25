@@ -1,21 +1,49 @@
-#include"Effect.h"
+#include"EffectManager.h"
+
+EffectManager* EffectManager::Get()
+{
+
+    static EffectManager instance;
+    //自分自身のポインタを返却する
+    return &instance;
+}
 
 //コンストラクタ
-Effect::Effect() : eff_num(0), imgExplosion(0), effects()
+EffectManager::EffectManager()
 {
 }
 
 //初期化
-void Effect::Initialize()
+void EffectManager::Initialize()
 {
-    //エフェクトを初期化
-    for (int i = 0; i < EFFECT_MAX; ++i) {
-        effects[i].state = 0;
-    }
+    for (int i = 0; i < effect_num; i++)
+    {
+        EffectSpawnData kari={ 0 };
+        int ka[100] = { 0 };
+        //画像を分割して読み込む
+        LoadDivGraph(effect_image_path[i].image_path,
+            effect_image_path[i].all_num,
+            effect_image_path[i].x_num,
+            effect_image_path[i].y_num,
+            effect_image_path[i].x_size,
+            effect_image_path[i].y_size,
+            ka);
+        //読み込んだ画像をstdに格納
+        for (int j = 0; ka[j] != NULL; j++)
+        {
+            kari.image.push_back(ka[j]);
+        }
+        //アニメーション更新頻度を格納
+        kari.anim_span = effect_image_path[i].anim_span;
 
-    // 爆発画像の読み込み(仮)
-    imgExplosion = LoadGraph("Rescurce/Image/explosion.png");
-    imgHanabi = LoadGraph("Rescurce/Image/E_PuffAndStar.png");    //花火
+        //格納した値をeffect_imageに纏める
+        effect_image.push_back(kari);
+    }
+}
+
+void EffectManager::Finalize()
+{
+
 }
 
 /// <summary>
@@ -24,67 +52,41 @@ void Effect::Initialize()
 /// <param name="x">X座標</param>
 /// <param name="y">Y座標</param>
 /// <param name="pattern">エフェクトパターン</param>
-void Effect::Set(int x, int y, int pattern)
+void EffectManager::Set(int x, int y, int pattern)
 {
-    //描画したい座標にセット
-    effects[eff_num].x = x;
-    effects[eff_num].y = y;
 
-    // アクティブ状態に設定
-    effects[eff_num].state = 1;
-    effects[eff_num].pattern = pattern;
-
-    // タイマー初期化
-    effects[eff_num].timer = 0;
-
-    // 最大数を超えないようにする
-    eff_num = (eff_num + 1) % EFFECT_MAX;
 }
 
 //描画
-void Effect::Draw() const
+void EffectManager::Draw() const
 {
-    for (int i = 0; i < EFFECT_MAX; ++i)
-    {
-        if (effects[i].state == 0) {
-            continue;  // 非アクティブなエフェクトは描画しない
-        }
 
-        //ここで種類を増やしたりする＜--エフェクトのパターン
-        switch (effects[i].pattern)
-        {
-        case EFF_EXPLODE:
-            DrawExplosion(effects[i]);  //爆発
-            break;
-        //case:EFF_CIRCLE;
-
-        }
-    }
 }
 
 //更新処理
-void Effect::Update()
+void EffectManager::Update()
 {
-    //エフェクトの状態を更新
-    for (int i = 0; i < EFFECT_MAX; ++i)
-    {
-        if (effects[i].state == 0) {
-            continue;  // 非アクティブなエフェクトは更新しない
-        }
+    ////エフェクトの状態を更新
+    //for (int i = 0; i < EFFECT_MAX; ++i)
+    //{
+    //    if (effects[i].state == 0) {
+    //        continue;  // 非アクティブなエフェクトは更新しない
+    //    }
 
-        // タイマーを更新し、エフェクトの状態を管理
-        effects[i].timer++;
-        if (effects[i].timer == 7) {  // 7回更新したらエフェクト終了
-            effects[i].state = 0;
-        }
-    }
+    //    // タイマーを更新し、エフェクトの状態を管理
+    //    effects[i].timer++;
+    //    if (effects[i].timer == 7) {  // 7回更新したらエフェクト終了
+    //        effects[i].state = 0;
+    //    }
+    //}
+    //int x = effect_image_path[0].all_num;
 }
 
 //爆発エフェクトを呼び出す
-void Effect::DrawExplosion(const OBJECT& effect) const
+void EffectManager::DrawExplosion(const OBJECT& effect) const
 {
     int ix = effect.timer * 128;  // 画像の切り出し位置
-    DrawRectGraph(effect.x - 64, effect.y - 64, ix, 0, 128, 128, imgExplosion, TRUE, FALSE);  // 爆発画像の描画
+   // DrawRectGraph(effect.x - 64, effect.y - 64, ix, 0, 128, 128, imgExplosion, TRUE, FALSE);  // 爆発画像の描画
 }
 
 //void Effect::DrawCircleEffect(const OBJECT& effect) const
