@@ -184,6 +184,12 @@ eSceneType InGameScene::Update()
 #endif // _DEBUG
 
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
+	if (Timer == -1)
+	{
+		//for (int i = 0; i < Data::player_num; i++)
+		//{
+		//}
+	}
 	if (Timer == 0)
 	{
 		if (QSet)
@@ -196,6 +202,7 @@ eSceneType InGameScene::Update()
 				Player_Anser[i] = agreement::none;
 				Pagree[i] = agreement::none;
 				Anserd[i] = false;
+				ScoreValue[i] = 0;
 			}
 		}
 	}
@@ -207,10 +214,8 @@ eSceneType InGameScene::Update()
 		Timer = -1;
 		for (int i = 0; i < Data::player_num; i++)
 		{
-		Player_Anser[i] = agreement::none;
-		Pagree[i]		= agreement::none;
-		Anserd[i]		= false			 ;
-		ScoreValue[i]	= 0				 ;
+			Player_Anser[i] = agreement::none;
+			Pagree[i] = agreement::none;
 		}
 		QSet = true;
 		Question = "・ ・ ・";
@@ -245,43 +250,42 @@ eSceneType InGameScene::GetNowScene() const
 
 int InGameScene::PlayerAnser()
 {
-#ifdef _DEBUG
-	//playerの押したボタンに応じて回答を当てはめる
-	if (CheckHitKey(KEY_INPUT_W))//←仮置き
-	{
-		Player_Anser[0] = agreement::positive;
-		Pagree[0] = 1;
-		Anserd[0] = true;
-		PlaySeter.push_back(0);
-	}
-	else if (CheckHitKey(KEY_INPUT_A))
-	{
-		Player_Anser[0] = agreement::negation;
-		Pagree[0] = 2;
-		Anserd[0] = true;
-		PlaySeter.push_back(0);
-	}
-	else if (CheckHitKey(KEY_INPUT_S))
-	{
-		Player_Anser[0] = agreement::question;
-		Pagree[0] = 3;
-		Anserd[0] = true;
-		PlaySeter.push_back(0);
-	}
-	else if (CheckHitKey(KEY_INPUT_D))
-	{
-		Player_Anser[0] = agreement::excitement;
-		Pagree[0] = 4;
-		Anserd[0] = true;
-		PlaySeter.push_back(0);
-	}
-#endif // _DEBUG
-
 	int j = 1;
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		if (Anserd[i] != true)
 		{
+#ifdef _DEBUG
+			//playerの押したボタンに応じて回答を当てはめる
+			if (CheckHitKey(KEY_INPUT_W))//←仮置き
+			{
+				Player_Anser[0] = agreement::positive;
+				Pagree[0] = 1;
+				Anserd[0] = true;
+				PlaySeter.push_back(0);
+			}
+			else if (CheckHitKey(KEY_INPUT_A))
+			{
+				Player_Anser[0] = agreement::negation;
+				Pagree[0] = 2;
+				Anserd[0] = true;
+				PlaySeter.push_back(0);
+			}
+			else if (CheckHitKey(KEY_INPUT_S))
+			{
+				Player_Anser[0] = agreement::question;
+				Pagree[0] = 3;
+				Anserd[0] = true;
+				PlaySeter.push_back(0);
+			}
+			else if (CheckHitKey(KEY_INPUT_D))
+			{
+				Player_Anser[0] = agreement::excitement;
+				Pagree[0] = 4;
+				Anserd[0] = true;
+				PlaySeter.push_back(0);
+			}
+#endif // _DEBUG
 			//playerの押したボタンに応じて回答を当てはめる
 			if (PadInput::GetButtonDown(j, XINPUT_BUTTON_B))//←仮置き
 			{
