@@ -34,9 +34,21 @@ void TitleScene::Initialize()
     object_image[2] = LoadGraph("Rescurce/Image/Cursor.png");
     object_image[3] = LoadGraph("Rescurce/Image/Line_Message.png");
     object_image[4] = LoadGraph("Rescurce/Image/Menu.png");
+
     //エネミー用
     object_image[5] = LoadGraph("Rescurce/Image/EnemyMessage.png");
     object_image[6] = LoadGraph("Rescurce/Image/Icon.png");
+    
+    message_image[0] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_1.png");
+    message_image[1] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_2.png");
+    message_image[2] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_3.png");
+    message_image[3] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_4.png");
+    message_image[4] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_5.png");
+    message_image[5] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_6.png");
+    message_image[6] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_7.png");
+    message_image[7] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_8.png");
+    message_image[8] = LoadGraph("Rescurce/Image/Title/TitleImages/EnemyMessage_9.png");
+
    //参加者
    object_image[7] = LoadGraph("Rescurce/Image/Player1.png");
    object_image[8] = LoadGraph("Rescurce/Image/Player2.png");
@@ -61,8 +73,11 @@ void TitleScene::Initialize()
         Data::player_data[0].use_controller = DX_INPUT_PAD1;
         Data::player_num++;
         player_join[0] = true;
-        join_flag++;
+        join_flag++;    //参加しました。
     }
+
+    random_image_timer = 0; // タイマー変数の初期化
+    current_image_index = rand() % 9; // ランダムな画像の初期選択
 }
 
 //終了時処理
@@ -107,28 +122,12 @@ eSceneType TitleScene::Update()
             return eSceneType::E_END;
         }
     }
-    //デバッグ用
+    //デバッグ用(リザルト画面)
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START))
     {
         return eSceneType::E_RESULT;
     }
-    //// 各参加者の入力があれば＜-- X ボタンで参加  ※複数コントローラー必要
-    //if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_X) && !player_join[0]) {
-    //    player_join[0] = true; // プレイヤー1が参加
-    //    join_flag++;
-    //}
-    //if (PadInput::GetButtonDown(DX_INPUT_PAD2, XINPUT_BUTTON_X) && !player_join[1]) {
-    //    player_join[1] = true; // プレイヤー2が参加
-    //    join_flag++;
-    //}
-    //if (PadInput::GetButtonDown(DX_INPUT_PAD3, XINPUT_BUTTON_X) && !player_join[2]) {
-    //    player_join[2] = true; // プレイヤー3が参加
-    //    join_flag++;
-    //}
-    //if (PadInput::GetButtonDown(DX_INPUT_PAD4, XINPUT_BUTTON_X) && !player_join[3]) {
-    //    player_join[3] = true; // プレイヤー4が参加
-    //    join_flag++;
-    //}
+
     //コントローラーが1～4なのでforも合わす
     for (int i = 1; i <= 4; i++)
     {
@@ -174,7 +173,19 @@ eSceneType TitleScene::Update()
         }
     }
 
+    //デバッグ用
     DebugInfomation::Add("player_num", Data::player_num);
+
+
+    // タイマーをインクリメント
+    random_image_timer++;
+    // 一定間隔 (例えば60フレーム = 1秒) ごとにランダムな画像を選択
+    if (random_image_timer >= 60 * 3)   //＜--60×3なのでだいたい3秒
+    {
+        random_image_timer = 0; // タイマーをリセット
+        current_image_index = rand() % 9; // ランダムな画像を選択
+    }
+
     // 現在のシーンタイプを返す
     return GetNowScene();
 }
@@ -188,8 +199,10 @@ void TitleScene::Draw() const
     DrawGraph(10, 500, object_image[11], true); //操作説明
 
     //敵側のメッセージ
-    DrawRotaGraph(500, 400, scale, 0.0f, object_image[5], true); //メッセージ(ちょっと話聞いてほしくて)
+   // DrawRotaGraph(500, 400, scale, 0.0f, object_image[5], true); //メッセージ(ちょっと話聞いてほしくて)
     DrawRotaGraph(75, 340, 1.0f, 0.0f, object_image[6], true);   //アイコン
+    // ランダム画像を描画
+    DrawRotaGraph(500, 400, scale, 0.0f, message_image[current_image_index], true);
 
     //メッセージアイコン(メニュー枠)
     DrawRotaGraph(message_x, obj_location.y / 1.65f, (scale - 0.2), 0.0f, object_image[0], true);
@@ -207,11 +220,7 @@ void TitleScene::Draw() const
 
     // 参加者アイコンを描画
     for (int i = 0; i < 4; i++) {
-        //if (player_join[i]) {
-        //    DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
-        //}
         //自分のコントローラーを押したら反応する
-
         //コントローラーが割り当てられているかで判断
         if (Data::player_data[i].use_controller > 0)
         {
@@ -236,10 +245,7 @@ void TitleScene::Draw() const
     SetFontSize(50); //フォントサイズを設定
     DrawFormatString(SCREEN_WIDTH / 1.8, obj_location.y / 1.25f, GetColor(0, 0, 0), "既読", true);    //UI
 
-    //デバッグ用
-    DrawFormatString(SCREEN_WIDTH / 5, obj_location.y / 1.3f, GetColor(0, 0, 0), "-- A キーで参加 --", true);
-
-    // 既読状態の描画  ＜--バグあり
+    // 既読状態の描画
     DrawFormatString(SCREEN_WIDTH / 1.8 + 105, obj_location.y / 1.25f, GetColor(0, 0, 0), "%d", join_flag, false);
  }
 

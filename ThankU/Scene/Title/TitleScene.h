@@ -13,6 +13,10 @@ private:
 	int title_image;		//タイトル背景
 	int title_logo;			//タイトルロゴ
 	int object_image[13];	//オブジェクト
+	int message_image[10];	//メッセージ画像
+
+	int random_image_timer = 0; // タイマー変数の初期化
+	int current_image_index = rand() % 9; // ランダムな画像の初期選択
 
 private:
 	//オブジェクト管理用変数

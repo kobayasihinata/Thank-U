@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="Utility\Data.cpp" />
+    <ClCompile Include="Utility\EffectManager.cpp" />
     <ClCompile Include="Utility\KeyInput.cpp" />
     <ClCompile Include="Scene\Credit\CreditScene.cpp" />
     <ClCompile Include="Scene\Result\ResultScene.cpp" />

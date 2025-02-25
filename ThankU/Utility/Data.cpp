@@ -1,13 +1,24 @@
 #include "Data.h"
 #include "DxLib.h"
 
-int Data::player_num = 0;				//音量 0=全体 1=BGM 2=SE
+int Data::player_num = 0;					//音量 0=全体 1=BGM 2=SE
 PlayerData Data::player_data[4] = { 0 };	//キー割り当て情報格納
 int Data::frame_image[6] = { 0 };			//吹き出し枠
+char* Data::font_name = 0;					//使用フォントの格納
 
 void Data::Initialize()
 {
 	LoadDivGraph("Rescurce/Image/MessageFrame_3.png", 6, 3, 2, 100, 120, frame_image);
+
+	LPCSTR font_path = "Rescurce/Font/Noto_Sans_JP/NotoSansJP-VariableFont_wght.ttf"; // 読み込むフォントファイルのパス
+	if (AddFontResourceEx(font_path, FR_PRIVATE, NULL) > 0) {
+	}
+	else {
+		// フォント読込エラー処理
+		MessageBox(NULL, "フォント読込失敗", "", MB_OK);
+	}
+	//フォント変更
+	ChangeFont("Noto Sans JP");
 }
 
 void Data::DrawSpeechBubble(Vector2D _loc, int _size_x, bool _color)
