@@ -15,7 +15,8 @@ public://プロパティ(データ群)
 	bool result_draw_flg;		//スコアをすべて表示出来たか判断
 	int winner_draw_time;		//結果発表までの貯め
 	int winner_num;				//同率一位の人数
-	
+	bool return_title_flg;		//タイトルに戻れる状態か判断
+
 	//画像用変数
 	int bar_image;			//下のバー
 
@@ -39,6 +40,14 @@ public:	//メソッド(処理群)
 	virtual eSceneType GetNowScene() const override;
 
 private:
+	void UpdateResultsMulti();	//結果発表更新（マルチ）
+
+	void DrawResultsmulti()const;	//結果発表描画（マルチ）
+
+	void UpdateResultsSolo();	//結果発表更新（ソロ）
+
+	void DrawResultsSolo()const;		//結果発表描画（ソロ）
+
 	int CheckWinnerNum()const;		//一番大きいスコアを検知
 
 	void DrawWinner()const;			//勝者を描画
