@@ -34,6 +34,8 @@ public://データ
     int Border_Line;
     int false_Message;
     int InGameHelp;
+    //SE類
+    int SE_Correct;
     //-Enemy関連-//
     vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
     agreement FatalAnser;                       //正解
@@ -47,6 +49,8 @@ public://データ
     int PlayerScore[4];                         //仮置き
     int TotalScore;                      //全体に配分する合計スコアポイント
     int ScoreValue[4];
+
+    bool QSet;
     bool Anserd[4];
     bool Collect[4];
 

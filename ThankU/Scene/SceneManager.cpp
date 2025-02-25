@@ -26,7 +26,7 @@ void SceneManager::Initialize()
 	//ウィンドウのタイトルを設定
 	SetMainWindowText("相槌を打つ");
 
-#if FULLSCREEN
+#ifdef FULLSCREEN
 	// ウインドウモードで起動
 	ChangeWindowMode(FULLSCREEN);
 #else

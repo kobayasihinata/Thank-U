@@ -28,9 +28,10 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
+	PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
+	SE_Correct = LoadSoundMem("Rescurce/SE/Correct.mp3");
 
-
-	
+	Timer = -1;
 
 	for (int i = 0; i < Data::player_num; i++)
 	{
@@ -163,7 +164,7 @@ void InGameScene::Draw() const
 		}
 	}
 
-	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer);
+	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer+1);
 #if _DEBUG
 	DrawString(10, 10, "InGame", 0x000000);
 #endif
@@ -182,22 +183,27 @@ eSceneType InGameScene::Update()
 #endif // _DEBUG
 
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
-	if (Timer == 2)
+	if (Timer == 0)
 	{
-		for (int i = 0; i < Data::player_num; i++)
+		if (QSet)
 		{
-		Collect[i] = true;
+			//Enemyから問いかけを貰う
+			EnemyAsk();
+			for (int i = 0; i < Data::player_num; i++)
+			{
+				Collect[i] = true;
+				Player_Anser[i] = agreement::none;
+				Pagree[i] = agreement::none;
+				Anserd[i] = false;
+			}
 		}
-
 	}
 	while (Timer > 4)
 	{
 		SetPoint();
 		//Enemyから受け取った答えとplayerらが言ってる答えを比較する
 		CheckAnser();
-		//Enemyから問いかけを貰う
-		EnemyAsk();
-		Timer = 0;
+		Timer = -1;
 		for (int i = 0; i < Data::player_num; i++)
 		{
 		Player_Anser[i] = agreement::none;
@@ -205,6 +211,8 @@ eSceneType InGameScene::Update()
 		Anserd[i]		= false			 ;
 		ScoreValue[i]	= 0				 ;
 		}
+		QSet = true;
+		Question = "・ ・ ・";
 		PlaySeter.clear();
 	}
 	/*player関連^-_-^おそらくループ*/
@@ -236,6 +244,37 @@ eSceneType InGameScene::GetNowScene() const
 
 int InGameScene::PlayerAnser()
 {
+#ifdef _DEBUG
+	//playerの押したボタンに応じて回答を当てはめる
+	if (CheckHitKey(KEY_INPUT_W))//←仮置き
+	{
+		Player_Anser[0] = agreement::positive;
+		Pagree[0] = 1;
+		Anserd[0] = true;
+		PlaySeter.push_back(0);
+	}
+	else if (CheckHitKey(KEY_INPUT_A))
+	{
+		Player_Anser[0] = agreement::negation;
+		Pagree[0] = 2;
+		Anserd[0] = true;
+		PlaySeter.push_back(0);
+	}
+	else if (CheckHitKey(KEY_INPUT_S))
+	{
+		Player_Anser[0] = agreement::question;
+		Pagree[0] = 3;
+		Anserd[0] = true;
+		PlaySeter.push_back(0);
+	}
+	else if (CheckHitKey(KEY_INPUT_D))
+	{
+		Player_Anser[0] = agreement::excitement;
+		Pagree[0] = 4;
+		Anserd[0] = true;
+		PlaySeter.push_back(0);
+	}
+#endif // _DEBUG
 
 	int j = 1;
 	for (int i = 0; i < Data::player_num; i++)
@@ -301,6 +340,7 @@ void InGameScene::CheckAnser()
 
 		if (Player_Anser[i] == FatalAnser)
 		{
+			PlaySoundMem(SE_Correct, DX_PLAYTYPE_BACK);
 			//正解の場合
 			//scoreを正答したプレイヤーに加算
 			switch (i)
@@ -393,6 +433,8 @@ void InGameScene::EnemyAnser()
 /// </summary>
 void InGameScene::EnemyAsk()
 {
+
+	QSet = false;
 	EnemyAnser();
 
 	Question = EnemyString[FatalAnserNum][GetRand(4)];
