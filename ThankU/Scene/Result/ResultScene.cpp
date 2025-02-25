@@ -54,9 +54,6 @@ void ResultScene::Initialize()
 	drum_se = LoadSoundMem("Rescurce/SE/ƒhƒ‰ƒ€ƒ[ƒ‹.mp3");
 	winner_se = LoadSoundMem("Rescurce/SE/Winner.mp3");
 	result_bgm = LoadSoundMem("Rescurce/BGM/ResultBGM.wav");
-	Data::player_data[0].score = 1000;
-	Data::player_data[1].score = 500;
-	Data::player_data[2].score = 300;
 }
 
 void ResultScene::Finalize()
