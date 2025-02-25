@@ -28,6 +28,10 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
+
+
+	
+
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		Collect[i] = true;
@@ -35,24 +39,33 @@ void InGameScene::Initialize()
 	switch (Data::player_num)
 	{
 	case 4:
+		TotalScore = 3000;
 		PlayerImage[3] = LoadGraph("Rescurce/Image/Player4.png");
+		PD4 = Data::player_data[3];
 	case 3:
+		TotalScore = 1500;
 		PlayerImage[2] = LoadGraph("Rescurce/Image/Player3.png");
+		PD3 = Data::player_data[2];
 	case 2:
+		TotalScore = 1000;
 		PlayerImage[1] = LoadGraph("Rescurce/Image/Player2.png");
+		PD2 = Data::player_data[1];
 	case 1:
+		TotalScore = 500;
 		PlayerImage[0] = LoadGraph("Rescurce/Image/Player1.png");
+		PD1 = Data::player_data[0];
 		break;
 	}
 
 	EnemyAnser();
 
-	EnemyString = {
+	EnemyString = read_csv("Rescurce/EnemyVoice.csv");
+	/*EnemyString = {
 		{"ポジティブな質問1", "ポジティブな質問2", "ポジティブな質問3", "ポジティブな質問4", "ポジティブな質問5"},
 		{"ネガティブな質問1", "ネガティブな質問2", "ネガティブな質問3", "ネガティブな質問4", "ネガティブな質問5"},
 		{"疑問系の質問1", "疑問系の質問2", "疑問系の質問3", "疑問系の質問4", "疑問系の質問5"},
 		{"盛り上げる質問1", "盛り上げる質問2", "盛り上げる質問3", "盛り上げる質問4", "盛り上げる質問5"}
-	};
+	};*/
 
 	PString = { "・　・　・","そうだね！","そんなことないよ！","そうなの？","それから？"};
 
@@ -63,6 +76,8 @@ void InGameScene::Initialize()
 	PlayerTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_1.png");
 	EnemyImage			=	LoadGraph("Rescurce/Image/MessageFrame_2.png");
 	false_Message		=	LoadGraph("Rescurce/Image/MessageCancel.png");
+	InGameHelp			=	LoadGraph("Rescurce/Image/InGameButton.png");
+
 }
 
 /// <summary>
@@ -72,6 +87,10 @@ void InGameScene::Initialize()
 /// <returns></returns>
 void InGameScene::Finalize()
 {
+	Data::player_data[0] = PD1;
+	Data::player_data[1] = PD2;
+	Data::player_data[2] = PD3;
+	Data::player_data[3] = PD4;
 }
 
 /// <summary>
@@ -85,7 +104,8 @@ void InGameScene::Draw() const
 	DrawReverseGraph(0, 0, Background_image, false,1);
 
 	//エネミー関係 800 100
-	DrawReverseGraph(50, 100, EnemyImage, true,1);
+	//DrawReverseGraph(50, 100, EnemyImage, true,1);
+	Data::DrawSpeechBubble(Vector2D(50, 200), Question.length()*25, false);
 	DrawFormatString(50, 200, 0xFFFFFF, "%s", Question.c_str());
 
 	int P_X = 1700;
@@ -93,7 +113,7 @@ void InGameScene::Draw() const
 
   
  	DrawGraph(0, 0, Border_Line, true);
-
+	DrawGraph(0, 500, InGameHelp, true);
 	//人数に合わせて描画
 	switch (Data::player_num)
 	{
@@ -180,8 +200,10 @@ eSceneType InGameScene::Update()
 		Timer = 0;
 		for (int i = 0; i < Data::player_num; i++)
 		{
-		Pagree[i] = none;
-		Anserd[i] = false;
+		Player_Anser[i] = agreement::none;
+		Pagree[i]		= agreement::none;
+		Anserd[i]		= false			 ;
+		ScoreValue[i]	= 0				 ;
 		}
 		PlaySeter.clear();
 	}
@@ -354,6 +376,15 @@ void InGameScene::EnemyAnser()
 		FatalAnserNum = 3;
 		break;
 	}
+#if _DEBUG
+	if (CheckHitKey(KEY_INPUT_0))
+	{
+		FatalAnser = agreement::positive;
+		FatalAnserNum = 0;
+	}
+
+#endif // _DEBUG
+
 }
 
 

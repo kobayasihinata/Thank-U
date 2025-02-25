@@ -13,10 +13,10 @@
 
 enum agreement :int
 {
-    none = 0,   //未回答
-    positive = 1,   //肯定
-    negation = 2,   //否定
-    question = 3,   //疑問
+    none = 0,           //未回答
+    positive = 1,       //肯定
+    negation = 2,       //否定
+    question = 3,       //疑問
     excitement = 4    //盛り上げ
 };
 
@@ -33,6 +33,7 @@ public://データ
     int Background_image;                       //背景
     int Border_Line;
     int false_Message;
+    int InGameHelp;
     //-Enemy関連-//
     vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
     agreement FatalAnser;                       //正解
@@ -44,15 +45,15 @@ public://データ
     int Pagree[4];
     agreement Player_Anser[4];                  //プレイヤー入力保存領域
     int PlayerScore[4];                         //仮置き
-    int TotalScore = 1000;                      //全体に配分する合計スコアポイント
+    int TotalScore;                      //全体に配分する合計スコアポイント
     int ScoreValue[4];
     bool Anserd[4];
     bool Collect[4];
 
-    PlayerData PD1{};
-    PlayerData PD2{};
-    PlayerData PD3{};
-    PlayerData PD4{};
+    PlayerData PD1;
+    PlayerData PD2;
+    PlayerData PD3;
+    PlayerData PD4;
 
     float TimeCountUp;
     int Timer;
