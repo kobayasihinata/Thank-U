@@ -28,7 +28,10 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
-
+	for (int i = 0; i < Data::player_num; i++)
+	{
+		Collect[i] = true;
+	}
 	switch (Data::player_num)
 	{
 	case 4:
@@ -51,14 +54,15 @@ void InGameScene::Initialize()
 		{"盛り上げる質問1", "盛り上げる質問2", "盛り上げる質問3", "盛り上げる質問4", "盛り上げる質問5"}
 	};
 
-	PString = { "そうだね！","そんなことないよ！","そうなの？","それから？" };
+	PString = { "・　・　・","そうだね！","そんなことないよ！","そうなの？","それから？"};
 
 	Question = EnemyString[FatalAnserNum][GetRand(4)];
 
-	Background_image = LoadGraph("Rescurce/Image/background.png");
-
-	 PlayerTextImage = LoadGraph("Rescurce/Image/MessageFrame_1.png");
-	 EnemyImage		 = LoadGraph("Rescurce/Image/MessageFrame_2.png");
+	Background_image	=	LoadGraph("Rescurce/Image/background.png");
+	Border_Line			=	LoadGraph("Rescurce/Image/Line_Message.png");
+	PlayerTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_1.png");
+	EnemyImage			=	LoadGraph("Rescurce/Image/MessageFrame_2.png");
+	false_Message		=	LoadGraph("Rescurce/Image/MessageCancel.png");
 }
 
 /// <summary>
@@ -78,72 +82,70 @@ void InGameScene::Finalize()
 void InGameScene::Draw() const
 {
 	//背景画像
-	DrawGraph(0, 0, Background_image, false);
+	DrawReverseGraph(0, 0, Background_image, false,1);
 
-	//エネミー関係
-	DrawGraph(800, 100, EnemyImage, true);
-	DrawFormatString(800, 200, 0xFFFFFF, "%s", Question.c_str());
+	//エネミー関係 800 100
+	DrawReverseGraph(50, 100, EnemyImage, true,1);
+	DrawFormatString(50, 200, 0xFFFFFF, "%s", Question.c_str());
+
+	int P_X = 1700;
+	int P_Y = 50;
+
+  
+ 	DrawGraph(0, 0, Border_Line, true);
 
 	//人数に合わせて描画
 	switch (Data::player_num)
 	{
 	case 4:
-		DrawGraph(50, 500, PlayerImage[3], true);
 		if (Collect[3] == false)
 		{
-		DrawFormatString(180, 600, 0x000000, "<メッセージが削除されました>");
+		DrawGraph(880, 750, false_Message, true);
+		//DrawFormatString(880, 750, 0x000000, "<メッセージが削除されました>");
 		}else {
-		DrawReverseGraph(80, 500, PlayerTextImage, true, 1);
-		DrawFormatString(180,600, 0x000000, "%s", PString[Pagree[3]].c_str());
+		DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
+		DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
+		DrawFormatString(P_X - 220, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
+		DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", PD4.score);
 		}
 	case 3:
 		if (Collect[2] == false)
 		{
-		DrawFormatString(180, 450, 0x000000, "<メッセージが削除されました>");
+		DrawGraph(880, 550, false_Message, true);
+		//DrawFormatString(880, 550, 0x000000, "<メッセージが削除されました>");
 		}else {
-		DrawGraph(50, 350, PlayerImage[2], true);
-		DrawReverseGraph(80, 350, PlayerTextImage, true, 1);
-		DrawFormatString(180,450, 0x000000, "%s", PString[Pagree[2]].c_str());
-
+		DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
+		DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
+		DrawFormatString(P_X - 220, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
+		DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", PD3.score);
 		}
 	case 2:
 		if (Collect[1] == false)
 		{
-		DrawFormatString(180, 300, 0x000000, "<メッセージが削除されました>");
+		DrawGraph(880, 350, false_Message, true);
+		//DrawFormatString(880, 350, 0x000000, "<メッセージが削除されました>");
 		}else {
-		DrawGraph(50, 200, PlayerImage[1], true);
-		DrawReverseGraph(80, 200, PlayerTextImage, true, 1);
-		DrawFormatString(180,300, 0x000000, "%s", PString[Pagree[1]].c_str());
-
+		DrawGraph(P_X, P_Y + 200, PlayerImage[1], true);
+		DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
+		DrawFormatString(P_X - 220, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
+		DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", PD2.score);
 		}
-
 	case 1:
 		if (Collect[0] == false)
 		{
-		DrawFormatString(180, 150, 0x000000, "<メッセージが削除されました>");
+		DrawGraph(880, 150, false_Message, true);
+		//DrawFormatString(880, 150, 0x000000, "<メッセージが削除されました>");
 		}else{
-		DrawGraph(50, 50, PlayerImage[0], true);
-		DrawReverseGraph(80, 50, PlayerTextImage, true, 1);
-		DrawFormatString(180, 150, 0x000000, "%s", PString[Pagree[0]].c_str());
+		DrawGraph(P_X, P_Y, PlayerImage[0], true);
+		DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
+		DrawFormatString(P_X - 220, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
+		DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", PD1.score);
 		}
 	}
 
 	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer);
 #if _DEBUG
-	switch (Data::player_num)
-	{
-	case 4:
-		DrawFormatString(50, 600, 0x000000, "%d", PD4.score);
-	case 3:
-		DrawFormatString(50, 450, 0x000000, "%d", PD3.score);
-	case 2:
-		DrawFormatString(50, 300, 0x000000, "%d", PD2.score);
-	case 1:
-		DrawFormatString(50, 150, 0x000000, "%d", PD1.score);
-	}
-
 	DrawString(10, 10, "InGame", 0x000000);
-
 #endif
 }
 
@@ -162,18 +164,26 @@ eSceneType InGameScene::Update()
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
 	if (Timer == 2)
 	{
-		Collect[0] = true;
-		Collect[1] = true;
-		Collect[2] = true;
-		Collect[3] = true;
+		for (int i = 0; i < Data::player_num; i++)
+		{
+		Collect[i] = true;
+		}
+
 	}
 	while (Timer > 4)
 	{
+		SetPoint();
 		//Enemyから受け取った答えとplayerらが言ってる答えを比較する
 		CheckAnser();
 		//Enemyから問いかけを貰う
 		EnemyAsk();
 		Timer = 0;
+		for (int i = 0; i < Data::player_num; i++)
+		{
+		Pagree[i] = none;
+		Anserd[i] = false;
+		}
+		PlaySeter.clear();
 	}
 	/*player関連^-_-^おそらくループ*/
 
@@ -204,48 +214,69 @@ eSceneType InGameScene::GetNowScene() const
 
 int InGameScene::PlayerAnser()
 {
+
 	int j = 1;
 	for (int i = 0; i < Data::player_num; i++)
 	{
-		//playerの押したボタンに応じて回答を当てはめる
-		if(PadInput::GetButtonDown(j, XINPUT_BUTTON_B))//←仮置き
+		if (Anserd[i] != true)
 		{
-			Player_Anser[i] = agreement::positive;
-			Pagree[i] = 0;
-		}
-		else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_A))
-		{
-			Player_Anser[i] = agreement::negation;
-			Pagree[i] = 1;
-
-		}
-		else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_X))
-		{
-			Player_Anser[i] = agreement::question;
-			Pagree[i] = 2;
-
-		}
-		else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_Y))
-		{
-			Player_Anser[i] = agreement::excitement;
-			Pagree[i] = 3;
-
+			//playerの押したボタンに応じて回答を当てはめる
+			if (PadInput::GetButtonDown(j, XINPUT_BUTTON_B))//←仮置き
+			{
+				Player_Anser[i] = agreement::positive;
+				Pagree[i] = 1;
+				Anserd[i] = true;
+				PlaySeter.push_back(i);
+			}
+			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_A))
+			{
+				Player_Anser[i] = agreement::negation;
+				Pagree[i] = 2;
+				Anserd[i] = true;
+				PlaySeter.push_back(i);
+			}
+			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_X))
+			{
+				Player_Anser[i] = agreement::question;
+				Pagree[i] = 3;
+				Anserd[i] = true;
+				PlaySeter.push_back(i);
+			}
+			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_Y))
+			{
+				Player_Anser[i] = agreement::excitement;
+				Pagree[i] = 4;
+				Anserd[i] = true;
+				PlaySeter.push_back(i);
+			}
 		}
 		j++;
 	}
-
 	return 0;
+}
+
+void InGameScene::SetPoint()
+{
+	switch (PlaySeter.size())
+	{
+	case 4:
+		ScoreValue[PlaySeter[3]] = 0;
+	case 3:
+		ScoreValue[PlaySeter[2]] = 25;
+	case 2:
+		ScoreValue[PlaySeter[1]] = 50;
+	case 1:
+		ScoreValue[PlaySeter[0]] = 100;
+	}
 }
 
 void InGameScene::CheckAnser()
 {
-	Collect[0] = false;
-	Collect[1] = false;
-	Collect[2] = false;
-	Collect[3] = false;
 
 	for (int i = 0; i < Data::player_num; i++)
 	{
+		Collect[i] = false;
+
 		if (Player_Anser[i] == FatalAnser)
 		{
 			//正解の場合
@@ -253,25 +284,42 @@ void InGameScene::CheckAnser()
 			switch (i)
 			{
 			case 0:
-				PD1.score += 50;
-				TotalScore -= 50;
+				PD1.score += ScoreValue[i];
+				TotalScore -= ScoreValue[i];
 				Collect[0] = true;
 				break;
 			case 1:
-				PD2.score += 50;
-				TotalScore -= 50;
+				PD2.score += ScoreValue[i];
+				TotalScore -= ScoreValue[i];
 				Collect[1] = true;
-
 				break;
 			case 2:
-				PD3.score += 50;
-				TotalScore -= 50;
+				PD3.score += ScoreValue[i];
+				TotalScore -= ScoreValue[i];
 				Collect[2] = true;
 				break;
 			case 3:
-				PD4.score += 50;
-				TotalScore -= 50;
+				PD4.score += ScoreValue[i];
+				TotalScore -= ScoreValue[i];
 				Collect[3] = true;
+				break;
+			}
+		}
+		else
+		{
+			switch (i)
+			{
+			case 0:
+				PD1.score -= ScoreValue[i];
+				break;
+			case 1:
+				PD2.score -= ScoreValue[i];
+				break;
+			case 2:
+				PD3.score -= ScoreValue[i];
+				break;
+			case 3:
+				PD4.score -= ScoreValue[i];
 				break;
 			}
 		}

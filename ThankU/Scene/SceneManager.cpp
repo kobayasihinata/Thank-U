@@ -11,6 +11,7 @@
 #include"Credit/CreditScene.h"
 
 
+
 SceneManager::SceneManager() : current_scene(nullptr){
 }
 
@@ -23,8 +24,14 @@ void SceneManager::Initialize()
 	//ウィンドウのタイトルを設定
 	SetMainWindowText("相槌を打つ");
 
+#ifdef FULLSCREEN
 	// ウインドウモードで起動
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FULLSCREEN);
+#else
+	// ウインドウモードで起動
+	ChangeWindowMode(WINDOW_MODE);
+#endif // FULLSCREEN
+
 
 	// ウインドウのサイズ
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32);

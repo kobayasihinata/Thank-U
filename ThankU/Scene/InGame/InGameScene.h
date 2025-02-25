@@ -31,18 +31,22 @@ public://データ
     int PlayerImage[4];
     int PlayerTextImage;
     int Background_image;                       //背景
+    int Border_Line;
+    int false_Message;
     //-Enemy関連-//
     vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
     agreement FatalAnser;                       //正解
     int FatalAnserNum;                          //正解の添え字
     string Question;                            //質問文
 
+    vector<int> PlaySeter;
     vector<string> PString;
     int Pagree[4];
     agreement Player_Anser[4];                  //プレイヤー入力保存領域
     int PlayerScore[4];                         //仮置き
     int TotalScore = 1000;                      //全体に配分する合計スコアポイント
-
+    int ScoreValue[4];
+    bool Anserd[4];
     bool Collect[4];
 
     PlayerData PD1{};
@@ -74,6 +78,8 @@ public:
     
     //プレイヤーの回答を探索
     int PlayerAnser();
+
+    void SetPoint();
 
     void CheckAnser();
 
