@@ -206,6 +206,11 @@ eSceneType TitleScene::Update()
     {
         e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eBighit);
     }
+    //エフェクトテスト(BigHit)
+    if (key_input->GetKeyState(KEY_INPUT_5) == eInputState::Pressed)
+    {
+        e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eBloodImpact);
+    }
 #endif // _DEBUG
     DebugInfomation::Add("cont1", PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_A));
     DebugInfomation::Add("cont2", PadInput::GetButton(DX_INPUT_PAD2, XINPUT_BUTTON_A));
