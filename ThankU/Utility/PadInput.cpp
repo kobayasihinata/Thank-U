@@ -10,7 +10,7 @@ Vector2D PadInput::stick[4][2] = {};
 void PadInput::Update()
 {
 	XINPUT_STATE input_state = {};
-	for (int j = 0; j < 4; j++)
+	for (int j = 1; j <= 4; j++)
 	{
 		GetJoypadXInputState(j, &input_state);
 

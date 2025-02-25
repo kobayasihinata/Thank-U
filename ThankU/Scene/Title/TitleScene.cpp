@@ -126,11 +126,6 @@ eSceneType TitleScene::Update()
             return eSceneType::E_END;
         }
     }
-    //デバッグ用(リザルト画面)
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START))
-    {
-        return eSceneType::E_RESULT;
-    }
 
     //コントローラーが1～4なのでforも合わす
     for (int i = 1; i <= 4; i++)
@@ -148,23 +143,6 @@ eSceneType TitleScene::Update()
         }
     }
 
-    //デバッグ用＜--　Aキー で参加 ※ひとり用
-    if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
-    {
-        //コントローラーが1～４なのでforも
-        for (int i = 1; i <= 4; i++) 
-        {
-            //参加
-            if (CheckUseController(i) == -1)
-            {
-                Data::player_data[Data::player_num].use_controller = i;
-                Data::player_data[Data::player_num].number = Data::player_num;
-                Data::player_num++;
-                break;
-            }
-        }
-    }
-
     //Dataを参照してアイコンの演出
     for (int i = 0; i < 4; i++)
     {
@@ -177,10 +155,6 @@ eSceneType TitleScene::Update()
         }
     }
 
-    //デバッグ用
-    DebugInfomation::Add("player_num", Data::player_num);
-
-
     // タイマーをインクリメント
     random_image_timer++;
     // 一定間隔 (例えば60フレーム = 1秒) ごとにランダムな画像を選択
@@ -190,6 +164,43 @@ eSceneType TitleScene::Update()
         current_image_index = rand() % 9; // ランダムな画像を選択
     }
 
+#ifdef _DEBUG
+    //デバッグ用(リザルト画面)
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START))
+    {
+        return eSceneType::E_RESULT;
+    }
+    //デバッグ用＜--　Aキー で参加 ※ひとり用
+    if (key_input->GetKeyState(KEY_INPUT_A) == eInputState::Pressed)
+    {
+        //コントローラーが1～４なのでforも
+        for (int i = 1; i <= 4; i++)
+        {
+            //参加
+            if (CheckUseController(i) == -1)
+            {
+                Data::player_data[Data::player_num].use_controller = i;
+                Data::player_data[Data::player_num].number = Data::player_num;
+                Data::player_num++;
+                break;
+            }
+        }
+    }
+    //エフェクトテスト(爆発)
+    if (key_input->GetKeyState(KEY_INPUT_1) == eInputState::Pressed)
+    {
+        e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eExplosion);
+    }
+    //エフェクトテスト(細かい爆発)
+    if (key_input->GetKeyState(KEY_INPUT_2) == eInputState::Pressed)
+    {
+        e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::ePuffAndStar);
+    }
+#endif // _DEBUG
+    DebugInfomation::Add("cont1", PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_A));
+    DebugInfomation::Add("cont2", PadInput::GetButton(DX_INPUT_PAD2, XINPUT_BUTTON_A));
+    DebugInfomation::Add("cont3", PadInput::GetButton(DX_INPUT_PAD3, XINPUT_BUTTON_A));
+    DebugInfomation::Add("cont4", PadInput::GetButton(DX_INPUT_PAD4, XINPUT_BUTTON_A));
     // 現在のシーンタイプを返す
     return GetNowScene();
 }
