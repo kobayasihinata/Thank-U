@@ -12,23 +12,35 @@ EffectManager* EffectManager::Get()
 void EffectManager::Initialize()
 {
     frame = 0;
-    for (int i = 0; i < effect_num; i++)
+    for (int i = 0; i < effect_num-1; i++)
     {
         EffectSpawnData kari={ 0 };
         int ka[100] = { 0 };
+        int im, w, h;
+
+        //一回読み込んで、高さと幅を取得する
+        im = LoadGraph(effect_image_path[i].image_path);
+        GetGraphSize(im,&w, &h);
+
+        //分割数を基に、一分割当たりの幅、高さを求める
+        w /= effect_image_path[i].x_num;
+        h /= effect_image_path[i].y_num;
+
         //画像を分割して読み込む
         LoadDivGraph(effect_image_path[i].image_path,
             effect_image_path[i].all_num,
             effect_image_path[i].x_num,
             effect_image_path[i].y_num,
-            effect_image_path[i].x_size,
-            effect_image_path[i].y_size,
+            w,
+            h,
             ka);
+
         //読み込んだ画像をstdに格納
         for (int j = 0; ka[j] != NULL; j++)
         {
             kari.image.push_back(ka[j]);
         }
+
         //アニメーション更新頻度を格納
         kari.anim_span = effect_image_path[i].anim_span;
 
@@ -57,7 +69,6 @@ void EffectManager::Update()
 {
     //フレーム計測
     frame++;
-
 
     //生成されているオブジェクトを管理
     for (auto& effect : effect_list)

@@ -10,9 +10,7 @@ struct EffectData
     int all_num;                    //分割数
     int x_num;                      //X分割数
     int y_num;                      //Y分割数
-    int x_size;                     //X大きさ
-    int y_size;                     //Y大きさ
-    //ここまではLoadDivGraphの引数と同じ
+    //ここまではLoadDivGraphの引数と同じ(画像幅、高さは勝手に計算するので入れなくていい)
     int anim_span;                  //アニメーション切り替え速度
 };
 
@@ -42,13 +40,13 @@ enum eEffectList
 };
 int const effect_num = eEnd + 1;     //enumの最後の要素を格納しておく
 
-//EffectListの順にパスを並べる(パス、画像総数、X軸画像数、Y軸画像数、画像幅、画像高さ、アニメーション切り替えスパンの順)
+//EffectListの順にパスを並べる(パス、画像総数、X軸画像数、Y軸画像数、アニメーション切り替えスパンの順)
 static EffectData effect_image_path[effect_num] =
 {
-    {"Rescurce/Image/Effect/explosion.png",7,7,1,128,128,10},
-    {"Rescurce/Image/Effect/E_PuffAndStar.png",60,10,6,108,116,1},
+    {"Rescurce/Image/Effect/explosion.png",7,7,1,10},
+    {"Rescurce/Image/Effect/E_PuffAndStar.png",60,10,6,1},
 
-    {"この文字が常に配列の最後に来るようにする",0,0,0,0,0},
+    {"この文字が常に配列の最後に来るようにする",0,0,0,0},
 };
 /********************************************************************************
 *   ↑新しいエフェクト入れるときとアニメーション速度変える時にいじるゾーン↑    *
@@ -86,7 +84,4 @@ public:
     /// <param name="_loc">座標</param>
     /// <param name="type">生成するエフェクトの種類</param>
     void SpawnEffect(Vector2D _loc, eEffectList _type);
-
-private://エフェクトの情報
-
 };
