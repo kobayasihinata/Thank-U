@@ -19,6 +19,7 @@ struct EffectData
 //エフェクトを生成するときに必要なデータ
 struct EffectSpawnData
 {
+    int now_image;                  //現在表示している画像
     int anim_span;                  //アニメーション切り替え速度
     std::vector<int> image;         //格納先
 };
@@ -44,8 +45,9 @@ static EffectData effect_image_path[effect_num] =
 class EffectManager
 {
 private://エフェクト画像系
+    int frame;                                  //測定用
     std::vector<EffectSpawnData> effect_image; //アニメーションに必要な情報格納
-
+    std::vector<EffectSpawnData> effect_spawn;  //実際に生成されているエフェクトを管理
 private:
     //コンストラクタをprivateにすることで、
 //自クラスのメンバ関数でインスタンスを生成できないようにする
@@ -60,11 +62,11 @@ public:
     //インスタンスを取得する処理
     static EffectManager* Get();
 
-    EffectManager();  // コンストラクタ
     void Initialize();     //初期化処理
     void Finalize();       //終了時処理
     void Draw() const;  //描画処理
     void Update();  //更新処理
+
 
     /// <summary>
     /// エフェクトをセット
@@ -72,29 +74,29 @@ public:
     /// <param name="x">X座標</param>
     /// <param name="y">Y座標</param>
     /// <param name="pattern">エフェクトパターン</param>
-    void Set(int x, int y, int pattern); 
+    //void Set(int x, int y, int pattern); 
 
 private://エフェクトの情報
-    struct OBJECT {
-        int x;
-        int y;
-        int vx;
-        int vy;
-        int state;    // エフェクトの状態（アクティブかどうか）
-        int pattern;  // エフェクトのパターン（種類）
-        int image;
-        int wid;
-        int hei;
-        int shield;    //これは要らないけど一応
-        int timer;    // エフェクトの時間
-    };
+    //struct OBJECT {
+    //    int x;
+    //    int y;
+    //    int vx;
+    //    int vy;
+    //    int state;    // エフェクトの状態（アクティブかどうか）
+    //    int pattern;  // エフェクトのパターン（種類）
+    //    int image;
+    //    int wid;
+    //    int hei;
+    //    int shield;    //これは要らないけど一応
+    //    int timer;    // エフェクトの時間
+    //};
 
 
     /// <summary>
     /// 爆発エフェクトの描画
     /// </summary>
     /// <param name="effect"></param>
-    void DrawExplosion(const OBJECT& effect) const;
+    //void DrawExplosion(const OBJECT& effect) const;
 
-    void DrawCircleEffect(const OBJECT& effect) const;
+    //void DrawCircleEffect(const OBJECT& effect) const;
 };

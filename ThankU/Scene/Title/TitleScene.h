@@ -8,6 +8,7 @@
 class TitleScene : public SceneBase
 {
 private:
+	class EffectManager* e_manager;				 //マネージャー情報
 	//各画像
 	int cursor;				//メニューカーソル
 	int title_image;		//タイトル背景

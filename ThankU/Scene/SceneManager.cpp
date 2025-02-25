@@ -2,6 +2,7 @@
 #include"../Utility/PadInput.h"
 #include"../Utility/KeyInput.h"
 #include"../Utility/DebugInformation.h"
+#include "../Utility/EffectManager.h"
 #include"../Utility/Common.h"
 #include"../Utility/Data.h"
 #include"DxLib.h"
@@ -21,10 +22,11 @@ SceneManager::~SceneManager(){
 //シーンマネージャー機能：初期化処理
 void SceneManager::Initialize()
 {
+
 	//ウィンドウのタイトルを設定
 	SetMainWindowText("相槌を打つ");
 
-#ifdef FULLSCREEN
+#if FULLSCREEN
 	// ウインドウモードで起動
 	ChangeWindowMode(FULLSCREEN);
 #else
@@ -61,11 +63,15 @@ void SceneManager::Initialize()
 		throw("描画先の指定ができませんでした\n");
 	}
 
-	//タイトルシーンから始める
-	ChangeScene(eSceneType::E_TITLE);
-
 	//データの初期化
 	Data::Initialize();
+
+	//エフェクトマネージャー取得
+	e_manager = EffectManager::Get();
+	e_manager->Initialize();
+
+	//タイトルシーンから始める
+	ChangeScene(eSceneType::E_TITLE);
 }
 
 //シーンマネージャー機能：更新処理
@@ -93,6 +99,9 @@ void SceneManager::Update()
 			//入力機能：更新処理
 			PadInput::Update();
 			key_input->Update();
+
+			//エフェクト管理クラス更新
+			e_manager->Update();
 
 			//デバッグ表示の更新
 			DebugInfomation::Update();
@@ -131,6 +140,10 @@ void SceneManager::Finalize()
 		delete current_scene;
 		current_scene = nullptr;
 	}
+	if (e_manager != nullptr)
+	{
+		e_manager->Finalize();
+	}
 	//DXライブラリの使用を終了する
 	DxLib_End();
 }
@@ -143,6 +156,9 @@ void SceneManager::Draw() const
 
 	//シーンの描画
 	current_scene->Draw();
+
+	//エフェクトの描画
+	e_manager->Draw();
 
 	//デバッグ表示の描画
 	DebugInfomation::Draw();

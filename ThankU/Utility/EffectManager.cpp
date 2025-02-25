@@ -8,14 +8,10 @@ EffectManager* EffectManager::Get()
     return &instance;
 }
 
-//コンストラクタ
-EffectManager::EffectManager()
-{
-}
-
 //初期化
 void EffectManager::Initialize()
 {
+    frame = 0;
     for (int i = 0; i < effect_num; i++)
     {
         EffectSpawnData kari={ 0 };
@@ -52,10 +48,10 @@ void EffectManager::Finalize()
 /// <param name="x">X座標</param>
 /// <param name="y">Y座標</param>
 /// <param name="pattern">エフェクトパターン</param>
-void EffectManager::Set(int x, int y, int pattern)
-{
-
-}
+//void EffectManager::Set(int x, int y, int pattern)
+//{
+//
+//}
 
 //描画
 void EffectManager::Draw() const
@@ -80,14 +76,42 @@ void EffectManager::Update()
     //    }
     //}
     //int x = effect_image_path[0].all_num;
+
+    //フレーム計測
+    frame++;
+    ////生成されているオブジェクトを管理
+    //for (auto effect : effect_spawn)
+    //{
+    //    //指定の間隔毎にアニメーションを次に進める
+    //    if (frame % effect.anim_span == 0)
+    //    {
+    //        //加算後、画像数を越したら削除
+    //        effect.now_image++;
+    //        if (effect.now_image > effect.image.size())
+    //        {
+    //            for (auto it2 = effect_spawn.begin(); it2 != effect_spawn.end();)
+    //            {
+    //                if (*it2 == effect)
+    //                {
+    //                    it2 = effect_spawn.erase(it2);
+    //                    break;
+    //                }
+    //                else
+    //                {
+    //                    ++it2;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 }
 
 //爆発エフェクトを呼び出す
-void EffectManager::DrawExplosion(const OBJECT& effect) const
-{
-    int ix = effect.timer * 128;  // 画像の切り出し位置
-   // DrawRectGraph(effect.x - 64, effect.y - 64, ix, 0, 128, 128, imgExplosion, TRUE, FALSE);  // 爆発画像の描画
-}
+//void EffectManager::DrawExplosion(const OBJECT& effect) const
+//{
+//    int ix = effect.timer * 128;  // 画像の切り出し位置
+//   // DrawRectGraph(effect.x - 64, effect.y - 64, ix, 0, 128, 128, imgExplosion, TRUE, FALSE);  // 爆発画像の描画
+//}
 
 //void Effect::DrawCircleEffect(const OBJECT& effect) const
 //{

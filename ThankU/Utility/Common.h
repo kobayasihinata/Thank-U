@@ -3,7 +3,7 @@
 #define FULLSCREEN 0
 
 //よく使うor共有すべきマクロはここ
-#ifdef FULLSCREEN
+#if FULLSCREEN
 #define SCREEN_WIDTH 1920		//画面幅
 #define SCREEN_HEIGHT 1080		//画面高さ
 #else

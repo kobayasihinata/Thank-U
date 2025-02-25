@@ -24,7 +24,7 @@ void CreditScene::Initialize()
 	object_image[1] = LoadGraph("Rescurce/Image/MessageFrame_1.png");
 
 	//ここでエフェクトの初期化 --＞ 画像の読み込みとか
-	effect.Initialize();
+	//effect.Initialize();
 }
 
 //終了時処理
@@ -60,7 +60,7 @@ eSceneType CreditScene::Update()
 	//count--;
 
 	// エフェクトを更新
-	effect.Update();
+	//effect.Update();
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * */
 
@@ -129,7 +129,7 @@ void CreditScene::Draw() const
 #endif
 
 	//エフェクトの描画
-	effect.Draw();
+	//effect.Draw();
 }
 
 //現在シーン情報を取得

@@ -2,7 +2,7 @@
 #include"DxLib.h"
 #include"../SceneBase.h"
 #include "../../Utility/Common.h"
-#include "../../Utility/Effect.h"
+#include "../../Utility/EffectManager.h"
 
 class CreditScene : public SceneBase
 {
@@ -16,7 +16,7 @@ public://プロパティ(データ群)
 
 public:
 	//エフェクトを使用する際必要
-	Effect effect;
+	//Effect effect;
 
 private:
 	int background_image;	//背景

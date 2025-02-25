@@ -6,6 +6,7 @@
 #include "../../Utility/Vector2D.h"
 #include "../../Utility/Data.h"
 #include "../../Utility/DebugInformation.h"
+#include "../../Utility/EffectManager.h"
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
@@ -24,6 +25,9 @@ TitleScene::~TitleScene()
 //初期化処理
 void TitleScene::Initialize()
 {
+    //エフェクト管理クラス取得
+    e_manager = EffectManager::Get();
+
     //背景画像
     title_image = LoadGraph("Rescurce/Image/background.png");
     title_logo = LoadGraph("Rescurce/Image/TitleLogo.png");

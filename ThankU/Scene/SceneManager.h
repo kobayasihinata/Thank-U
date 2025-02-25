@@ -14,6 +14,7 @@ class SceneManager
 private:
 	//現在シーン情報
 	SceneBase* current_scene;
+	class EffectManager* e_manager;				 //マネージャー情報
 
 public:
 	SceneManager();
