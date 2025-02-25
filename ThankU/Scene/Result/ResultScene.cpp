@@ -24,6 +24,7 @@ ResultScene::ResultScene() :
 ResultScene::~ResultScene()
 {
 
+
 }
 
 void ResultScene::Initialize()
