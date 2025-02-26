@@ -10,7 +10,7 @@
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
-cursor(0),scale(0), alpha(0), fadein_timer(0), 
+    cursor(0), player_button_flg{ false }, scale(0), alpha(0), fadein_timer(0),
 obj_location(0), message_x(0),
 title_image(NULL),title_logo(NULL), scaling_up(true), SE_Cursor(NULL),SE_Decision(NULL),
 object_image(),player_icon_x(),player_join(),join_flag(0)
@@ -115,6 +115,7 @@ eSceneType TitleScene::Update()
         PlaySoundMem(SE_Cursor, DX_PLAYTYPE_BACK);
         // 1番上に到達したら、一番下にする
         if (cursor < 0)  cursor = 2;
+        
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_A) || 
         key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
@@ -156,6 +157,25 @@ eSceneType TitleScene::Update()
             }
         }
     }
+
+    //待機中の演出
+    for (int i = 0; i < Data::player_num; i++)
+    {
+        int use = Data::player_data[i].use_controller;
+        if (PadInput::GetButtonDown(use, XINPUT_BUTTON_A) ||
+            PadInput::GetButtonDown(use, XINPUT_BUTTON_B) ||
+            PadInput::GetButtonDown(use, XINPUT_BUTTON_X) ||
+            PadInput::GetButtonDown(use, XINPUT_BUTTON_Y))
+        {
+            player_button_flg[i] = true;
+            StarBurst({ player_icon_x[i] + i * 130, obj_location.y / 4.2f,});
+        }
+        else
+        {
+            player_button_flg[i] = false;
+        }
+    }
+
 
     //Dataを参照してアイコンの演出
     for (int i = 0; i < 4; i++)
@@ -268,11 +288,7 @@ void TitleScene::Draw() const
         //コントローラーが割り当てられているかで判断
         if (Data::player_data[i].use_controller > 0)
         {
-            int use = Data::player_data[i].use_controller;
-            if (PadInput::GetButton(use, XINPUT_BUTTON_A) ||
-                PadInput::GetButton(use, XINPUT_BUTTON_B) ||
-                PadInput::GetButton(use, XINPUT_BUTTON_X) ||
-                PadInput::GetButton(use, XINPUT_BUTTON_Y))
+            if (player_button_flg[i])
             {
                 SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
                 //強調描画
@@ -336,4 +352,15 @@ int TitleScene::CheckUseController(int _pad)
     }
     //どこにも割り当てられてないなら-1
     return -1;
+}
+
+void TitleScene::StarBurst(Vector2D _loc)const
+{
+    for (int i = 0; i < 5; i++)
+    {
+        e_manager->SpawnEffect(_loc,
+            (eEffectList)(GetRand(9) + 6),
+            { (float)(GetRand(20) - 10),(float)(GetRand(20) - 10) }, 
+            10);
+    }
 }
