@@ -21,9 +21,11 @@ public://プロパティ(データ群)
 	int bar_image;			//下のバー
 
 	//音声用変数
-	int talk_se;			//文字を出すときのSE
+	int ScoreDisplay_se;			//文字を出すときのSE
 	int drum_se;			//ドラムロールSE
 	int winner_se;			//勝者のSE
+	int ovation_se;			//拍手のSE
+	int ovation_se_flg;
 	int result_bgm;			//BGM
 
 public:	//メソッド(処理群)
