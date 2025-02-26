@@ -44,7 +44,7 @@ InGameScene::~InGameScene()
 void InGameScene::Initialize()
 {
 
-	//PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
+	PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
 	SE_Correct = LoadSoundMem("Rescurce/SE/Correct.mp3");
 	SE_Talk = LoadSoundMem("Rescurce/SE/Talking.mp3");
 	SE_MessageDelete = LoadSoundMem("Rescurce/SE/MessageDelete.mp3");
