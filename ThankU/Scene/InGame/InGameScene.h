@@ -54,11 +54,6 @@ public://データ
     bool Anserd[4];
     bool Collect[4];
 
-    PlayerData PD1;
-    PlayerData PD2;
-    PlayerData PD3;
-    PlayerData PD4;
-
     float TimeCountUp;
     int Timer;
 

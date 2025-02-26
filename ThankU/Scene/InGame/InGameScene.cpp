@@ -21,7 +21,7 @@ InGameScene::InGameScene():
 	PlayerImage{ NULL,NULL,NULL,NULL },
 	Player_Anser{none,none,none,none},
 	PlayerScore{ NULL,NULL,NULL,NULL },
-	QSet(false),
+	QSet(true),
 	SE_Correct(NULL),
 	ScoreValue{ NULL,NULL,NULL,NULL }
 {
@@ -56,21 +56,21 @@ void InGameScene::Initialize()
 		Anserd[i] = false;
 		ScoreValue[i] = 0;
 
-		switch (Data::player_data[i].number)
-		{
-		case 0:
-			PD1 = Data::player_data[i];
-			break;
-		case 1:
-			PD2 = Data::player_data[i];
-			break;
-		case 2:
-			PD3 = Data::player_data[i];
-			break;
-		case 3:
-			PD4 = Data::player_data[i];
-			break;
-		}
+		//switch (Data::player_data[i].use_controller)
+		//{
+		//case 1:
+		//	PD1 = Data::player_data[i];
+		//	break;
+		//case 2:
+		//	PD2 = Data::player_data[i];
+		//	break;
+		//case 3:
+		//	PD3 = Data::player_data[i];
+		//	break;
+		//case 4:
+		//	PD4 = Data::player_data[i];
+		//	break;
+		//}
 	}
 
 	switch (Data::player_num)
@@ -101,8 +101,6 @@ void InGameScene::Initialize()
 		break;
 	}
 
-	EnemyAnser();
-
 	EnemyString = read_csv("Rescurce/EnemyVoice.csv");
 
 	/*EnemyString = {
@@ -114,14 +112,12 @@ void InGameScene::Initialize()
 
 	PString = { "・　・　・","そうだね！","そんなことないよ！","そうなの？","それから？"};
 
-	Question = EnemyString[FatalAnserNum][GetRand(4)];
-
-	Background_image	=	LoadGraph("Rescurce/Image/background.png");
-	Border_Line			=	LoadGraph("Rescurce/Image/Line_Message.png");
-	PlayerTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_1.png");
-	EnemyImage			=	LoadGraph("Rescurce/Image/MessageFrame_2.png");
-	false_Message		=	LoadGraph("Rescurce/Image/MessageCancel.png");
-	InGameHelp			=	LoadGraph("Rescurce/Image/InGameButton.png");
+	Background_image	=	LoadGraph("Rescurce/Image/background.png")		;
+	Border_Line			=	LoadGraph("Rescurce/Image/Line_Message.png")	;
+	PlayerTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_1.png")	;
+	EnemyImage			=	LoadGraph("Rescurce/Image/MessageFrame_2.png")	;
+	false_Message		=	LoadGraph("Rescurce/Image/MessageCancel.png")	;
+	InGameHelp			=	LoadGraph("Rescurce/Image/InGameButton.png")	;
 
 }
 
@@ -133,10 +129,10 @@ void InGameScene::Initialize()
 void InGameScene::Finalize()
 {
 	StopSoundFile();
-	Data::player_data[0] = PD1;
-	Data::player_data[1] = PD2;
-	Data::player_data[2] = PD3;
-	Data::player_data[3] = PD4;
+	//Data::player_data[0] = PD1;
+	//Data::player_data[1] = PD2;
+	//Data::player_data[2] = PD3;
+	//Data::player_data[3] = PD4;
 }
 
 /// <summary>
@@ -156,7 +152,6 @@ void InGameScene::Draw() const
 
 	int P_X = 1700;
 	int P_Y = 50;
-
   
  	DrawGraph(0, 0, Border_Line, true);
 	DrawGraph(0, 500, InGameHelp, true);
@@ -172,7 +167,7 @@ void InGameScene::Draw() const
 		DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
 		DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
 		DrawFormatString(P_X - 220, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", PD4.score);
+		DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
 		}
 	case 3:
 		if (Collect[2] == false)
@@ -183,7 +178,7 @@ void InGameScene::Draw() const
 		DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
 		DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
 		DrawFormatString(P_X - 220, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", PD3.score);
+		DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
 		}
 	case 2:
 		if (Collect[1] == false)
@@ -194,7 +189,7 @@ void InGameScene::Draw() const
 		DrawGraph(P_X, P_Y + 200, PlayerImage[1], true);
 		DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
 		DrawFormatString(P_X - 220, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", PD2.score);
+		DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
 		}
 	case 1:
 		if (Collect[0] == false)
@@ -205,7 +200,7 @@ void InGameScene::Draw() const
 		DrawGraph(P_X, P_Y, PlayerImage[0], true);
 		DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
 		DrawFormatString(P_X - 220, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", PD1.score);
+		DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
 		}
 	}
 
@@ -395,22 +390,22 @@ void InGameScene::CheckAnser()
 			switch (i)
 			{
 			case 0:
-				PD1.score += ScoreValue[i];
+				Data::player_data[0].score += ScoreValue[i];
 				TotalScore -= ScoreValue[i];
 				Collect[0] = true;
 				break;
 			case 1:
-				PD2.score += ScoreValue[i];
+				Data::player_data[1].score += ScoreValue[i];
 				TotalScore -= ScoreValue[i];
 				Collect[1] = true;
 				break;
 			case 2:
-				PD3.score += ScoreValue[i];
+				Data::player_data[2].score += ScoreValue[i];
 				TotalScore -= ScoreValue[i];
 				Collect[2] = true;
 				break;
 			case 3:
-				PD4.score += ScoreValue[i];
+				Data::player_data[3].score += ScoreValue[i];
 				TotalScore -= ScoreValue[i];
 				Collect[3] = true;
 				break;
@@ -421,16 +416,16 @@ void InGameScene::CheckAnser()
 			switch (i)
 			{
 			case 0:
-				PD1.score -= ScoreValue[i];
+				Data::player_data[0].score -= ScoreValue[i];
 				break;
 			case 1:
-				PD2.score -= ScoreValue[i];
+				Data::player_data[1].score -= ScoreValue[i];
 				break;
 			case 2:
-				PD3.score -= ScoreValue[i];
+				Data::player_data[2].score -= ScoreValue[i];
 				break;
 			case 3:
-				PD4.score -= ScoreValue[i];
+				Data::player_data[3].score -= ScoreValue[i];
 				break;
 			}
 		}
@@ -465,15 +460,6 @@ void InGameScene::EnemyAnser()
 		FatalAnserNum = 3;
 		break;
 	}
-#if _DEBUG
-	if (CheckHitKey(KEY_INPUT_0))
-	{
-		FatalAnser = agreement::positive;
-		FatalAnserNum = 0;
-	}
-
-#endif // _DEBUG
-
 }
 
 
