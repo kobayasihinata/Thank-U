@@ -124,6 +124,7 @@ void CreditScene::Draw() const
 	DrawString(startX, currentY += y * 2, "◇イラスト素材", 0xffffff);
 	DrawString(startX, currentY += y, "ひなた", 0xffffff);
 	DrawString(startX, currentY += y, "まなと", 0xffffff);
+	DrawString(startX, currentY += y, "いらすとや様", 0xffffff);
 
 	//画像の描画
 	DrawGraph(0, 0, object_image[0], true);
