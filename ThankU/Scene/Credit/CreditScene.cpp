@@ -76,13 +76,15 @@ eSceneType CreditScene::Update()
 	//テキストが画面外に行ったらエンドへ遷移する
 	if (scrollY < -1300) return E_TITLE;
 
-	//デバッグ時処理
-#if _DEBUG
-	//タイトルへ遷移する(デバッグ用)
+	//タイトルへ遷移する
 	if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
 	{
 		return E_TITLE;
 	}
+
+	//デバッグ時処理
+#if _DEBUG
+	
 
 	//デバッグ用(Xキー)
 	DebugInfomation::Add("count", count);
