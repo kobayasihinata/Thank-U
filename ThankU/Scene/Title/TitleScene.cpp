@@ -10,7 +10,8 @@
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
-    cursor(0), player_button_flg{ false }, scale(0), alpha(0), fadein_timer(0),
+    frame(0), cursor(0), player_button_flg{ false },game_start_flg(false),
+    game_start_timer(0) , cursor_size(2.3f), scale(0), alpha(0), fadein_timer(0),
 obj_location(0), message_x(0),
 title_image(NULL),title_logo(NULL), scaling_up(true), SE_Cursor(NULL),SE_Decision(NULL),
 object_image(),player_icon_x(),player_join(),join_flag(0)
@@ -106,12 +107,17 @@ eSceneType TitleScene::Update()
     //オブジェクトの演出処理
     ObjectMove();
 
+    //フレーム計測
+    if (frame++ > 6000)frame = 0;
+
     //キーボードのインスタンス取得(Singleton)
     KeyInput* key_input = KeyInput::Get();
 
-    /* --- カーソルの操作 --- */
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_Y) || 
-        key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
+    if (!game_start_flg)
+    {
+        /* --- カーソルの操作 --- */
+        if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_Y) || 
+            key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
     {
         cursor--;
         PlaySoundMem(SE_Cursor, DX_PLAYTYPE_BACK);
@@ -119,31 +125,41 @@ eSceneType TitleScene::Update()
         if (cursor < 0)  cursor = 2;
         
     }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_A) || 
-        key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
+        if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_A) || 
+            key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
     {
         cursor++;
         PlaySoundMem(SE_Cursor, DX_PLAYTYPE_BACK);
         // 1番下に到達したら、一番上にする
         if (cursor > 2) cursor = 0;
     }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
-    {
-        //カーソル決定(決定した画面に遷移する)
-        switch (cursor)
+        if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
         {
-        case 0:
+            //ゲーム開始演出
             PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
-            return eSceneType::E_INGAME;
-        case 1:
-            PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
-            return eSceneType::E_CREDIT;
-        default:
-            PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
-            return eSceneType::E_END;
+            game_start_flg = true;
+            game_start_timer = 60;
         }
     }
 
+    //開始演出処理
+    if (game_start_flg)
+    {
+        //一定時間経過で遷移
+        if (--game_start_timer <= 0)
+        {
+            //カーソル決定(決定した画面に遷移する)
+            switch (cursor)
+            {
+            case 0:
+                return eSceneType::E_INGAME;
+            case 1:
+                return eSceneType::E_CREDIT;
+            default:
+                return eSceneType::E_END;
+            }
+        }
+    }
     //コントローラーが1～4なのでforも合わす
     for (int i = 1; i <= 4; i++)
     {
@@ -202,6 +218,7 @@ eSceneType TitleScene::Update()
 
     // タイマーをインクリメント
     random_image_timer++;
+
     // 一定間隔 (例えば60フレーム = 1秒) ごとにランダムな画像を選択
     if (random_image_timer >= 60 * 3)   //＜--60×3なのでだいたい3秒
     {
@@ -209,6 +226,15 @@ eSceneType TitleScene::Update()
         current_image_index = rand() % 9; // ランダムな画像を選択
     }
 
+    //カーソルを大きくしたり小さくしたりする
+    if (frame % 60 > 30)
+    {
+        cursor_size += 0.01f;
+    }
+    else
+    {
+        cursor_size -= 0.01f;
+    }
 #ifdef _DEBUG
     //デバッグ用(リザルト画面)
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START) ||key_input->GetKeyState(KEY_INPUT_R) == eInputState::Pressed)
@@ -261,11 +287,12 @@ eSceneType TitleScene::Update()
     {
         StarBurst({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) });
     }
-#endif // _DEBUG
+
     DebugInfomation::Add("cont1", PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_A));
     DebugInfomation::Add("cont2", PadInput::GetButton(DX_INPUT_PAD2, XINPUT_BUTTON_A));
     DebugInfomation::Add("cont3", PadInput::GetButton(DX_INPUT_PAD3, XINPUT_BUTTON_A));
     DebugInfomation::Add("cont4", PadInput::GetButton(DX_INPUT_PAD4, XINPUT_BUTTON_A));
+#endif // _DEBUG
     // 現在のシーンタイプを返す
     return GetNowScene();
 }
@@ -274,10 +301,19 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
     DrawGraph(0, 0, title_image, true);         //背景画像の描画
-    DrawGraph(0.0f, 0.0f, title_logo, true);    //タイトルロゴ
     DrawGraph(0, 0, object_image[3], true);     //メッセージバー(下の枠みたいなやつ)
     DrawGraph(10, 500, object_image[11], true); //操作説明
 
+    //ゲーム開始演出中に表示が変わる画像たち
+    if (game_start_flg)
+    {
+        DrawGraph(0.0f, -4 * (60 - game_start_timer), title_logo, true);    //タイトルロゴ
+    }
+    //通常表示
+    else
+    {
+        DrawGraph(0.0f, 0, title_logo, true);    //タイトルロゴ
+    }
     //敵側のメッセージ
    // DrawRotaGraph(500, 400, scale, 0.0f, object_image[5], true); //メッセージ(ちょっと話聞いてほしくて)
     DrawRotaGraph(75, 340, 1.0f, 0.0f, object_image[6], true);   //アイコン
@@ -293,7 +329,7 @@ void TitleScene::Draw() const
     //メニュー(文字)
     DrawRotaGraph(message_x, obj_location.y / 1.65f, (scale - 0.2), 0.0f, object_image[1], true);
     //カーソル(送信ボタン)
-    DrawRotaGraph(SCREEN_WIDTH / 1.45f, (obj_location.y / 2.2) + cursor * 155.0f, 1.8f, 0.0, object_image[2], true);
+    DrawRotaGraph(SCREEN_WIDTH / 1.45f, (obj_location.y / 2.2) + cursor * 157.0f, cursor_size, 0.0, object_image[2], true);
 
     //ブレンドモードを解除 ----エフェクト終了
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

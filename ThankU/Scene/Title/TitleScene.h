@@ -8,15 +8,19 @@
 class TitleScene : public SceneBase
 {
 private:
-	class EffectManager* e_manager;				 //マネージャー情報
-	int cursor;				//メニューカーソル
-	bool player_button_flg[4];	//各プレイヤーのABXYいずれかのボタンを押したかを格納(描画用)
+	int frame;							//フレーム計測
+	class EffectManager* e_manager;		//マネージャー情報
+	int cursor;							//メニューカーソル
+	bool player_button_flg[4];			//各プレイヤーのABXYいずれかのボタンを押したかを格納(描画用)
+	float cursor_size;					//カーソルの表示サイズ
+	bool game_start_flg;				//ゲーム開始演出中か判断
+	int game_start_timer;				//ゲーム開始演出測定
 
 	//各画像
-	int title_image;		//タイトル背景
-	int title_logo;			//タイトルロゴ
-	int object_image[13];	//オブジェクト
-	int message_image[10];	//メッセージ画像
+	int title_image;					//タイトル背景
+	int title_logo;						//タイトルロゴ
+	int object_image[13];				//オブジェクト
+	int message_image[10];				//メッセージ画像
 
 	//SE
 	int SE_Cursor;
