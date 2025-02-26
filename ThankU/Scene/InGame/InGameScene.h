@@ -36,6 +36,8 @@ public://データ
     int InGameHelp;
     //SE類
     int SE_Correct;
+    int SE_Talk;
+    int SE_MessageDelete;
     //-Enemy関連-//
     vector<vector<string>> EnemyString;         //csvファイルを読み込んで保存する領域
     agreement FatalAnser;                       //正解

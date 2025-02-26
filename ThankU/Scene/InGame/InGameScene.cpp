@@ -45,6 +45,8 @@ void InGameScene::Initialize()
 {
 	PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
 	SE_Correct = LoadSoundMem("Rescurce/SE/Correct.mp3");
+	SE_Talk = LoadSoundMem("Rescurce/SE/Talking.mp3");
+	SE_MessageDelete = LoadSoundMem("Rescurce/SE/MessageDelete.mp3");
 
 	Timer = -1;
 
@@ -55,22 +57,6 @@ void InGameScene::Initialize()
 		Pagree[i] = agreement::none;
 		Anserd[i] = false;
 		ScoreValue[i] = 0;
-
-		//switch (Data::player_data[i].use_controller)
-		//{
-		//case 1:
-		//	PD1 = Data::player_data[i];
-		//	break;
-		//case 2:
-		//	PD2 = Data::player_data[i];
-		//	break;
-		//case 3:
-		//	PD3 = Data::player_data[i];
-		//	break;
-		//case 4:
-		//	PD4 = Data::player_data[i];
-		//	break;
-		//}
 	}
 
 	switch (Data::player_num)
@@ -129,10 +115,6 @@ void InGameScene::Initialize()
 void InGameScene::Finalize()
 {
 	StopSoundFile();
-	//Data::player_data[0] = PD1;
-	//Data::player_data[1] = PD2;
-	//Data::player_data[2] = PD3;
-	//Data::player_data[3] = PD4;
 }
 
 /// <summary>
@@ -332,6 +314,7 @@ int InGameScene::PlayerAnser()
 				Pagree[i] = 1;
 				Anserd[i] = true;
 				PlaySeter.push_back(i);
+				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
 			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_A))
 			{
@@ -339,6 +322,8 @@ int InGameScene::PlayerAnser()
 				Pagree[i] = 2;
 				Anserd[i] = true;
 				PlaySeter.push_back(i);
+				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
+
 			}
 			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_X))
 			{
@@ -346,6 +331,7 @@ int InGameScene::PlayerAnser()
 				Pagree[i] = 3;
 				Anserd[i] = true;
 				PlaySeter.push_back(i);
+				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
 			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_Y))
 			{
@@ -353,6 +339,7 @@ int InGameScene::PlayerAnser()
 				Pagree[i] = 4;
 				Anserd[i] = true;
 				PlaySeter.push_back(i);
+				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
 		}
 		j++;
@@ -413,6 +400,8 @@ void InGameScene::CheckAnser()
 		}
 		else
 		{
+			PlaySoundMem(SE_MessageDelete, DX_PLAYTYPE_BACK);
+
 			switch (i)
 			{
 			case 0:
@@ -468,6 +457,8 @@ void InGameScene::EnemyAnser()
 /// </summary>
 void InGameScene::EnemyAsk()
 {
+
+	PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 
 	QSet = false;
 	EnemyAnser();
