@@ -57,7 +57,20 @@ void InGameScene::Initialize()
 		Pagree[i] = agreement::none;
 		Anserd[i] = false;
 		ScoreValue[i] = 0;
+		if (Data::player_data[0].use_controller != Data::player_data[0].number)
+		{
+			int j = 0;
+			while (Data::player_data[0].use_controller != Data::player_data[j].number||j > 4)
+			{
+				j++;
+			}
+			if (j > 4)
+			{
+
+			}
+		}
 	}
+
 
 	switch (Data::player_num)
 	{
@@ -342,7 +355,7 @@ int InGameScene::PlayerAnser()
 			}
 #endif // _DEBUG
 			//playerの押したボタンに応じて回答を当てはめる
-			if (PadInput::GetButtonDown(j, XINPUT_BUTTON_B))//←仮置き
+			if (PadInput::GetButtonDown(Data::player_data[i].use_controller, XINPUT_BUTTON_B))//←仮置き
 			{
 				Player_Anser[i] = agreement::positive;
 				Pagree[i] = 1;
@@ -350,7 +363,7 @@ int InGameScene::PlayerAnser()
 				PlaySeter.push_back(i);
 				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
-			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_A))
+			else if (PadInput::GetButtonDown(Data::player_data[i].use_controller, XINPUT_BUTTON_A))
 			{
 				Player_Anser[i] = agreement::negation;
 				Pagree[i] = 2;
@@ -358,7 +371,7 @@ int InGameScene::PlayerAnser()
 				PlaySeter.push_back(i);
 				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
-			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_X))
+			else if (PadInput::GetButtonDown(Data::player_data[i].use_controller, XINPUT_BUTTON_X))
 			{
 				Player_Anser[i] = agreement::question;
 				Pagree[i] = 3;
@@ -366,7 +379,7 @@ int InGameScene::PlayerAnser()
 				PlaySeter.push_back(i);
 				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
-			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_Y))
+			else if (PadInput::GetButtonDown(Data::player_data[i].use_controller, XINPUT_BUTTON_Y))
 			{
 				Player_Anser[i] = agreement::excitement;
 				Pagree[i] = 4;
