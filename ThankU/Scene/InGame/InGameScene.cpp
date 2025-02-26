@@ -19,21 +19,22 @@
 /// <param></param>
 /// <returns></returns>
 InGameScene::InGameScene():
-	Anserd{ (true),(true),(true),(true) },
+	Anserd{ true },
 	Background_image(NULL),
 	Border_Line(NULL),
-	Collect{ (false),(false),(false),(false)},
+	Collect{ false },
 	EnemyImage(NULL),
 	FatalAnser(none),
 	FatalAnserNum(NULL),
 	InGameHelp(NULL),
-	Pagree{ NULL,NULL,NULL,NULL },
-	PlayerImage{ NULL,NULL,NULL,NULL },
-	Player_Anser{none,none,none,none},
-	PlayerScore{ NULL,NULL,NULL,NULL },
+	Pagree{ NULL },
+	PlayerImage{ NULL },
+	Player_Anser{none},
+	PlayerScore{ NULL },
 	QSet(true),
 	SE_Correct(NULL),
-	ScoreValue{ NULL,NULL,NULL,NULL }
+	ScoreValue{ NULL },
+	addscore{0}
 {
 }
 
@@ -58,7 +59,7 @@ void InGameScene::Initialize()
 	SE_Talk				= LoadSoundMem("Rescurce/SE/Talking.mp3");
 	SE_MessageDelete	= LoadSoundMem("Rescurce/SE/MessageDelete.mp3");
 
-	Timer = -1;
+	Timer = 0;
 
 	for (int i = 0; i < Data::player_num; i++)
 	{
@@ -185,7 +186,19 @@ void InGameScene::Draw() const
 		{
 			DrawRotaGraph(P_X - 200, P_Y + 700, 1.0, (-45 / 180 + 1), Bad_Image, true);
 		}
-
+		if (addscore[1][3] != 0)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - (addscore[1][3]*4));
+			if (addscore[0][3] >= 0)
+			{
+				DrawFormatString(P_X + 100, P_Y + 700 - addscore[1][3], 0x000000, "+%d", addscore[0][3]);
+			}
+			else
+			{
+				DrawFormatString(P_X + 100, P_Y + 700 + addscore[1][3], 0xff0000, "%d", addscore[0][3]);
+			}
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		}
 	case 3:
 		if (Collect[2] == false)
 		{
@@ -220,7 +233,19 @@ void InGameScene::Draw() const
 		{
 			DrawRotaGraph(P_X - 200, P_Y + 500, 1.0, (-45 / 180 + 1), Bad_Image, true);
 		}
-
+		if (addscore[1][2] != 0)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - (addscore[1][2] * 4));
+			if (addscore[0][2] >= 0)
+			{
+				DrawFormatString(P_X + 100, P_Y + 500 - addscore[1][2], 0x000000, "+%d", addscore[0][2]);
+			}
+			else
+			{
+				DrawFormatString(P_X + 100, P_Y + 500 + addscore[1][2], 0xff0000, "%d", addscore[0][2]);
+			}
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		}
 	case 2:
 		if (Collect[1] == false)
 		{
@@ -255,7 +280,19 @@ void InGameScene::Draw() const
 		{
 			DrawRotaGraph(P_X - 200, P_Y + 300, 1.0, (-45 / 180 + 1), Bad_Image, true);
 		}
-
+		if (addscore[1][1] != 0)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - (addscore[1][1] * 4));
+			if (addscore[0][1] >= 0)
+			{
+				DrawFormatString(P_X + 100, P_Y + 300 - addscore[1][1], 0x000000, "+%d", addscore[0][1]);
+			}
+			else
+			{
+				DrawFormatString(P_X + 100, P_Y + 300 + addscore[1][1], 0xff0000, "%d", addscore[0][1]);
+			}
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		}
 	case 1:
 		if (Collect[0] == false)
 		{
@@ -290,9 +327,47 @@ void InGameScene::Draw() const
 		{
 			DrawRotaGraph(P_X - 200, P_Y + 100, 1.0, (-45 / 180 + 1), Bad_Image, true);
 		}
-
+		if (addscore[1][0] != 0)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - (addscore[1][0] * 4));
+			if (addscore[0][0] >= 0)
+			{
+				DrawFormatString(P_X + 100, P_Y + 100 - addscore[1][0], 0x000000, "+%d", addscore[0][0]);
+			}
+			else
+			{
+				DrawFormatString(P_X + 100, P_Y + 100 + addscore[1][0], 0xff0000, "%d", addscore[0][0]);
+			}
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		}
 	}
-	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer + 1);
+	//DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer + 1);
+
+	//制限時間のゲージ描画
+	int impact = (GetRand((int)(Timer / 2)) - (int)(Timer / 2))*2;
+	Vector2D box_loc[2] =
+	{
+		{900 , 20},
+		{1500 , 60}
+	};	//箱の座標
+	DrawBoxAA(box_loc[0].x + impact, 
+			  box_loc[0].y + impact,
+			  box_loc[1].x + impact, 
+			  box_loc[1].y + impact, 
+			  0xaaaaaa, 
+			  true);
+	DrawBoxAA(box_loc[0].x + impact, 
+			  box_loc[0].y + impact, 
+			  box_loc[0].x + (Timer * 100) + (TimeCountUp / 60 * 100)+ impact,
+			  box_loc[1].y + impact, 
+			  GetColor(255, 255 - (Timer * 40), 255 - (Timer * 40)), 
+			  true);
+	DrawBoxAA(box_loc[0].x + impact,
+			  box_loc[0].y + impact + 5, 
+			  box_loc[0].x + (Timer * 100) + (TimeCountUp / 60 * 100) + impact,
+			  box_loc[1].y + impact,
+			  GetColor(255, 225 - (Timer * 40), 225 - (Timer * 40)),
+			  true);
 #if _DEBUG
 	DrawString(10, 10, "InGame", 0x000000);
 #endif
@@ -311,7 +386,7 @@ eSceneType InGameScene::Update()
 #endif // _DEBUG
 
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
-	if (Timer == 0)
+	if (Timer == 1)
 	{
 		if (QSet)
 		{
@@ -328,12 +403,12 @@ eSceneType InGameScene::Update()
 			}
 		}
 	}
-	while (Timer > 4)
+	while (Timer > 5)
 	{
 		SetPoint();
 		//Enemyから受け取った答えとplayerらが言ってる答えを比較する
 		CheckAnser();
-		Timer = -1;
+		Timer = 0;
 		for (int i = 0; i < Data::player_num; i++)
 		{
 			Player_Anser[i] = agreement::none;
@@ -349,6 +424,20 @@ eSceneType InGameScene::Update()
 	PlayerAnser();
 	//全員入力する または 指定時間過ぎる(要勉強)
 
+	//ポイント加算の見た目移動
+	for (int i = 0; i < Data::player_num; i++)
+	{
+		//移動の値が1以上なら移動開始
+		if (addscore[1][i] > 0)
+		{
+			addscore[1][i]++;
+			if (addscore[1][i] > 60)
+			{
+				addscore[1][i] = 0;
+				addscore[0][i] = 0;
+			}
+		}
+	}
 
 	//指定ポイント分配しきったら
 	if (TotalScore <= 0)
@@ -466,8 +555,11 @@ void InGameScene::CheckAnser()
 		Collect[i] = false;
 		right[i] = -1;
 
+		addscore[1][i] = 1;
+
 		if (Player_Anser[i] == FatalAnser)
 		{
+			addscore[0][i] = ScoreValue[i];
 			PlaySoundMem(SE_Correct, DX_PLAYTYPE_BACK);
 			//正解の場合
 			//scoreを正答したプレイヤーに加算
@@ -505,6 +597,7 @@ void InGameScene::CheckAnser()
 		}
 		else
 		{
+			addscore[0][i] = -ScoreValue[i];
 			PlaySoundMem(SE_MessageDelete, DX_PLAYTYPE_BACK);
 
 			switch (i)

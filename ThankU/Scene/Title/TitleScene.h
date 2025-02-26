@@ -8,7 +8,6 @@
 class TitleScene : public SceneBase
 {
 private:
-	int frame;							//フレーム計測
 	class EffectManager* e_manager;		//マネージャー情報
 	int cursor;							//メニューカーソル
 	bool player_button_flg[4];			//各プレイヤーのABXYいずれかのボタンを押したかを格納(描画用)

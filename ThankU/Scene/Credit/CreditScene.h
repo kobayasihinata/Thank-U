@@ -13,6 +13,7 @@ public://プロパティ(データ群)
 
 	int count;	//一定時間経過で終了
 	int scrollY; //スクロール初期位置
+	int move_frame;	//上の枠移動用
 
 public:
 	//エフェクトを使用する際必要

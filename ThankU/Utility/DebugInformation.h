@@ -1,9 +1,25 @@
 #pragma once
-#include "Vector2D.h"
-#include "Dxlib.h"
-#include "PadInput.h"
 
-#include <unordered_map>
+/*******************小林陽向*************
+* 事前準備
+* 
+* SceneManagerのUpdateなどの、常に更新されている所にDebugInfomationのUpdateも追加
+* 同じくDrawも他の描画がされている所に追加（全描画の後に描画する）
+* 
+* 
+* 使い方
+* 
+* DebugInfomation.hをインクルード
+* 		↓
+* Add関数に「表示したい文字 , 変数」を渡して呼び出し
+*		↓
+* 実行中にXキーで表示
+*/
+#include "Vector2D.h"										
+#include "Dxlib.h"											
+#include "PadInput.h"										
+															
+#include <unordered_map>									
 
 #define DEBUG_X 10
 #define DEBUG_Y 100

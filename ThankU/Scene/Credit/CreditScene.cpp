@@ -4,7 +4,7 @@
 #include "../../Utility/DebugInformation.h"
 
 //コンストラクタ
-CreditScene::CreditScene() :count(150), scrollY(SCREEN_HEIGHT),
+CreditScene::CreditScene() :count(150), scrollY(SCREEN_HEIGHT), move_frame(0),
 background_image(0), credit_logo(0), object_image()
 {
 }
@@ -24,9 +24,6 @@ void CreditScene::Initialize()
 	credit_logo = LoadGraph("Rescurce/Image/CreditLogo.png");
 	//各オブジェクト
 	object_image[0] = LoadGraph("Rescurce/Image/Line_Message.png");
-
-	//ここでエフェクトの初期化 --＞ 画像の読み込みとか
-	//effect.Initialize();
 }
 
 //終了時処理
@@ -42,33 +39,14 @@ eSceneType CreditScene::Update()
 	//親クラスの更新処理を呼び出す
 	__super::Update();
 
+	move_frame += 3;
+	//上限を超えないようにする
+	if (move_frame > 240)
+	{
+		move_frame = 240;
+	}
 	//キーボード入力処理のインスタンスを取得
 	KeyInput* key_input = KeyInput::Get();
-
-	/* * * * * * * * * * * * * * * * エフェクト関連　* * * * * * * * * * * */
-
-	if (key_input->GetKeyState(KEY_INPUT_E) == eInputState::Pressed)
-	{
-		// Eキーが押されたらエフェクト
-		//effect.Set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, EFF_EXPLODE);
-		DebugInfomation::Add("Effect Set", true); // デバッグ用
-	}
-
-	////大体３秒くらいエフェクトを出す＜---お試し
-	//if (count > 0) {
-	//	for (int i = 0; i < 5; ++i)
-	//	{
-	//		int randomX = std::rand() % SCREEN_WIDTH;
-	//		int randomY = std::rand() % SCREEN_HEIGHT;
-	//		effect.Set(randomX, randomY, EFF_EXPLODE);
-	//	}
-	//}
-	//count--;
-
-	// エフェクトを更新
-	//effect.Update();
-
-	/* * * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * */
 
 	//スクロール量を加算
 	scrollY -= 2.0f;
@@ -85,7 +63,6 @@ eSceneType CreditScene::Update()
 	//デバッグ時処理
 #if _DEBUG
 	
-
 	//デバッグ用(Xキー)
 	DebugInfomation::Add("count", count);
 	DebugInfomation::Add("scrollY", scrollY);
@@ -130,7 +107,7 @@ void CreditScene::Draw() const
 
 	//画像の描画
 	DrawGraph(0, 0, object_image[0], true);
-	DrawGraph(0, 0, credit_logo, true);
+	DrawGraph(0, move_frame - 240, credit_logo, true);
 
 	SetFontSize(70);
 	DrawString(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100, "Bでタイトルへ", 0xffffff);
@@ -139,9 +116,6 @@ void CreditScene::Draw() const
 #if _DEBUG
 	
 #endif
-
-	//エフェクトの描画
-	//effect.Draw();
 }
 
 //現在シーン情報を取得

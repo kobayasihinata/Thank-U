@@ -17,13 +17,22 @@ public:
 	SceneBase() {}	//コンストラクタ
 	virtual ~SceneBase() {}	//デストラクタ
 
+	int frame;				//フレーム計測
 	int animation_image;	//アニメーション画像格納
 public:
 	//初期化処理
 	virtual void Initialize() {}
 
 	//更新処理
-	virtual eSceneType Update(){ return GetNowScene();}
+	virtual eSceneType Update()
+	{
+		//フレーム計測
+		if (++frame > 6000)
+		{
+			frame = 0;
+		}
+		return GetNowScene();
+	}
 
 	//描画処理
 	virtual void Draw() const {}

@@ -10,7 +10,7 @@
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
-    frame(0), cursor(0), player_button_flg{ false },game_start_flg(false),
+    cursor(0), player_button_flg{ false },game_start_flg(false),
     game_start_timer(0) , cursor_size(2.3f), scale(0), alpha(0), fadein_timer(0),
 obj_location(0), message_x(0),
 title_image(NULL),title_logo(NULL), scaling_up(true), SE_Cursor(NULL),SE_Decision(NULL),
@@ -104,11 +104,10 @@ void TitleScene::Finalize()
 //更新処理(現在シーン)
 eSceneType TitleScene::Update()
 {
+    __super::Update();
+
     //オブジェクトの演出処理
     ObjectMove();
-
-    //フレーム計測
-    if (frame++ > 6000)frame = 0;
 
     //キーボードのインスタンス取得(Singleton)
     KeyInput* key_input = KeyInput::Get();
@@ -194,15 +193,6 @@ eSceneType TitleScene::Update()
             player_button_flg[i] = false;
         }
     }
-    //↑キーでも反応(デバッグ)
-    if (key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
-    {
-        player_button_flg[0] = true;
-    }
-    else
-    {
-        player_button_flg[0] = false;
-    }
 
     //Dataを参照してアイコンの演出
     for (int i = 0; i < 4; i++)
@@ -227,7 +217,7 @@ eSceneType TitleScene::Update()
     }
 
     //カーソルを大きくしたり小さくしたりする
-    if (frame % 60 > 30)
+    if (frame % 60 >= 30)
     {
         cursor_size += 0.01f;
     }

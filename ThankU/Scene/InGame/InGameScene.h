@@ -70,6 +70,7 @@ public://データ
     float TimeCountUp;
     int Timer;
 
+    int addscore[2][4];     //追加された点数と表示位置
 public:
     //インストラクタ
     InGameScene();

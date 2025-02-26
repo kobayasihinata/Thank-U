@@ -8,7 +8,6 @@
 class ResultScene : public SceneBase
 {
 public://プロパティ(データ群)
-	int frame;					//フレーム時間測定
 	Vector2D score_location[4];	//スコア表示の座標	
 	Vector2D winner_draw;		//勝者の描画位置
 	int result_num;				//何人分描画中か

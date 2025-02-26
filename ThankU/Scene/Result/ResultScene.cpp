@@ -5,7 +5,6 @@
 #include "../../Utility/Data.h"
 
 ResultScene::ResultScene() :
-	frame(0),
 	bar_image(0),
 	score_location{ 0 },
 	winner_draw{ 0 },
@@ -81,9 +80,6 @@ void ResultScene::Finalize()
 eSceneType ResultScene::Update()
 {
 	__super::Update();
-
-	//フレーム測定
-	frame++;
 
 	//キー入力取得
 	KeyInput* key_input = KeyInput::Get();
