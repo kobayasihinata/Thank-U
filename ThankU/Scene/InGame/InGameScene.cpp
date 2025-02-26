@@ -173,7 +173,6 @@ void InGameScene::Draw() const
 		else {
 			DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
 			//DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
-			Data::DrawSpeechBubble(Vector2D(P_X - 320, P_Y+400), PString[Pagree[2]].length() * 25, true);
 			if (Pagree[2] == 2)
 			{
 				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 500), PString[Pagree[2]].length() * 20, true);
