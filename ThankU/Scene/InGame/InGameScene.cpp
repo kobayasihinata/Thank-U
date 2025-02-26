@@ -143,50 +143,53 @@ void InGameScene::Draw() const
 	case 4:
 		if (Collect[3] == false)
 		{
-		DrawGraph(880, 750, false_Message, true);
-		//DrawFormatString(880, 750, 0x000000, "<メッセージが削除されました>");
-		}else {
-		DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
-		DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
-		DrawFormatString(P_X - 220, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
+			DrawGraph(880, 750, false_Message, true);
+			//DrawFormatString(880, 750, 0x000000, "<メッセージが削除されました>");
+		}
+		else {
+			DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
+			DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
+			DrawFormatString(P_X - 220, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
+			DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
 		}
 	case 3:
 		if (Collect[2] == false)
 		{
-		DrawGraph(880, 550, false_Message, true);
-		//DrawFormatString(880, 550, 0x000000, "<メッセージが削除されました>");
-		}else {
-		DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
-		DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
-		DrawFormatString(P_X - 220, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
+			DrawGraph(880, 550, false_Message, true);
+			//DrawFormatString(880, 550, 0x000000, "<メッセージが削除されました>");
+		}
+		else {
+			DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
+			DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
+			DrawFormatString(P_X - 220, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
+			DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
 		}
 	case 2:
 		if (Collect[1] == false)
 		{
-		DrawGraph(880, 350, false_Message, true);
-		//DrawFormatString(880, 350, 0x000000, "<メッセージが削除されました>");
-		}else {
-		DrawGraph(P_X, P_Y + 200, PlayerImage[1], true);
-		DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
-		DrawFormatString(P_X - 220, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
+			DrawGraph(880, 350, false_Message, true);
+			//DrawFormatString(880, 350, 0x000000, "<メッセージが削除されました>");
+		}
+		else {
+			DrawGraph(P_X, P_Y + 200, PlayerImage[1], true);
+			DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
+			DrawFormatString(P_X - 220, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
+			DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
 		}
 	case 1:
 		if (Collect[0] == false)
 		{
-		DrawGraph(880, 150, false_Message, true);
-		//DrawFormatString(880, 150, 0x000000, "<メッセージが削除されました>");
-		}else{
-		DrawGraph(P_X, P_Y, PlayerImage[0], true);
-		DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
-		DrawFormatString(P_X - 220, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
-		DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
+			DrawGraph(880, 150, false_Message, true);
+			//DrawFormatString(880, 150, 0x000000, "<メッセージが削除されました>");
+		}
+		else {
+			DrawGraph(P_X, P_Y, PlayerImage[0], true);
+			DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
+			DrawFormatString(P_X - 220, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
+			DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
 		}
 	}
-
-	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer+1);
+	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer + 1);
 #if _DEBUG
 	DrawString(10, 10, "InGame", 0x000000);
 #endif
@@ -255,7 +258,6 @@ eSceneType InGameScene::Update()
 	{
 		return eSceneType::E_RESULT;
 	}
-
 	return eSceneType::E_INGAME;
 }
 
