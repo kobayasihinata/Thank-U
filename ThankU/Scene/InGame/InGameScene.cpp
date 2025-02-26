@@ -504,7 +504,7 @@ void InGameScene::EnemyAsk()
 	QSet = false;
 	EnemyAnser();
 
-	Question = EnemyString[FatalAnserNum][GetRand(7)];
+	Question = EnemyString[FatalAnserNum][GetRand(6)];
 }
 
 /// <summary>
