@@ -22,6 +22,8 @@ struct EffectSpawnData
     int anim_span;                  //アニメーション切り替え速度
     std::vector<int> image;         //格納先
 
+    //↓アニメーションが移動する場合は使用する
+    Vector2D velocity;              //移動量
     //等価演算子のオーバーロード
     bool operator==(const EffectSpawnData& other) const {
         return (now_image == other.now_image) && (anim_span == other.anim_span) && (image == other.image);
@@ -90,5 +92,5 @@ public:
     /// </summary>
     /// <param name="_loc">座標</param>
     /// <param name="type">生成するエフェクトの種類</param>
-    void SpawnEffect(Vector2D _loc, eEffectList _type);
+    void SpawnEffect(Vector2D _loc, eEffectList _type,Vector2D _velocity = 0);
 };
