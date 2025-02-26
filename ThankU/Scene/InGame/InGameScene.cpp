@@ -53,24 +53,9 @@ void InGameScene::Initialize()
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		Collect[i] = true;
-		Player_Anser[i] = agreement::none;
-		Pagree[i] = agreement::none;
+		Pagree[i] = 0;
 		Anserd[i] = false;
-		ScoreValue[i] = 0;
-		if (Data::player_data[0].use_controller != Data::player_data[0].number)
-		{
-			int j = 0;
-			while (Data::player_data[0].use_controller != Data::player_data[j].number||j > 4)
-			{
-				j++;
-			}
-			if (j > 4)
-			{
-
-			}
-		}
 	}
-
 
 	switch (Data::player_num)
 	{
@@ -88,7 +73,7 @@ void InGameScene::Initialize()
 	switch (Data::player_num)
 	{
 	case 4:
-		TotalScore = 4000;
+		TotalScore = 3000;
 		break;
 	case 3:
 		TotalScore = 2500;
@@ -144,6 +129,7 @@ void InGameScene::Draw() const
 	//エネミー関係 800 100
 	//DrawReverseGraph(50, 100, EnemyImage, true,1);
 	DrawGraph(50, 50, EnemyImage, true);
+	DrawFormatString(180, 70, 0xFFFFFF, "親友ポイント:%d", TotalScore);
 	Data::DrawSpeechBubble(Vector2D(50, 200), Question.length()*25, false);
 	DrawFormatString(50, 200, 0xFFFFFF, "%s", Question.c_str());
 
@@ -174,6 +160,9 @@ void InGameScene::Draw() const
 				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 700), PString[Pagree[3]].length() * 20, true);
 				DrawFormatString(P_X - 260, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
 			}
+		}
+		if (Data::player_data[3].score < 0)
+		{
 			DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
 		}
 	case 3:
@@ -195,8 +184,8 @@ void InGameScene::Draw() const
 				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 500), PString[Pagree[2]].length() * 20, true);
 				DrawFormatString(P_X - 260, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
 			}
-			DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
 		}
+		DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
 	case 2:
 		if (Collect[1] == false)
 		{
@@ -217,8 +206,8 @@ void InGameScene::Draw() const
 				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 300), PString[Pagree[1]].length() * 20, true);
 				DrawFormatString(P_X - 260, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
 			}
-			DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
 		}
+		DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
 	case 1:
 		if (Collect[0] == false)
 		{
@@ -238,8 +227,8 @@ void InGameScene::Draw() const
 				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 100), PString[Pagree[0]].length() * 20, true);
 				DrawFormatString(P_X - 260, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
 			}
-			DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
 		}
+		DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
 	}
 	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer + 1);
 #if _DEBUG
@@ -318,7 +307,6 @@ eSceneType InGameScene::GetNowScene() const
 
 int InGameScene::PlayerAnser()
 {
-	int j = 1;
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		if (Anserd[i] != true)
@@ -388,7 +376,6 @@ int InGameScene::PlayerAnser()
 				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 			}
 		}
-		j++;
 	}
 	return 0;
 }
@@ -484,7 +471,7 @@ void InGameScene::CheckAnser()
 /// <returns></returns>
 void InGameScene::EnemyAnser()
 {
-	switch (GetRand(4) + 1)
+	switch (GetRand(3) + 1)
 	{
 	case 1:
 		FatalAnser = agreement::positive;
@@ -511,7 +498,6 @@ void InGameScene::EnemyAnser()
 /// </summary>
 void InGameScene::EnemyAsk()
 {
-
 	PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
 
 	QSet = false;
