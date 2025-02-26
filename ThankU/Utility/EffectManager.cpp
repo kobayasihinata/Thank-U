@@ -84,6 +84,8 @@ void EffectManager::Update()
                 delete_list.push_back(effect);
             }
         }
+        //移動
+        effect.location += effect.velocity;
     }
 
     //オブジェクト配列から削除する処理
@@ -107,13 +109,15 @@ void EffectManager::Update()
     delete_list.clear();
 }
 
-void EffectManager::SpawnEffect(Vector2D _loc, eEffectList _type)
+void EffectManager::SpawnEffect(Vector2D _loc, eEffectList _type, Vector2D _velocity)
 {
     EffectSpawnData kari;
     //必要情報を格納
     kari = effect_image[_type];
     //座標を格納
     kari.location = _loc;
+    //移動量を格納
+    kari.velocity = _velocity;
     //生成
     effect_list.push_back(kari);
 }
