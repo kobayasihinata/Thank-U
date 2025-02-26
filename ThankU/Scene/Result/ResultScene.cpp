@@ -330,10 +330,13 @@ void ResultScene::UpdateResultsSolo()
 	if (winner_draw_time > WINNER_DRAW_TIME + 60)
 	{
 		//”èSEÄ¶
-		if (ovation_se_flg)
+		if (Data::player_data->score > 0)
 		{
-			PlaySoundMem(ovation_se, DX_PLAYTYPE_BACK);
-			ovation_se_flg = false;
+			if (ovation_se_flg)
+			{
+				PlaySoundMem(ovation_se, DX_PLAYTYPE_BACK);
+				ovation_se_flg = false;
+			}
 		}
 
 		//ƒŠƒUƒ‹ƒgBGMÄ¶
