@@ -1,7 +1,14 @@
 #include "InGameScene.h"
 #include "../../Utility/PadInput.h"
+#if _DEBUG
 #include "../../Utility/KeyInput.h"
+#endif // _DEBUG
 
+
+//プレイヤーのx座標(共有)
+#define P_X 1700
+//プレイヤーのy座標(共有)
+#define P_Y  50
 
 /// <summary>
 ///　インストラクタ
@@ -9,7 +16,7 @@
 /// <param></param>
 /// <returns></returns>
 InGameScene::InGameScene():
-	Anserd{ (false),(false),(false),(false) },
+	Anserd{ (true),(true),(true),(true) },
 	Background_image(NULL),
 	Border_Line(NULL),
 	Collect{ (false),(false),(false),(false)},
@@ -44,9 +51,9 @@ InGameScene::~InGameScene()
 void InGameScene::Initialize()
 {
 	PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
-	SE_Correct = LoadSoundMem("Rescurce/SE/Correct.mp3");
-	SE_Talk = LoadSoundMem("Rescurce/SE/Talking.mp3");
-	SE_MessageDelete = LoadSoundMem("Rescurce/SE/MessageDelete.mp3");
+	SE_Correct			= LoadSoundMem("Rescurce/SE/Correct.mp3");
+	SE_Talk				= LoadSoundMem("Rescurce/SE/Talking.mp3");
+	SE_MessageDelete	= LoadSoundMem("Rescurce/SE/MessageDelete.mp3");
 
 	Timer = -1;
 
@@ -54,7 +61,7 @@ void InGameScene::Initialize()
 	{
 		Collect[i] = true;
 		Pagree[i] = 0;
-		Anserd[i] = false;
+		right[i] = -1;
 	}
 
 	switch (Data::player_num)
@@ -73,10 +80,10 @@ void InGameScene::Initialize()
 	switch (Data::player_num)
 	{
 	case 4:
-		TotalScore = 3000;
+		TotalScore = 2500;
 		break;
 	case 3:
-		TotalScore = 2500;
+		TotalScore = 2000;
 		break;
 	case 2:
 		TotalScore = 1000;
@@ -96,7 +103,7 @@ void InGameScene::Initialize()
 	};*/
 
 	PString = { "・　・　・","そうだね！","そんなことないよ！","そうなの？","それから？"};
-	Question = "・ ・ ・";
+	Question =  "・ ・ ・";
 
 	Background_image	=	LoadGraph("Rescurce/Image/background.png")		;
 	Border_Line			=	LoadGraph("Rescurce/Image/Line_Message.png")	;
@@ -104,6 +111,9 @@ void InGameScene::Initialize()
 	EnemyImage			=	LoadGraph("Rescurce/Image/Icon.png")			;
 	false_Message		=	LoadGraph("Rescurce/Image/MessageCancel.png")	;
 	InGameHelp			=	LoadGraph("Rescurce/Image/InGameButton.png")	;
+	Collect1st_Image	=	LoadGraph("Rescurce/Image/Great_1.png")			;
+	Collect2nd_Image	=	LoadGraph("Rescurce/Image/Great_2.png")			;
+	Bad_Image			=	LoadGraph("Rescurce/Image/Bad.png")				;
 }
 
 /// <summary>
@@ -129,13 +139,10 @@ void InGameScene::Draw() const
 	//エネミー関係 800 100
 	//DrawReverseGraph(50, 100, EnemyImage, true,1);
 	DrawGraph(50, 50, EnemyImage, true);
-	DrawFormatString(180, 70, 0xFFFFFF, "親友ポイント:%d", TotalScore);
+	DrawFormatString(180, 70, 0xFFFFFF, "親友ポイント残り:%d", TotalScore);
 	Data::DrawSpeechBubble(Vector2D(50, 200), Question.length()*25, false);
 	DrawFormatString(50, 200, 0xFFFFFF, "%s", Question.c_str());
 
-	int P_X = 1700;
-	int P_Y = 50;
-  
  	DrawGraph(0, 0, Border_Line, true);
 	DrawGraph(50, 500, InGameHelp, true);
 	//人数に合わせて描画
@@ -149,8 +156,7 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
-			//DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
-			if (Pagree[3] == 2)
+			if (Pagree[3] == 2)//長文用調整
 			{
 				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 700), PString[Pagree[3]].length() * 20, true);
 				DrawFormatString(P_X - 450, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
@@ -161,10 +167,22 @@ void InGameScene::Draw() const
 				DrawFormatString(P_X - 260, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
 			}
 		}
-		if (Data::player_data[3].score < 0)
+		if (Data::player_data[3].score < 0)//スコアの表示
 		{
+			DrawFormatString(P_X + 100, P_Y + 700, 0xFF0000, "%d", Data::player_data[3].score);
+		}
+		else {
 			DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
 		}
+		if (right[3] == 1)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 700, 1.0, (-45 / 180 + 1), Collect1st_Image, true);
+		}
+		else if (right[3] == 0)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 700, 1.0, (-45 / 180 + 1), Bad_Image, true);
+		}
+
 	case 3:
 		if (Collect[2] == false)
 		{
@@ -173,8 +191,7 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
-			//DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
-			if (Pagree[2] == 2)
+			if (Pagree[2] == 2)//長文用調整
 			{
 				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 500), PString[Pagree[2]].length() * 20, true);
 				DrawFormatString(P_X - 450, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
@@ -185,7 +202,22 @@ void InGameScene::Draw() const
 				DrawFormatString(P_X - 260, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
 			}
 		}
-		DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
+		if (Data::player_data[3].score < 0)//スコアの表示
+		{
+			DrawFormatString(P_X + 100, P_Y + 500, 0xFF0000, "%d", Data::player_data[2].score);
+		}
+		else {
+			DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
+		}
+		if (right[2] == 1)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 500, 1.0, (-45 / 180 + 1), Collect1st_Image, true);
+		}
+		else if (right[2] == 0)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 500, 1.0, (-45 / 180 + 1), Bad_Image, true);
+		}
+
 	case 2:
 		if (Collect[1] == false)
 		{
@@ -194,9 +226,7 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y + 200, PlayerImage[1], true);
-			//DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
-			//Data::DrawSpeechBubble(Vector2D(P_X - 500, P_Y+500), PString[Pagree[0]].length() * 25, true);
-			if (Pagree[1] == 2)
+			if (Pagree[1] == 2)//長文用調整
 			{
 				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 300), PString[Pagree[1]].length() * 20, true);
 				DrawFormatString(P_X - 450, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
@@ -207,7 +237,22 @@ void InGameScene::Draw() const
 				DrawFormatString(P_X - 260, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
 			}
 		}
-		DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
+		if (Data::player_data[1].score < 0)//スコアの表示
+		{
+			DrawFormatString(P_X + 100, P_Y + 300, 0xFF0000, "%d", Data::player_data[1].score);
+		}
+		else {
+			DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
+		}
+		if (right[1] == 1)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 300, 1.0, (-45 / 180 + 1), Collect1st_Image, true);
+		}
+		else if (right[1] == 0)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 300, 1.0, (-45 / 180 + 1), Bad_Image, true);
+		}
+
 	case 1:
 		if (Collect[0] == false)
 		{
@@ -216,8 +261,7 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y, PlayerImage[0], true);
-			//DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
-			if (Pagree[0] == 2)
+			if (Pagree[0] == 2)//長文用調整
 			{
 				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 100), PString[Pagree[0]].length() * 20, true);
 				DrawFormatString(P_X - 450, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
@@ -228,7 +272,22 @@ void InGameScene::Draw() const
 				DrawFormatString(P_X - 260, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
 			}
 		}
-		DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
+		if (Data::player_data[0].score < 0)//スコアの表示
+		{
+			DrawFormatString(P_X + 100, P_Y + 100, 0xFF0000, "%d", Data::player_data[0].score);
+		}
+		else {
+			DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
+		}	
+		if (right[0] == 1)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 100, 1.0, (-45 / 180 + 1), Collect1st_Image, true);
+		}
+		else if (right[0] == 0)
+		{
+			DrawRotaGraph(P_X - 200, P_Y + 100, 1.0, (-45 / 180 + 1), Bad_Image, true);
+		}
+
 	}
 	DrawFormatString(900, 0, 0x000000, "TimeCount:%d", Timer + 1);
 #if _DEBUG
@@ -261,6 +320,7 @@ eSceneType InGameScene::Update()
 				Player_Anser[i] = agreement::none;
 				Pagree[i] = 0;
 				Anserd[i] = false;
+				right[i] = -1;
 				ScoreValue[i] = 0;
 			}
 		}
@@ -401,6 +461,7 @@ void InGameScene::CheckAnser()
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		Collect[i] = false;
+		right[i] = -1;
 
 		if (Player_Anser[i] == FatalAnser)
 		{
@@ -414,24 +475,28 @@ void InGameScene::CheckAnser()
 				Data::player_data[0].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[0] = true;
+				right[0] = 1;
 				break;
 			case 1:
 				Data::player_data[1].score += ScoreValue[i];
 				Data::player_data[1].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[1] = true;
+				right[1] = 1;
 				break;
 			case 2:
 				Data::player_data[2].score += ScoreValue[i];
 				Data::player_data[2].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[2] = true;
+				right[2] = 1;
 				break;
 			case 3:
 				Data::player_data[3].score += ScoreValue[i];
 				Data::player_data[3].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[3] = true;
+				right[3] = 1;
 				break;
 			}
 		}
@@ -444,18 +509,22 @@ void InGameScene::CheckAnser()
 			case 0:
 				Data::player_data[0].score -= ScoreValue[i];
 				Data::player_data[0].bad++;
+				right[0] = 0;
 				break;
 			case 1:
 				Data::player_data[1].score -= ScoreValue[i];
 				Data::player_data[1].bad++;
+				right[1] = 0;
 				break;
 			case 2:
 				Data::player_data[2].score -= ScoreValue[i];
 				Data::player_data[2].bad++;
+				right[2] = 0;
 				break;
 			case 3:
 				Data::player_data[3].score -= ScoreValue[i];
 				Data::player_data[3].bad++;
+				right[3] = 0;
 				break;
 			}
 		}
@@ -491,7 +560,6 @@ void InGameScene::EnemyAnser()
 		break;
 	}
 }
-
 
 /// <summary>
 /// Enemyの質問決定

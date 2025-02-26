@@ -41,6 +41,9 @@ public://データ
     int Border_Line;
     int false_Message;
     int InGameHelp;
+    int Collect1st_Image;
+    int Collect2nd_Image;
+    int Bad_Image;
     //SE類
     int SE_Correct;
     int SE_Talk;
@@ -58,10 +61,11 @@ public://データ
     int PlayerScore[4];                         //仮置き
     int TotalScore;                      //全体に配分する合計スコアポイント
     int ScoreValue[4];
-
+    int PlayerForward[4];
     bool QSet;
     bool Anserd[4];
     bool Collect[4];
+    int right[4];
 
     float TimeCountUp;
     int Timer;
