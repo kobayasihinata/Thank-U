@@ -129,7 +129,7 @@ void CreditScene::Draw() const
 	DrawGraph(0, 0, credit_logo, true);
 
 #if _DEBUG
-	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 13, "Pad B or Spaceでタイトル", 0xffffff);
+	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 13, "Pad Bでタイトル", 0xffffff);
 #endif
 
 	//エフェクトの描画
