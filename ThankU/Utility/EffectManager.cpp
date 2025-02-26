@@ -78,8 +78,22 @@ void EffectManager::Update()
         {
             //‰ÁŽZ
             effect.now_image++;
-            //‰æ‘œ‚ð•\Ž¦‚µ‚«‚Á‚½‚çíœ‘ÎÛƒŠƒXƒg‚É’Ç‰Á
+            //‰æ‘œ‚ð•\Ž¦‚µ‚«‚Á‚½‚çíœ‘ÎÛƒŠƒXƒg‚É’Ç‰Á‚©Å‰‚É–ß‚é
             if (effect.now_image >= effect.image.size())
+            {
+                //¶‘¶ŽžŠÔ‚ªŽw’è‚³‚ê‚Ä‚¢‚È‚¢‚È‚çíœ‘ÎÛ‚É
+                if (effect.life_time == 0)
+                {
+                    delete_list.push_back(effect);
+                }
+                //Žw’è‚³‚ê‚Ä‚¢‚½‚çÅ‰‚Ì‰æ‘œ‚É
+                else
+                {
+                    effect.now_image = 0;
+                }
+            }
+            //¶‘¶ŽžŠÔ‚ª0ˆÈãAŠŽ‚Â¶‘¶ŽžŠÔ‚ªI‚í‚Á‚½‚çíœ
+            if (effect.life_time > 0 && --effect.life_time <= 0)
             {
                 delete_list.push_back(effect);
             }
@@ -109,7 +123,7 @@ void EffectManager::Update()
     delete_list.clear();
 }
 
-void EffectManager::SpawnEffect(Vector2D _loc, eEffectList _type, Vector2D _velocity)
+void EffectManager::SpawnEffect(Vector2D _loc, eEffectList _type, Vector2D _velocity, int _life_time)
 {
     EffectSpawnData kari;
     //•K—vî•ñ‚ðŠi”[
@@ -118,6 +132,8 @@ void EffectManager::SpawnEffect(Vector2D _loc, eEffectList _type, Vector2D _velo
     kari.location = _loc;
     //ˆÚ“®—Ê‚ðŠi”[
     kari.velocity = _velocity;
+    //¶‘¶ŽžŠÔŠi”[
+    kari.life_time = _life_time;
     //¶¬
     effect_list.push_back(kari);
 }
