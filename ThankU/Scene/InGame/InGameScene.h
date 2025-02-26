@@ -26,11 +26,18 @@ using namespace std;
 class InGameScene  : public SceneBase
 {
 public://データ
-    //画像類
+    //--画像類--//
+    //敵の吹き出し
     int EnemyImage;
+    //敵の吹き出し
+    int EnemyTextImage;
+    //プレイヤ―の吹き出し
     int PlayerImage[4];
+    //プレイヤ―の吹き出し
     int PlayerTextImage;
+    //背景の画像
     int Background_image;                       //背景
+    //下のライン
     int Border_Line;
     int false_Message;
     int InGameHelp;

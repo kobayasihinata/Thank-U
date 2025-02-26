@@ -43,7 +43,8 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
-	PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
+
+	//PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
 	SE_Correct = LoadSoundMem("Rescurce/SE/Correct.mp3");
 	SE_Talk = LoadSoundMem("Rescurce/SE/Talking.mp3");
 	SE_MessageDelete = LoadSoundMem("Rescurce/SE/MessageDelete.mp3");
@@ -70,6 +71,7 @@ void InGameScene::Initialize()
 	case 1:
 		PlayerImage[0] = LoadGraph("Rescurce/Image/Player1.png");
 	}
+	PlayerTextImage = LoadGraph("Rescurce/Image/MessageFrame_1.png");
 
 	switch (Data::player_num)
 	{
@@ -97,14 +99,14 @@ void InGameScene::Initialize()
 	};*/
 
 	PString = { "・　・　・","そうだね！","そんなことないよ！","そうなの？","それから？"};
+	Question = "・ ・ ・";
 
 	Background_image	=	LoadGraph("Rescurce/Image/background.png")		;
 	Border_Line			=	LoadGraph("Rescurce/Image/Line_Message.png")	;
-	PlayerTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_1.png")	;
-	EnemyImage			=	LoadGraph("Rescurce/Image/MessageFrame_2.png")	;
+	EnemyTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_2.png")	;
+	EnemyImage			=	LoadGraph("Rescurce/Image/Icon.png")			;
 	false_Message		=	LoadGraph("Rescurce/Image/MessageCancel.png")	;
 	InGameHelp			=	LoadGraph("Rescurce/Image/InGameButton.png")	;
-
 }
 
 /// <summary>
@@ -129,6 +131,7 @@ void InGameScene::Draw() const
 
 	//エネミー関係 800 100
 	//DrawReverseGraph(50, 100, EnemyImage, true,1);
+	DrawGraph(50, 50, EnemyImage, true);
 	Data::DrawSpeechBubble(Vector2D(50, 200), Question.length()*25, false);
 	DrawFormatString(50, 200, 0xFFFFFF, "%s", Question.c_str());
 
@@ -136,7 +139,7 @@ void InGameScene::Draw() const
 	int P_Y = 50;
   
  	DrawGraph(0, 0, Border_Line, true);
-	DrawGraph(0, 500, InGameHelp, true);
+	DrawGraph(50, 500, InGameHelp, true);
 	//人数に合わせて描画
 	switch (Data::player_num)
 	{
@@ -148,8 +151,17 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
-			DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
-			DrawFormatString(P_X - 220, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
+			//DrawReverseGraph(P_X - 320, P_Y + 600, PlayerTextImage, true, 0);
+			if (Pagree[3] == 2)
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 700), PString[Pagree[3]].length() * 20, true);
+				DrawFormatString(P_X - 450, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
+			}
+			else
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 700), PString[Pagree[3]].length() * 20, true);
+				DrawFormatString(P_X - 260, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
+			}
 			DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
 		}
 	case 3:
@@ -160,8 +172,18 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y + 400, PlayerImage[2], true);
-			DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
-			DrawFormatString(P_X - 220, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
+			//DrawReverseGraph(P_X - 320, P_Y + 400, PlayerTextImage, true, 0);
+			Data::DrawSpeechBubble(Vector2D(P_X - 320, P_Y+400), PString[Pagree[2]].length() * 25, true);
+			if (Pagree[2] == 2)
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 500), PString[Pagree[2]].length() * 20, true);
+				DrawFormatString(P_X - 450, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
+			}
+			else
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 500), PString[Pagree[2]].length() * 20, true);
+				DrawFormatString(P_X - 260, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
+			}
 			DrawFormatString(P_X + 100, P_Y + 500, 0x000000, "%d", Data::player_data[2].score);
 		}
 	case 2:
@@ -172,8 +194,18 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y + 200, PlayerImage[1], true);
-			DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
-			DrawFormatString(P_X - 220, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
+			//DrawReverseGraph(P_X - 320, P_Y + 200, PlayerTextImage, true, 0);
+			//Data::DrawSpeechBubble(Vector2D(P_X - 500, P_Y+500), PString[Pagree[0]].length() * 25, true);
+			if (Pagree[1] == 2)
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 300), PString[Pagree[1]].length() * 20, true);
+				DrawFormatString(P_X - 450, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
+			}
+			else
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 300), PString[Pagree[1]].length() * 20, true);
+				DrawFormatString(P_X - 260, P_Y + 300, 0x000000, "%s", PString[Pagree[1]].c_str());
+			}
 			DrawFormatString(P_X + 100, P_Y + 300, 0x000000, "%d", Data::player_data[1].score);
 		}
 	case 1:
@@ -184,8 +216,17 @@ void InGameScene::Draw() const
 		}
 		else {
 			DrawGraph(P_X, P_Y, PlayerImage[0], true);
-			DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
-			DrawFormatString(P_X - 220, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
+			//DrawReverseGraph(P_X - 320, P_Y, PlayerTextImage, true, 0);
+			if (Pagree[0] == 2)
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 100), PString[Pagree[0]].length() * 20, true);
+				DrawFormatString(P_X - 450, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
+			}
+			else
+			{
+				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 100), PString[Pagree[0]].length() * 20, true);
+				DrawFormatString(P_X - 260, P_Y + 100, 0x000000, "%s", PString[Pagree[0]].c_str());
+			}
 			DrawFormatString(P_X + 100, P_Y + 100, 0x000000, "%d", Data::player_data[0].score);
 		}
 	}
@@ -208,12 +249,6 @@ eSceneType InGameScene::Update()
 #endif // _DEBUG
 
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
-	if (Timer == -1)
-	{
-		//for (int i = 0; i < Data::player_num; i++)
-		//{
-		//}
-	}
 	if (Timer == 0)
 	{
 		if (QSet)
@@ -246,7 +281,6 @@ eSceneType InGameScene::Update()
 		PlaySeter.clear();
 	}
 	/*player関連^-_-^おそらくループ*/
-
 	TimerCount();
 	//入力に応じた処理
 	PlayerAnser();
@@ -325,7 +359,6 @@ int InGameScene::PlayerAnser()
 				Anserd[i] = true;
 				PlaySeter.push_back(i);
 				PlaySoundMem(SE_Talk, DX_PLAYTYPE_BACK);
-
 			}
 			else if (PadInput::GetButtonDown(j, XINPUT_BUTTON_X))
 			{
@@ -380,21 +413,25 @@ void InGameScene::CheckAnser()
 			{
 			case 0:
 				Data::player_data[0].score += ScoreValue[i];
+				Data::player_data[0].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[0] = true;
 				break;
 			case 1:
 				Data::player_data[1].score += ScoreValue[i];
+				Data::player_data[1].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[1] = true;
 				break;
 			case 2:
 				Data::player_data[2].score += ScoreValue[i];
+				Data::player_data[2].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[2] = true;
 				break;
 			case 3:
 				Data::player_data[3].score += ScoreValue[i];
+				Data::player_data[3].great++;
 				TotalScore -= ScoreValue[i];
 				Collect[3] = true;
 				break;
@@ -408,15 +445,19 @@ void InGameScene::CheckAnser()
 			{
 			case 0:
 				Data::player_data[0].score -= ScoreValue[i];
+				Data::player_data[0].bad++;
 				break;
 			case 1:
 				Data::player_data[1].score -= ScoreValue[i];
+				Data::player_data[1].bad++;
 				break;
 			case 2:
 				Data::player_data[2].score -= ScoreValue[i];
+				Data::player_data[2].bad++;
 				break;
 			case 3:
 				Data::player_data[3].score -= ScoreValue[i];
+				Data::player_data[3].bad++;
 				break;
 			}
 		}
@@ -465,7 +506,7 @@ void InGameScene::EnemyAsk()
 	QSet = false;
 	EnemyAnser();
 
-	Question = EnemyString[FatalAnserNum][GetRand(4)];
+	Question = EnemyString[FatalAnserNum][GetRand(7)];
 }
 
 /// <summary>
