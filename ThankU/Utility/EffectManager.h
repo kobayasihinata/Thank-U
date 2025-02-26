@@ -38,7 +38,7 @@ enum eEffectList
     eAnima,
     eBighit,
     eBloodImpact,
-
+    eImpact,
     eEnd    //í‚ÉÅŒã‚Ì—v‘f‚É‚È‚é‚æ‚¤‚É‚·‚é
 };
 int const effect_num = eEnd + 1;     //enum‚ÌÅŒã‚Ì—v‘f‚ğŠi”[‚µ‚Ä‚¨‚­
@@ -51,6 +51,7 @@ static EffectData effect_image_path[effect_num] =
     {"Rescurce/Image/Effect/E_Anima.png",63,9,7,1},
     {"Rescurce/Image/Effect/E_BigHit_2.png",27,9,3,1},
     {"Rescurce/Image/Effect/E_BloodImpact.png",63,9,7,1},
+    {"Rescurce/Image/Effect/E_Impact_1.png",27,9,3,1},
 
     {"‚±‚Ì•¶š‚ªí‚É”z—ñ‚ÌÅŒã‚É—ˆ‚é‚æ‚¤‚É‚·‚é",0,0,0,0},
 };
