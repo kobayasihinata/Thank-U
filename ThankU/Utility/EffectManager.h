@@ -63,7 +63,7 @@ int const effect_num = eEnd + 1;     //enumの最後の要素を格納しておく
 //EffectListの順にパスを並べる(パス、画像総数、X軸画像数、Y軸画像数、アニメーション切り替えスパンの順)
 static EffectData effect_image_path[effect_num] =
 {
-    {"Rescurce/Image/Effect/explosion.png",     7,7,1,10},
+    {"Rescurce/Image/Effect/explosion.png",     7,7,1,5},
     {"Rescurce/Image/Effect/E_PuffAndStar.png", 60,10,8,1},
     {"Rescurce/Image/Effect/E_Anima.png",       63,9,7,1},
     {"Rescurce/Image/Effect/E_BigHit_2.png",    27,9,3,1},

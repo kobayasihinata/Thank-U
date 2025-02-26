@@ -106,6 +106,7 @@ void CreditScene::Draw() const
 	//枠
 
 	//クレジット表記
+	int old = GetFontSize();
 	DrawString(startX, currentY += y * 2, "--Credit--", 0xffffff);
 	DrawString(startX, currentY += y * 2, "◇ゲーム制作", 0xffffff);
 	DrawString(startX, currentY += y, "Team Thank U", 0xffffff);
@@ -129,7 +130,9 @@ void CreditScene::Draw() const
 	DrawGraph(0, 0, credit_logo, true);
 
 #if _DEBUG
-	DrawString(SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 13, "Pad B or Spaceでタイトル", 0xffffff);
+	SetFontSize(70);
+	DrawString(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100, "Bでタイトルへ", 0xffffff);
+	SetFontSize(old);
 #endif
 
 	//エフェクトの描画

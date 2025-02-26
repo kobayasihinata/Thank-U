@@ -10,7 +10,7 @@
 
 //コンストラクタ   --＞生成時呼び出されるのでここで初期化しますね
 TitleScene::TitleScene() : 
-cursor(0),scale(0), alpha(0), fadein_timer(0), 
+    cursor(0), player_button_flg{ false }, scale(0), alpha(0), fadein_timer(0),
 obj_location(0), message_x(0),
 title_image(NULL),title_logo(NULL), scaling_up(true), SE_Cursor(NULL),SE_Decision(NULL),
 object_image(),player_icon_x(),player_join(),join_flag(0)
@@ -76,8 +76,10 @@ void TitleScene::Initialize()
     for (int i = 0; i < 4; i++) {
         player_icon_x[i] = SCREEN_WIDTH; // 初期位置を画面右側に設定
         player_join[i] = false; // 参加フラグを初期化
+        Data::player_data[i] = { 0 };   //プレイヤーデータ初期化
     }
-
+    Data::player_num = 0;               //人数もリセット
+  
     //コントローラー1は強制的にプレイヤー1
     if (Data::player_data[0].use_controller == 0)
     {
@@ -115,6 +117,7 @@ eSceneType TitleScene::Update()
         PlaySoundMem(SE_Cursor, DX_PLAYTYPE_BACK);
         // 1番上に到達したら、一番下にする
         if (cursor < 0)  cursor = 2;
+        
     }
     if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_A) || 
         key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
@@ -155,6 +158,34 @@ eSceneType TitleScene::Update()
                 Data::player_num++;
             }
         }
+    }
+
+    //待機中の演出
+    for (int i = 0; i < Data::player_num; i++)
+    {
+        int use = Data::player_data[i].use_controller;
+        if (PadInput::GetButtonDown(use, XINPUT_BUTTON_A) ||
+            PadInput::GetButtonDown(use, XINPUT_BUTTON_B) ||
+            PadInput::GetButtonDown(use, XINPUT_BUTTON_X) ||
+            PadInput::GetButtonDown(use, XINPUT_BUTTON_Y))
+        {
+            player_button_flg[i] = true;
+            //StarBurst({ player_icon_x[i] + i * 130, obj_location.y / 4.2f,});
+            //e_manager->SpawnEffect({ player_icon_x[i] + i * 130, obj_location.y / 4.2f, }, eEffectList::eExplosion);
+        }
+        else
+        {
+            player_button_flg[i] = false;
+        }
+    }
+    //↑キーでも反応(デバッグ)
+    if (key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
+    {
+        player_button_flg[0] = true;
+    }
+    else
+    {
+        player_button_flg[0] = false;
     }
 
     //Dataを参照してアイコンの演出
@@ -225,6 +256,11 @@ eSceneType TitleScene::Update()
     {
         e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eBloodImpact);
     }
+    //エフェクトテスト(星)
+    if (key_input->GetKeyState(KEY_INPUT_6) == eInputState::Pressed)
+    {
+        StarBurst({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) });
+    }
 #endif // _DEBUG
     DebugInfomation::Add("cont1", PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_A));
     DebugInfomation::Add("cont2", PadInput::GetButton(DX_INPUT_PAD2, XINPUT_BUTTON_A));
@@ -268,21 +304,23 @@ void TitleScene::Draw() const
         //コントローラーが割り当てられているかで判断
         if (Data::player_data[i].use_controller > 0)
         {
-            int use = Data::player_data[i].use_controller;
-            if (PadInput::GetButton(use, XINPUT_BUTTON_A) ||
-                PadInput::GetButton(use, XINPUT_BUTTON_B) ||
-                PadInput::GetButton(use, XINPUT_BUTTON_X) ||
-                PadInput::GetButton(use, XINPUT_BUTTON_Y))
+            if (player_button_flg[i])
             {
                 SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
                 //強調描画
                 for (int j = 0; j < 5; j++)
                 {
-                    DrawCircleAA(player_icon_x[i] + i * 130 + 60, obj_location.y / 4.2f + 60, 60 + (j * 5), 20, 0xffffff, true);
+                    DrawCircleAA(player_icon_x[i] + i * 130, obj_location.y / 3.4f, 60 + (j * 5), 20, 0xffffff, true);
                 }
                 SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+                //ちょっと大きいアイコン描画
+                DrawRotaGraphF(player_icon_x[i] + i * 130, obj_location.y / 3.4f, 1.1f, 0.f, object_image[7 + i], true);
             }
-            DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
+            else
+            {
+                //通常のアイコン描画
+                DrawRotaGraphF(player_icon_x[i] + i * 130, obj_location.y / 3.4f,1.0f,0.f, object_image[7 + i], true);
+            }
         }
     }
 
@@ -336,4 +374,15 @@ int TitleScene::CheckUseController(int _pad)
     }
     //どこにも割り当てられてないなら-1
     return -1;
+}
+
+void TitleScene::StarBurst(Vector2D _loc)const
+{
+    for (int i = 0; i < 5; i++)
+    {
+        e_manager->SpawnEffect(_loc,
+            (eEffectList)(GetRand(9) + 6),
+            { (float)(GetRand(20) - 10),(float)(GetRand(20) - 10) }, 
+            10);
+    }
 }

@@ -9,8 +9,10 @@ class TitleScene : public SceneBase
 {
 private:
 	class EffectManager* e_manager;				 //マネージャー情報
-	//各画像
 	int cursor;				//メニューカーソル
+	bool player_button_flg[4];	//各プレイヤーのABXYいずれかのボタンを押したかを格納(描画用)
+
+	//各画像
 	int title_image;		//タイトル背景
 	int title_logo;			//タイトルロゴ
 	int object_image[13];	//オブジェクト
@@ -62,4 +64,6 @@ private:
 	//_pad=確認するコントローラー 戻り値 使っているプレイヤー(-1は誰も使っていない)
 	int CheckUseController(int _pad);
 
+	//星が弾けるエフェクトを出す
+	void StarBurst(Vector2D _loc)const;
 };
