@@ -129,10 +129,12 @@ void CreditScene::Draw() const
 	DrawGraph(0, 0, object_image[0], true);
 	DrawGraph(0, 0, credit_logo, true);
 
-#if _DEBUG
 	SetFontSize(70);
 	DrawString(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100, "Bでタイトルへ", 0xffffff);
 	SetFontSize(old);
+
+#if _DEBUG
+	
 #endif
 
 	//エフェクトの描画
