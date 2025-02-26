@@ -41,13 +41,13 @@ void ResultScene::Initialize()
 	if (Data::player_num >= 2)
 	{
 		//800=吹き出しを含めたサイズ 400=下基準にした時の移動値
-		winner_draw = { SCREEN_WIDTH - 800,SCREEN_HEIGHT - 400 };
+		winner_draw = { SCREEN_WIDTH - 800,SCREEN_HEIGHT - 280 };
 	}
 	//プレイヤーが1名以下ならソロ用の吹き出し位置
 	else
 	{
 		//500=吹き出しを含めたサイズ 400=下基準にした時の移動値
-		winner_draw = { SCREEN_WIDTH - 500,SCREEN_HEIGHT - 400 };
+		winner_draw = { SCREEN_WIDTH - 500,SCREEN_HEIGHT - 280 };
 	}
 	animation_image = LoadGraph("Rescurce/Image/result.png");
 	bar_image = LoadGraph("Rescurce/Image/Line_Message.png");
