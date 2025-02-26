@@ -15,20 +15,26 @@ CreditScene::~CreditScene() {}
 //初期化
 void CreditScene::Initialize()
 {
+	//タイトルBGM再生
+	PlaySoundFile("Rescurce/BGM/CreditBGM.wav", DX_PLAYTYPE_LOOP);
+
 	//背景画像
 	background_image = LoadGraph("Rescurce/Image/background.png");
 	//ロゴ
 	credit_logo = LoadGraph("Rescurce/Image/CreditLogo.png");
 	//各オブジェクト
 	object_image[0] = LoadGraph("Rescurce/Image/Line_Message.png");
-	object_image[1] = LoadGraph("Rescurce/Image/MessageFrame_1.png");
 
 	//ここでエフェクトの初期化 --＞ 画像の読み込みとか
 	//effect.Initialize();
 }
 
 //終了時処理
-void CreditScene::Finalize() {}
+void CreditScene::Finalize()
+{
+	//BGMを止める
+	StopSoundFile();
+}
 
 //更新処理
 eSceneType CreditScene::Update()
@@ -92,14 +98,12 @@ void CreditScene::Draw() const
 {
 	int y = 50;	//文字間隔
 	int startX = SCREEN_HEIGHT / 2; //真ん中ちょい左くらいの座標
-	int currentY = scrollY; // 現在のY位置
+	int currentY = scrollY - 200; // 現在のY位置
 
 	//背景画像
 	DrawGraph(0, 0, background_image, true);
 
 	//枠
-	DrawGraph(1500, currentY % 500 - 200, object_image[1], true);
-	DrawGraph(1500, currentY % 500, object_image[1], true);
 
 	//クレジット表記
 	DrawString(startX, currentY += y * 2, "--Credit--", 0xffffff);

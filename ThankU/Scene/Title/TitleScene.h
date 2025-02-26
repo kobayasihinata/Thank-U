@@ -16,6 +16,10 @@ private:
 	int object_image[13];	//オブジェクト
 	int message_image[10];	//メッセージ画像
 
+	//SE
+	int SE_Cursor;
+	int SE_Decision;
+
 	int random_image_timer = 0; // タイマー変数の初期化
 	int current_image_index = rand() % 9; // ランダムな画像の初期選択
 

@@ -12,7 +12,7 @@
 TitleScene::TitleScene() : 
 cursor(0),scale(0), alpha(0), fadein_timer(0), 
 obj_location(0), message_x(0),
-title_image(NULL),title_logo(NULL), scaling_up(true), 
+title_image(NULL),title_logo(NULL), scaling_up(true), SE_Cursor(NULL),SE_Decision(NULL),
 object_image(),player_icon_x(),player_join(),join_flag(0)
 {
 }
@@ -25,6 +25,13 @@ TitleScene::~TitleScene()
 //初期化処理
 void TitleScene::Initialize()
 {
+    //タイトルBGM再生
+    PlaySoundFile("Rescurce/BGM/TitleBGM.wav", DX_PLAYTYPE_LOOP);
+
+    //SEファイル読み込み
+    SE_Cursor = LoadSoundMem("Rescurce/SE/CursorMove.mp3");
+    SE_Decision = LoadSoundMem("Rescurce/SE/Decision.mp3");
+
     //エフェクト管理クラス取得
     e_manager = EffectManager::Get();
 
@@ -87,6 +94,8 @@ void TitleScene::Initialize()
 //終了時処理
 void TitleScene::Finalize()
 {
+    //BGMを止める
+    StopSoundFile();
 }
 
 //更新処理(現在シーン)
@@ -103,6 +112,7 @@ eSceneType TitleScene::Update()
         key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
     {
         cursor--;
+        PlaySoundMem(SE_Cursor, DX_PLAYTYPE_BACK);
         // 1番上に到達したら、一番下にする
         if (cursor < 0)  cursor = 2;
     }
@@ -110,19 +120,23 @@ eSceneType TitleScene::Update()
         key_input->GetKeyState(KEY_INPUT_DOWN) == eInputState::Pressed)
     {
         cursor++;
+        PlaySoundMem(SE_Cursor, DX_PLAYTYPE_BACK);
         // 1番下に到達したら、一番上にする
         if (cursor > 2) cursor = 0;
     }
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Released)
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_B) || key_input->GetKeyState(KEY_INPUT_SPACE) == eInputState::Pressed)
     {
         //カーソル決定(決定した画面に遷移する)
         switch (cursor)
         {
         case 0:
+            PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
             return eSceneType::E_INGAME;
         case 1:
+            PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
             return eSceneType::E_CREDIT;
         default:
+            PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
             return eSceneType::E_END;
         }
     }
@@ -166,7 +180,7 @@ eSceneType TitleScene::Update()
 
 #ifdef _DEBUG
     //デバッグ用(リザルト画面)
-    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START))
+    if (PadInput::GetButtonDown(DX_INPUT_PAD1, XINPUT_BUTTON_START) ||key_input->GetKeyState(KEY_INPUT_R) == eInputState::Pressed)
     {
         return eSceneType::E_RESULT;
     }
@@ -195,6 +209,21 @@ eSceneType TitleScene::Update()
     if (key_input->GetKeyState(KEY_INPUT_2) == eInputState::Pressed)
     {
         e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::ePuffAndStar);
+    }
+    //エフェクトテスト(Anima)
+    if (key_input->GetKeyState(KEY_INPUT_3) == eInputState::Pressed)
+    {
+        e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eAnima);
+    }
+    //エフェクトテスト(BigHit)
+    if (key_input->GetKeyState(KEY_INPUT_4) == eInputState::Pressed)
+    {
+        e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eBighit);
+    }
+    //エフェクトテスト(BigHit)
+    if (key_input->GetKeyState(KEY_INPUT_5) == eInputState::Pressed)
+    {
+        e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eBloodImpact);
     }
 #endif // _DEBUG
     DebugInfomation::Add("cont1", PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_A));
