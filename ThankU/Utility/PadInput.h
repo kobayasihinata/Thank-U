@@ -6,10 +6,10 @@ class PadInput
 {
 private:
 	//[0]は何も入っていなくて、1~4を使用する
-	static bool now_button[5][16]; //現在のボタン入力
+	static bool now_button[5][16]; //現在のボタン入力	
 	static bool old_button[5][16]; //ひとつ前のボタン入力
-	static float trigger[5][2];    //左右トリガー
-	static Vector2D stick[5][2];	//左右スティック
+	static float trigger[5][2];    //左右トリガー		
+	static Vector2D stick[5][2];	//左右スティック	
 
 public:
 	static void Update();	//入力更新

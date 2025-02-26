@@ -5,11 +5,12 @@
 
 
 struct EffectData
-{
-    char image_path[256];    //ファイルパス
-    int all_num;                    //分割数
-    int x_num;                      //X分割数
-    int y_num;                      //Y分割数
+{                                                     //作者
+    char image_path[256];            //ファイルパス      小
+    int all_num;                    //分割数             林
+    int x_num;                      //X分割数            陽
+    int y_num;                      //Y分割数            向
+
     //ここまではLoadDivGraphの引数と同じ(画像幅、高さは勝手に計算するので入れなくていい)
     int anim_span;                  //アニメーション切り替え速度
 };

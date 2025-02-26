@@ -138,7 +138,7 @@ eSceneType TitleScene::Update()
             //ゲーム開始演出
             PlaySoundMem(SE_Decision, DX_PLAYTYPE_NORMAL);
             game_start_flg = true;
-            game_start_timer = 60;
+            game_start_timer = 0;
         }
     }
 
@@ -146,7 +146,7 @@ eSceneType TitleScene::Update()
     if (game_start_flg)
     {
         //一定時間経過で遷移
-        if (--game_start_timer <= 0)
+        if (++game_start_timer > 60)
         {
             //カーソル決定(決定した画面に遷移する)
             switch (cursor)
@@ -304,33 +304,23 @@ void TitleScene::Draw() const
     DrawGraph(0, 0, object_image[3], true);     //メッセージバー(下の枠みたいなやつ)
     DrawGraph(10, 500, object_image[11], true); //操作説明
 
-    //ゲーム開始演出中に表示が変わる画像たち
-    if (game_start_flg)
-    {
-        DrawGraph(0.0f, -4 * (60 - game_start_timer), title_logo, true);    //タイトルロゴ
-    }
-    //通常表示
-    else
-    {
-        DrawGraph(0.0f, 0, title_logo, true);    //タイトルロゴ
-    }
+    DrawGraph(0.0f,  game_start_timer *(-4), title_logo, true);    //タイトルロゴ
+
     //敵側のメッセージ
-   // DrawRotaGraph(500, 400, scale, 0.0f, object_image[5], true); //メッセージ(ちょっと話聞いてほしくて)
-    DrawRotaGraph(75, 340, 1.0f, 0.0f, object_image[6], true);   //アイコン
+    DrawRotaGraph(75 - game_start_timer * 14, 340, 1.0f, 0.0f, object_image[6], true);   //アイコン
+
     // ランダム画像を描画
-    DrawRotaGraph(500, 400, scale, 0.0f, message_image[current_image_index], true);
+    DrawRotaGraph(500 - game_start_timer * 14, 400, scale, 0.0f, message_image[current_image_index], true);
 
     //メッセージアイコン(メニュー枠)
-    DrawRotaGraph(message_x, obj_location.y / 1.65f, (scale - 0.2), 0.0f, object_image[0], true);
+    DrawRotaGraph(message_x + game_start_timer * 14, obj_location.y / 1.65f, (scale - 0.2), 0.0f, object_image[0], true);
 
     //フェードインして描画 ----エフェクト開始
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-
     //メニュー(文字)
-    DrawRotaGraph(message_x, obj_location.y / 1.65f, (scale - 0.2), 0.0f, object_image[1], true);
+    DrawRotaGraph(message_x + game_start_timer * 14, obj_location.y / 1.65f, (scale - 0.2), 0.0f, object_image[1], true);
     //カーソル(送信ボタン)
-    DrawRotaGraph(SCREEN_WIDTH / 1.45f, (obj_location.y / 2.2) + cursor * 157.0f, cursor_size, 0.0, object_image[2], true);
-
+    DrawRotaGraph(SCREEN_WIDTH / 1.45f + game_start_timer * 14, (obj_location.y / 2.2) + cursor * 157.0f, cursor_size, 0.0, object_image[2], true);
     //ブレンドモードを解除 ----エフェクト終了
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -346,25 +336,25 @@ void TitleScene::Draw() const
                 //強調描画
                 for (int j = 0; j < 5; j++)
                 {
-                    DrawCircleAA(player_icon_x[i] + i * 130, obj_location.y / 3.4f, 60 + (j * 5), 20, 0xffffff, true);
+                    DrawCircleAA(player_icon_x[i] + i * 130 +(game_start_timer * 14), obj_location.y / 3.4f, 60 + (j * 5), 20, 0xffffff, true);
                 }
                 SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
                 //ちょっと大きいアイコン描画
-                DrawRotaGraphF(player_icon_x[i] + i * 130, obj_location.y / 3.4f, 1.1f, 0.f, object_image[7 + i], true);
+                DrawRotaGraphF(player_icon_x[i] + i * 130 + (game_start_timer * 14), obj_location.y / 3.4f, 1.1f, 0.f, object_image[7 + i], true);
             }
             else
             {
                 //通常のアイコン描画
-                DrawRotaGraphF(player_icon_x[i] + i * 130, obj_location.y / 3.4f,1.0f,0.f, object_image[7 + i], true);
+                DrawRotaGraphF(player_icon_x[i] + i * 130 + (game_start_timer * 14), obj_location.y / 3.4f,1.0f,0.f, object_image[7 + i], true);
             }
         }
     }
 
     SetFontSize(50); //フォントサイズを設定
-    DrawFormatString(SCREEN_WIDTH / 1.8, obj_location.y / 1.25f, GetColor(0, 0, 0), "既読", true);    //UI
+    DrawFormatString(SCREEN_WIDTH / 1.8 + (game_start_timer * 14), obj_location.y / 1.25f, GetColor(0, 0, 0), "既読", true);    //UI
 
     // 既読状態の描画
-    DrawFormatString(SCREEN_WIDTH / 1.8 + 105, obj_location.y / 1.25f, GetColor(0, 0, 0), "%d", join_flag, false);
+    DrawFormatString(SCREEN_WIDTH / 1.8 + 105 + (game_start_timer * 14), obj_location.y / 1.25f, GetColor(0, 0, 0), "%d", join_flag, false);
  }
 
 //現在シーン情報を取得

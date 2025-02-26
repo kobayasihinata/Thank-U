@@ -4,7 +4,10 @@
 #include "../../Utility/KeyInput.h"
 #endif // _DEBUG
 
-
+/*
+初めて出来たゲーム
+わーいわーい　とーちゃん
+*/
 //プレイヤーのx座標(共有)
 #define P_X 1700
 //プレイヤーのy座標(共有)
