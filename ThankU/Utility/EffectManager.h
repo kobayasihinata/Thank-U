@@ -24,6 +24,10 @@ struct EffectSpawnData
 
     //↓アニメーションが移動する場合は使用する
     Vector2D velocity;              //移動量
+
+    //↓アニメーションに生存時間があるなら使用する
+    int life_time;                  //生存時間
+
     //等価演算子のオーバーロード
     bool operator==(const EffectSpawnData& other) const {
         return (now_image == other.now_image) && (anim_span == other.anim_span) && (image == other.image);
@@ -65,16 +69,16 @@ static EffectData effect_image_path[effect_num] =
     {"Rescurce/Image/Effect/E_BigHit_2.png",    27,9,3,1},
     {"Rescurce/Image/Effect/E_BloodImpact.png", 63,9,7,1},
     {"Rescurce/Image/Effect/E_Impact_1.png",    27,9,3,1},
-    {"Rescurce/Image/Effect/star_red.png",      20,5,4,5},
-    {"Rescurce/Image/Effect/star_orange.png",   20,5,4,5},
-    {"Rescurce/Image/Effect/star_yellow.png",   20,5,4,5},
-    {"Rescurce/Image/Effect/star_green.png",    20,5,4,5},
-    {"Rescurce/Image/Effect/star_lightBlue.png",20,5,4,5},
-    {"Rescurce/Image/Effect/star_blue.png",     20,5,4,5},
-    {"Rescurce/Image/Effect/star_purple.png",   20,5,4,5},
-    {"Rescurce/Image/Effect/star_pink.png",     20,5,4,5},
-    {"Rescurce/Image/Effect/star_white.png",    20,5,4,5},
-    {"Rescurce/Image/Effect/star_black.png",    20,5,4,5},
+    {"Rescurce/Image/Effect/star_red.png",      20,5,4,1},
+    {"Rescurce/Image/Effect/star_orange.png",   20,5,4,1},
+    {"Rescurce/Image/Effect/star_yellow.png",   20,5,4,1},
+    {"Rescurce/Image/Effect/star_green.png",    20,5,4,1},
+    {"Rescurce/Image/Effect/star_lightBlue.png",20,5,4,1},
+    {"Rescurce/Image/Effect/star_blue.png",     20,5,4,1},
+    {"Rescurce/Image/Effect/star_purple.png",   20,5,4,1},
+    {"Rescurce/Image/Effect/star_pink.png",     20,5,4,1},
+    {"Rescurce/Image/Effect/star_white.png",    20,5,4,1},
+    {"Rescurce/Image/Effect/star_black.png",    20,5,4,1},
 
     {"この文字が常に配列の最後に来るようにする",0,0,0,0},
 };
@@ -103,15 +107,18 @@ public:
     //インスタンスを取得する処理
     static EffectManager* Get();
 
-    void Initialize();     //初期化処理
-    void Finalize();       //終了時処理
-    void Draw() const;  //描画処理
-    void Update();  //更新処理
+    void Initialize();   //初期化処理
+    void Finalize();     //終了時処理
+    void Draw() const;   //描画処理
+    void Update();       //更新処理
 
     /// <summary>
     /// エフェクト生成
     /// </summary>
     /// <param name="_loc">座標</param>
     /// <param name="type">生成するエフェクトの種類</param>
-    void SpawnEffect(Vector2D _loc, eEffectList _type,Vector2D _velocity = 0);
+    /// <param name="_velocity">移動量（移動するなら）</param>
+    /// <param name="_life_time">生存時間</param>
+    void SpawnEffect(Vector2D _loc, eEffectList _type,Vector2D _velocity = 0, int _life_time = 0);
+
 };
