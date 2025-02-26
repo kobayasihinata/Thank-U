@@ -76,8 +76,10 @@ void TitleScene::Initialize()
     for (int i = 0; i < 4; i++) {
         player_icon_x[i] = SCREEN_WIDTH; // 初期位置を画面右側に設定
         player_join[i] = false; // 参加フラグを初期化
+        Data::player_data[i] = { 0 };   //プレイヤーデータ初期化
     }
-
+    Data::player_num = 0;               //人数もリセット
+  
     //コントローラー1は強制的にプレイヤー1
     if (Data::player_data[0].use_controller == 0)
     {
@@ -168,14 +170,23 @@ eSceneType TitleScene::Update()
             PadInput::GetButtonDown(use, XINPUT_BUTTON_Y))
         {
             player_button_flg[i] = true;
-            StarBurst({ player_icon_x[i] + i * 130, obj_location.y / 4.2f,});
+            //StarBurst({ player_icon_x[i] + i * 130, obj_location.y / 4.2f,});
+            //e_manager->SpawnEffect({ player_icon_x[i] + i * 130, obj_location.y / 4.2f, }, eEffectList::eExplosion);
         }
         else
         {
             player_button_flg[i] = false;
         }
     }
-
+    //↑キーでも反応(デバッグ)
+    if (key_input->GetKeyState(KEY_INPUT_UP) == eInputState::Pressed)
+    {
+        player_button_flg[0] = true;
+    }
+    else
+    {
+        player_button_flg[0] = false;
+    }
 
     //Dataを参照してアイコンの演出
     for (int i = 0; i < 4; i++)
@@ -245,6 +256,11 @@ eSceneType TitleScene::Update()
     {
         e_manager->SpawnEffect({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) }, eEffectList::eBloodImpact);
     }
+    //エフェクトテスト(星)
+    if (key_input->GetKeyState(KEY_INPUT_6) == eInputState::Pressed)
+    {
+        StarBurst({ (float)GetRand(SCREEN_WIDTH),(float)GetRand(SCREEN_HEIGHT) });
+    }
 #endif // _DEBUG
     DebugInfomation::Add("cont1", PadInput::GetButton(DX_INPUT_PAD1, XINPUT_BUTTON_A));
     DebugInfomation::Add("cont2", PadInput::GetButton(DX_INPUT_PAD2, XINPUT_BUTTON_A));
@@ -294,11 +310,17 @@ void TitleScene::Draw() const
                 //強調描画
                 for (int j = 0; j < 5; j++)
                 {
-                    DrawCircleAA(player_icon_x[i] + i * 130 + 60, obj_location.y / 4.2f + 60, 60 + (j * 5), 20, 0xffffff, true);
+                    DrawCircleAA(player_icon_x[i] + i * 130, obj_location.y / 3.4f, 60 + (j * 5), 20, 0xffffff, true);
                 }
                 SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+                //ちょっと大きいアイコン描画
+                DrawRotaGraphF(player_icon_x[i] + i * 130, obj_location.y / 3.4f, 1.1f, 0.f, object_image[7 + i], true);
             }
-            DrawGraph(player_icon_x[i] + i * 130, obj_location.y / 4.2f, object_image[7 + i], true);
+            else
+            {
+                //通常のアイコン描画
+                DrawRotaGraphF(player_icon_x[i] + i * 130, obj_location.y / 3.4f,1.0f,0.f, object_image[7 + i], true);
+            }
         }
     }
 
