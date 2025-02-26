@@ -13,9 +13,11 @@ ResultScene::ResultScene() :
 	result_draw_flg(false),
 	winner_draw_time(0),
 	winner_num(0),
-	talk_se(0),
+	ScoreDisplay_se(0),
 	drum_se(0),
     winner_se(0),
+	ovation_se(0),
+	ovation_se_flg(0),
 	result_bgm(0),
 	return_title_flg(false)
 {
@@ -50,10 +52,13 @@ void ResultScene::Initialize()
 	animation_image = LoadGraph("Rescurce/Image/result.png");
 	bar_image = LoadGraph("Rescurce/Image/Line_Message.png");
 
-	talk_se = LoadSoundMem("Rescurce/SE/Talking.mp3");
+	ScoreDisplay_se = LoadSoundMem("Rescurce/SE/ScoreDisplay.mp3");
 	drum_se = LoadSoundMem("Rescurce/SE/ドラムロール.mp3");
 	winner_se = LoadSoundMem("Rescurce/SE/Winner.mp3");
+	ovation_se = LoadSoundMem("Rescurce/SE/Ovation.mp3");
 	result_bgm = LoadSoundMem("Rescurce/BGM/ResultBGM.wav");
+
+	ovation_se_flg = true;
 }
 
 void ResultScene::Finalize()
@@ -67,7 +72,7 @@ void ResultScene::Finalize()
 	//BGMを停止
 	StopSoundMem(result_bgm);
 	//SE、BGMを削除
-	DeleteSoundMem(talk_se);
+	DeleteSoundMem(ScoreDisplay_se);
 	DeleteSoundMem(drum_se);
 	DeleteSoundMem(winner_se);
 	DeleteSoundMem(result_bgm);
@@ -209,7 +214,7 @@ void ResultScene::UpdateResultsMulti()
 	if (frame % 60 == 0 && !result_draw_flg)
 	{
 		result_num++;
-		PlaySoundMem(talk_se, DX_PLAYTYPE_BACK);
+		PlaySoundMem(ScoreDisplay_se, DX_PLAYTYPE_BACK);
 	}
 	//プレイヤーの数だけ描画が完了したら結果発表に入る
 	if (!result_draw_flg && result_num >= Data::player_num)
@@ -235,11 +240,18 @@ void ResultScene::UpdateResultsMulti()
 	//BGMが再生される
 	if (winner_draw_time > WINNER_DRAW_TIME + 60)
 	{
+		//拍手SE再生
+		if (ovation_se_flg)
+		{
+			PlaySoundMem(ovation_se, DX_PLAYTYPE_BACK);
+			ovation_se_flg = false;
+		}
+
 		//リザルトBGM再生
 		if (!CheckSoundMem(result_bgm))
 		{
 			PlaySoundMem(result_bgm, DX_PLAYTYPE_LOOP);
-		}
+		}	
 	}
 	//タイトルに戻れるようになる
 	if (winner_draw_time > WINNER_DRAW_TIME + 120)
@@ -291,7 +303,7 @@ void ResultScene::UpdateResultsSolo()
 	if (frame % 60 == 0 && !result_draw_flg)
 	{
 		result_num++;
-		PlaySoundMem(talk_se, DX_PLAYTYPE_BACK);
+		PlaySoundMem(ScoreDisplay_se, DX_PLAYTYPE_BACK);
 	}
 	//項目の数だけ描画が完了したら結果発表に入る
 	if (!result_draw_flg && result_num >= 2)
@@ -317,6 +329,13 @@ void ResultScene::UpdateResultsSolo()
 	//BGMが再生される
 	if (winner_draw_time > WINNER_DRAW_TIME + 60)
 	{
+		//拍手SE再生
+		if (ovation_se_flg)
+		{
+			PlaySoundMem(ovation_se, DX_PLAYTYPE_BACK);
+			ovation_se_flg = false;
+		}
+
 		//リザルトBGM再生
 		if (!CheckSoundMem(result_bgm))
 		{
