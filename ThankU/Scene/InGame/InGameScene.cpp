@@ -43,7 +43,6 @@ InGameScene::~InGameScene()
 /// <returns></returns>
 void InGameScene::Initialize()
 {
-
 	PlaySoundFile("Rescurce/BGM/InGameBGM.wav", DX_PLAYTYPE_LOOP);
 	SE_Correct = LoadSoundMem("Rescurce/SE/Correct.mp3");
 	SE_Talk = LoadSoundMem("Rescurce/SE/Talking.mp3");
@@ -258,7 +257,7 @@ eSceneType InGameScene::Update()
 			{
 				Collect[i] = true;
 				Player_Anser[i] = agreement::none;
-				Pagree[i] = agreement::none;
+				Pagree[i] = 0;
 				Anserd[i] = false;
 				ScoreValue[i] = 0;
 			}
@@ -273,7 +272,7 @@ eSceneType InGameScene::Update()
 		for (int i = 0; i < Data::player_num; i++)
 		{
 			Player_Anser[i] = agreement::none;
-			Pagree[i] = agreement::none;
+			Pagree[i] = 0;
 		}
 		QSet = true;
 		Question = "E E E";
