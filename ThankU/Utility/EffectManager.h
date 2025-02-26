@@ -41,6 +41,17 @@ enum eEffectList
     eBighit,
     eBloodImpact,
     eImpact,
+    eStarRed,
+    eStarOrange,
+    eStarYellow,
+    eStarGreen,
+    eStarLightBlue,
+    eStarBlue,
+    eStarPurple,
+    eStarPink,
+    eStarWhite,
+    eStarBlack,
+
     eEnd    //常に最後の要素になるようにする
 };
 int const effect_num = eEnd + 1;     //enumの最後の要素を格納しておく
@@ -48,12 +59,22 @@ int const effect_num = eEnd + 1;     //enumの最後の要素を格納しておく
 //EffectListの順にパスを並べる(パス、画像総数、X軸画像数、Y軸画像数、アニメーション切り替えスパンの順)
 static EffectData effect_image_path[effect_num] =
 {
-    {"Rescurce/Image/Effect/explosion.png",7,7,1,10},
-    {"Rescurce/Image/Effect/E_PuffAndStar.png",60,10,8,1},
-    {"Rescurce/Image/Effect/E_Anima.png",63,9,7,1},
-    {"Rescurce/Image/Effect/E_BigHit_2.png",27,9,3,1},
-    {"Rescurce/Image/Effect/E_BloodImpact.png",63,9,7,1},
-    {"Rescurce/Image/Effect/E_Impact_1.png",27,9,3,1},
+    {"Rescurce/Image/Effect/explosion.png",     7,7,1,10},
+    {"Rescurce/Image/Effect/E_PuffAndStar.png", 60,10,8,1},
+    {"Rescurce/Image/Effect/E_Anima.png",       63,9,7,1},
+    {"Rescurce/Image/Effect/E_BigHit_2.png",    27,9,3,1},
+    {"Rescurce/Image/Effect/E_BloodImpact.png", 63,9,7,1},
+    {"Rescurce/Image/Effect/E_Impact_1.png",    27,9,3,1},
+    {"Rescurce/Image/Effect/star_red.png",      20,5,4,5},
+    {"Rescurce/Image/Effect/star_orange.png",   20,5,4,5},
+    {"Rescurce/Image/Effect/star_yellow.png",   20,5,4,5},
+    {"Rescurce/Image/Effect/star_green.png",    20,5,4,5},
+    {"Rescurce/Image/Effect/star_lightBlue.png",20,5,4,5},
+    {"Rescurce/Image/Effect/star_blue.png",     20,5,4,5},
+    {"Rescurce/Image/Effect/star_purple.png",   20,5,4,5},
+    {"Rescurce/Image/Effect/star_pink.png",     20,5,4,5},
+    {"Rescurce/Image/Effect/star_white.png",    20,5,4,5},
+    {"Rescurce/Image/Effect/star_black.png",    20,5,4,5},
 
     {"この文字が常に配列の最後に来るようにする",0,0,0,0},
 };
