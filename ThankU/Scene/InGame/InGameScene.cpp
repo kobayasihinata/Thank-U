@@ -30,7 +30,6 @@ InGameScene::InGameScene():
 	Pagree{ NULL },
 	PlayerImage{ NULL },
 	Player_Anser{none},
-	PlayerScore{ NULL },
 	QSet(true),
 	SE_Correct(NULL),
 	ScoreValue{ NULL },
@@ -61,6 +60,7 @@ void InGameScene::Initialize()
 
 	Timer = 0;
 
+	//何故かしてる初期化
 	for (int i = 0; i < Data::player_num; i++)
 	{
 		Collect[i] = true;
@@ -68,6 +68,7 @@ void InGameScene::Initialize()
 		right[i] = -1;
 	}
 
+	//プレイ人数に合わせてプレイヤーの画像をロード
 	switch (Data::player_num)
 	{
 	case 4:
@@ -81,6 +82,7 @@ void InGameScene::Initialize()
 	}
 	PlayerTextImage = LoadGraph("Rescurce/Image/MessageFrame_1.png");
 
+	//プレイ人数に合わせて総合ポイントをセット
 	switch (Data::player_num)
 	{
 	case 4:
@@ -97,8 +99,10 @@ void InGameScene::Initialize()
 		break;
 	}
 
+	//エネミーのセリフをcsvファイルから読み取り
 	EnemyString = read_csv("Rescurce/EnemyVoice.csv");
 
+	//ダミーデータ
 	/*EnemyString = {
 		{"ポジティブな質問1", "ポジティブな質問2", "ポジティブな質問3", "ポジティブな質問4", "ポジティブな質問5"},
 		{"ネガティブな質問1", "ネガティブな質問2", "ネガティブな質問3", "ネガティブな質問4", "ネガティブな質問5"},
@@ -106,9 +110,12 @@ void InGameScene::Initialize()
 		{"盛り上げる質問1", "盛り上げる質問2", "盛り上げる質問3", "盛り上げる質問4", "盛り上げる質問5"}
 	};*/
 
+	//プレイヤーの返答
 	PString = { "・　・　・","そうだね！","そんなことないよ！","そうなの？","それから？"};
+	//エネミーの初期質問(沈黙)
 	Question =  "・ ・ ・";
 
+	//画像類のロード
 	Background_image	=	LoadGraph("Rescurce/Image/background.png")		;
 	Border_Line			=	LoadGraph("Rescurce/Image/Line_Message.png")	;
 	EnemyTextImage		=	LoadGraph("Rescurce/Image/MessageFrame_2.png")	;
@@ -127,6 +134,7 @@ void InGameScene::Initialize()
 /// <returns></returns>
 void InGameScene::Finalize()
 {
+	//BGMの停止
 	StopSoundFile();
 }
 
@@ -143,47 +151,61 @@ void InGameScene::Draw() const
 	//エネミー関係 800 100
 	//DrawReverseGraph(50, 100, EnemyImage, true,1);
 	DrawGraph(50, 50, EnemyImage, true);
+	//トータルスコアの表示
 	DrawFormatString(180, 70, 0xFFFFFF, "親友ポイント残り:%d", TotalScore);
+	//質問文の長さに合わせて吹き出しを描画
 	Data::DrawSpeechBubble(Vector2D(50, 200), Question.length()*25, false);
+	//質問文の表示
 	DrawFormatString(50, 200, 0xFFFFFF, "%s", Question.c_str());
-
+	//下のメッセージ送信っぽい画像の表示
  	DrawGraph(0, 0, Border_Line, true);
+	//左下の操作方法の表示
 	DrawGraph(50, 500, InGameHelp, true);
 	//人数に合わせて描画
 	switch (Data::player_num)
 	{
+		//４人いるなら
 	case 4:
 		if (Collect[3] == false)
 		{
+			//メッセージの削除
 			DrawGraph(880, 750, false_Message, true);
 			//DrawFormatString(880, 750, 0x000000, "<メッセージが削除されました>");
 		}
 		else {
+			//アイコンの表示
 			DrawGraph(P_X, P_Y + 600, PlayerImage[3], true);
+			//「そんなことないよ！」かどうか
 			if (Pagree[3] == 2)//長文用調整
 			{
+				//長く表示する為にレイアウトの調整
 				Data::DrawSpeechBubble(Vector2D(P_X - 450, P_Y + 700), PString[Pagree[3]].length() * 20, true);
 				DrawFormatString(P_X - 450, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
 			}
 			else
 			{
+				//そのままでレイアウトの表示
 				Data::DrawSpeechBubble(Vector2D(P_X - 250, P_Y + 700), PString[Pagree[3]].length() * 20, true);
 				DrawFormatString(P_X - 260, P_Y + 700, 0x000000, "%s", PString[Pagree[3]].c_str());
 			}
 		}
 		if (Data::player_data[3].score < 0)//スコアの表示
 		{
+			//赤い字で-点を表示
 			DrawFormatString(P_X + 100, P_Y + 700, 0xFF0000, "%d", Data::player_data[3].score);
 		}
 		else {
 			DrawFormatString(P_X + 100, P_Y + 700, 0x000000, "%d", Data::player_data[3].score);
 		}
+		//正解したかどうか(-1:表示しない 0:不正解 1:正解)
 		if (right[3] == 1)
 		{
+			//正解の表示
 			DrawRotaGraph(P_X - 200, P_Y + 700, 1.0, (-45 / 180 + 1), Collect1st_Image, true);
 		}
 		else if (right[3] == 0)
 		{
+			//不正解の表示
 			DrawRotaGraph(P_X - 200, P_Y + 700, 1.0, (-45 / 180 + 1), Bad_Image, true);
 		}
 		if (addscore[1][3] != 0)
@@ -199,6 +221,7 @@ void InGameScene::Draw() const
 			}
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		}
+		//	**	------以降の処理は上記とほぼ同じなため、コメント割愛	------	**	//
 	case 3:
 		if (Collect[2] == false)
 		{
@@ -218,7 +241,7 @@ void InGameScene::Draw() const
 				DrawFormatString(P_X - 260, P_Y + 500, 0x000000, "%s", PString[Pagree[2]].c_str());
 			}
 		}
-		if (Data::player_data[3].score < 0)//スコアの表示
+		if (Data::player_data[2].score < 0)//スコアの表示
 		{
 			DrawFormatString(P_X + 100, P_Y + 500, 0xFF0000, "%d", Data::player_data[2].score);
 		}
@@ -368,6 +391,7 @@ void InGameScene::Draw() const
 			  box_loc[1].y + impact,
 			  GetColor(255, 225 - (Timer * 40), 225 - (Timer * 40)),
 			  true);
+	//デバッグ時シーンの情報表示
 #if _DEBUG
 	DrawString(10, 10, "InGame", 0x000000);
 #endif
@@ -382,16 +406,19 @@ eSceneType InGameScene::Update()
 {
 	__super::Update();
 #if _DEBUG
+	//デバッグじゃないなら要らない子
 	KeyInput* key_input = KeyInput::Get();
 #endif // _DEBUG
 
 	/*	Enemy関連(2つとも記載済みのため、関数呼び出しのみ)	*/
 	if (Timer == 1)
 	{
+		//１度だけ通す処理
 		if (QSet)
 		{
 			//Enemyから問いかけを貰う
 			EnemyAsk();
+			//各種変数の初期化
 			for (int i = 0; i < Data::player_num; i++)
 			{
 				Collect[i] = true;
@@ -403,6 +430,7 @@ eSceneType InGameScene::Update()
 			}
 		}
 	}
+	//制限時間に達したら・・・
 	while (Timer > 5)
 	{
 		SetPoint();
@@ -463,9 +491,10 @@ int InGameScene::PlayerAnser()
 	{
 		if (Anserd[i] != true)
 		{
+//デバッグ確認用
 #ifdef _DEBUG
 			//playerの押したボタンに応じて回答を当てはめる
-			if (CheckHitKey(KEY_INPUT_W))//←仮置き
+			if (CheckHitKey(KEY_INPUT_W))
 			{
 				Player_Anser[0] = agreement::positive;
 				Pagree[0] = 1;
@@ -495,7 +524,7 @@ int InGameScene::PlayerAnser()
 			}
 #endif // _DEBUG
 			//playerの押したボタンに応じて回答を当てはめる
-			if (PadInput::GetButtonDown(Data::player_data[i].use_controller, XINPUT_BUTTON_B))//←仮置き
+			if (PadInput::GetButtonDown(Data::player_data[i].use_controller, XINPUT_BUTTON_B))
 			{
 				Player_Anser[i] = agreement::positive;
 				Pagree[i] = 1;
@@ -552,7 +581,9 @@ void InGameScene::CheckAnser()
 
 	for (int i = 0; i < Data::player_num; i++)
 	{
+		//不正解を前置
 		Collect[i] = false;
+		//未回答を念の為前置
 		right[i] = -1;
 
 		addscore[1][i] = 1;
@@ -562,14 +593,18 @@ void InGameScene::CheckAnser()
 			addscore[0][i] = ScoreValue[i];
 			PlaySoundMem(SE_Correct, DX_PLAYTYPE_BACK);
 			//正解の場合
-			//scoreを正答したプレイヤーに加算
 			switch (i)
 			{
 			case 0:
+				//scoreを正答したプレイヤーに加算
 				Data::player_data[0].score += ScoreValue[i];
+				//正解数を加算
 				Data::player_data[0].great++;
+				//総合点を加算した分減らす
 				TotalScore -= ScoreValue[i];
+				//正答したで！
 				Collect[0] = true;
+				//正答いうてうやろ！！
 				right[0] = 1;
 				break;
 			case 1:
@@ -677,10 +712,15 @@ void InGameScene::EnemyAsk()
 /// <returns>vectorの中のvectorの中にあるstring</returns>
 vector<vector<string>> InGameScene::read_csv(const string& filename)
 {
+	/*細かい内容を書くと大変になるので大雑把で書きます*/
+
+	//返却用変数
 	vector<vector<string>> data;
+	//ファイルオープン
 	ifstream file(filename);
 	if (!file) {
 		cerr << "Error: ファイルを開けませんでした。" << endl;
+		//この書き方をすると、返却時にエラーが発生する
 		return data;
 	}
 
@@ -700,8 +740,9 @@ vector<vector<string>> InGameScene::read_csv(const string& filename)
 
 void InGameScene::TimerCount()
 {
+	//これが1フレームごとに加算
 	TimeCountUp += 1.0f;
-
+	//基本、60fpsのため、60回通ると１秒に判定(ifdefにこの辺直す方法があった気が...)
 	if (TimeCountUp > 60.0f)
 	{
 		TimeCountUp = 0.0f;
